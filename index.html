@@ -163,6 +163,67 @@ const rows = [
   {name:'nav', title:'Global Navigation', kind:'item', category:'config', status:'published', modified:'Jun 2, 2026', by:'K. Robin', template:'Fragment (system)', lang:'—', perms:'Read: org · Write: da-admins'},
 ];
 
+// Sample contents for each folder, keyed by folder path (relative to the site root).
+function localePages(lang){
+  return [
+    {name:'about-us', title:'About Us', kind:'item', category:'page', status:'published', modified:'Jul 19, 2026', by:'K. Robin', template:'Article Page', lang},
+    {name:'already-investing', title:'Already Investing', kind:'item', category:'page', status:'published', modified:'Jul 19, 2026', by:'K. Robin', template:'Article Page', lang},
+    {name:'articles', title:'Articles', kind:'container', category:'page', childCount:6},
+    {name:'events', title:'Events', kind:'item', category:'page', status:'published', modified:'Jul 18, 2026', by:'K. Robin', template:'List Page', lang},
+    {name:'index', title:'Home', kind:'item', category:'page', status:'published', modified:'Jul 19, 2026', by:'K. Robin', template:'Home Page', lang},
+  ];
+}
+const folderData = {
+  'articles': [
+    {name:'trips-worth-taking', title:'Trips Worth Taking', kind:'item', category:'page', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'Article Page', lang:'English', preview:'.../articles/trips-worth-taking', live:'.../articles/trips-worth-taking', perms:'Read: org · Write: da-authors'},
+    {name:'weekend-escapes', title:'Weekend Escapes', kind:'item', category:'page', status:'published', modified:'Jul 19, 2026', by:'K. Robin', template:'Article Page', lang:'English', perms:'Read: org · Write: da-authors'},
+    {name:'gear-guide', title:'Ultimate Gear Guide', kind:'item', category:'page', status:'draft', modified:'Jul 18, 2026', by:'B. Loeffler', template:'Article Page', lang:'English', perms:'Read: org · Write: da-authors'},
+    {name:'first-timers', title:'For First-Timers', kind:'item', category:'page', status:'review', modified:'Jul 17, 2026', by:'B. Loeffler', template:'Article Page', lang:'English', perms:'Read: org · Write: da-authors'},
+    {name:'2026', title:'2026 Archive', kind:'container', category:'page', childCount:3},
+  ],
+  'articles/2026': [
+    {name:'q1-recap', title:'Q1 Travel Recap', kind:'item', category:'page', status:'published', modified:'Apr 2, 2026', by:'K. Robin', template:'Article Page', lang:'English'},
+    {name:'summer-guide', title:'Summer Guide 2026', kind:'item', category:'page', status:'published', modified:'Jun 1, 2026', by:'K. Robin', template:'Article Page', lang:'English'},
+    {name:'fall-preview', title:'Fall Preview', kind:'item', category:'page', status:'draft', modified:'Jul 5, 2026', by:'B. Loeffler', template:'Article Page', lang:'English'},
+  ],
+  'de': localePages('German'),
+  'en': localePages('English'),
+  'es': localePages('Spanish'),
+  'demo-docs': [
+    {name:'onboarding', title:'Team Onboarding', kind:'item', category:null, status:'draft', modified:'Jul 10, 2026', by:'B. Loeffler'},
+    {name:'style-guide', title:'Brand Style Guide', kind:'item', category:null, status:'draft', modified:'Jul 8, 2026', by:'B. Loeffler'},
+    {name:'component-demo', title:'Component Demo', kind:'item', category:null, status:'draft', modified:'Jul 2, 2026', by:'AI Assistant'},
+  ],
+  'events': [
+    {name:'summer-festival', title:'Summer Festival', kind:'item', category:'page', status:'published', modified:'Jul 15, 2026', by:'K. Robin', template:'Event Page', lang:'English'},
+    {name:'trail-day', title:'Community Trail Day', kind:'item', category:'page', status:'published', modified:'Jul 12, 2026', by:'K. Robin', template:'Event Page', lang:'English'},
+    {name:'gear-swap', title:'Annual Gear Swap', kind:'item', category:'page', status:'draft', modified:'Jul 9, 2026', by:'B. Loeffler', template:'Event Page', lang:'English'},
+  ],
+  'faqs': [
+    {name:'booking', title:'Booking & Payments', kind:'item', category:'page', status:'published', modified:'Jun 20, 2026', by:'K. Robin', template:'FAQ Page', lang:'English'},
+    {name:'cancellations', title:'Cancellations', kind:'item', category:'page', status:'published', modified:'Jun 20, 2026', by:'K. Robin', template:'FAQ Page', lang:'English'},
+    {name:'gear-rental', title:'Gear Rental', kind:'item', category:'page', status:'published', modified:'Jun 18, 2026', by:'K. Robin', template:'FAQ Page', lang:'English'},
+  ],
+  'config': [
+    {name:'nav', title:'Global Navigation', kind:'item', category:'config', status:'published', modified:'Jun 2, 2026', by:'K. Robin', template:'Fragment (system)', lang:'—', perms:'Read: org · Write: da-admins'},
+    {name:'footer', title:'Global Footer', kind:'item', category:'config', status:'published', modified:'Jun 2, 2026', by:'K. Robin', template:'Fragment (system)', lang:'—', perms:'Read: org · Write: da-admins'},
+    {name:'site-config', title:'Site Settings', kind:'item', category:'config', status:'published', modified:'May 30, 2026', by:'K. Robin', template:'Config', lang:'—', perms:'Read: org · Write: da-admins'},
+  ],
+  'fragments': [
+    {name:'related-articles', title:'Related Articles (Bento)', kind:'item', category:'fragment', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'Fragment', lang:'English', perms:'Read: org · Write: da-authors'},
+    {name:'hero-banner', title:'Hero Banner', kind:'item', category:'fragment', status:'published', modified:'Jul 14, 2026', by:'K. Robin', template:'Fragment', lang:'English', perms:'Read: org · Write: da-authors'},
+    {name:'cta-newsletter', title:'Newsletter CTA', kind:'item', category:'fragment', status:'published', modified:'Jul 10, 2026', by:'K. Robin', template:'Fragment', lang:'English', perms:'Read: org · Write: da-authors'},
+    {name:'author-bio', title:'Author Bio', kind:'item', category:'fragment', status:'draft', modified:'Jul 4, 2026', by:'B. Loeffler', template:'Fragment', lang:'English', perms:'Read: org · Write: da-authors'},
+  ],
+  'icons': [
+    {name:'search.svg', title:'Search Icon', kind:'item', category:'asset', status:'published', modified:'Jul 20, 2026', by:'AI Assistant', template:'SVG Asset', lang:'—'},
+    {name:'menu.svg', title:'Menu Icon', kind:'item', category:'asset', status:'published', modified:'Jul 20, 2026', by:'AI Assistant', template:'SVG Asset', lang:'—'},
+    {name:'arrow.svg', title:'Arrow Icon', kind:'item', category:'asset', status:'published', modified:'Jul 20, 2026', by:'AI Assistant', template:'SVG Asset', lang:'—'},
+    {name:'pin.svg', title:'Location Pin', kind:'item', category:'asset', status:'published', modified:'Jul 19, 2026', by:'AI Assistant', template:'SVG Asset', lang:'—'},
+    {name:'star.svg', title:'Star Icon', kind:'item', category:'asset', status:'published', modified:'Jul 19, 2026', by:'AI Assistant', template:'SVG Asset', lang:'—'},
+  ],
+};
+
 const containerLabel = {page:'Pages', fragment:'Fragments', asset:'Assets', locale:'Locale', config:'Config'};
 const itemLabel = {page:'Page', fragment:'Fragment', asset:'Asset', locale:'Locale', config:'Config'};
 
@@ -221,11 +282,16 @@ document.querySelectorAll('th[data-key]').forEach(th => {
 });
 
 let currentList = [];
+let folderPath = [];
 const selection = new Set();
+
+function currentFolderRows(){
+  return folderPath.length === 0 ? rows : (folderData[folderPath.join('/')] || []);
+}
 
 function render(filter, search){
   tbody.innerHTML = '';
-  let list = rows.filter(r => {
+  let list = currentFolderRows().filter(r => {
         if(filter === 'all') return true;
         if(filter === 'folder') return !r.category; // uncategorized, generic containers only
         return r.category === filter;
@@ -235,6 +301,13 @@ function render(filter, search){
     list = list.slice().sort((a, b) => compareRows(a, b, sortState.key) * (sortState.dir === 'asc' ? 1 : -1));
   }
   currentList = list;
+  if(list.length === 0){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td></td><td colspan="6" class="muted" style="padding:24px 14px;">This folder is empty.</td>`;
+    tbody.appendChild(tr);
+    updateSelectAll();
+    return;
+  }
   list.forEach((r, i) => {
     const tr = document.createElement('tr');
     if(selection.has(r)) tr.classList.add('row-selected');
@@ -252,7 +325,7 @@ function render(filter, search){
     check.addEventListener('change', () => { toggleSelect(r, check.checked); tr.classList.toggle('row-selected', check.checked); });
     const more = tr.querySelector('.more-btn');
     more.addEventListener('click', e => { e.stopPropagation(); openMetaPopover(r, more); });
-    tr.addEventListener('click', () => { if(r.kind === 'item') openCanvas(r); else openDrawer(r); });
+    tr.addEventListener('click', () => { if(r.kind === 'item') openCanvas(r); else goToFolder([...folderPath, r.name]); });
     tbody.appendChild(tr);
   });
   updateSelectAll();
@@ -388,22 +461,48 @@ function renderOrgView(){
 
 let currentView = 'site';
 
-function setView(level){
-  currentView = level;
-  selection.clear();
-  updateSelectionBar();
-  document.querySelectorAll('.crumb-link').forEach(c => c.classList.toggle('active', c.dataset.level === level));
-  document.querySelector('.toolbar').style.display = level === 'site' ? 'flex' : 'none';
-  if(level === 'org'){
-    renderOrgView();
-  } else {
-    render(document.querySelector('.chip-filter.active').dataset.type, document.getElementById('searchInput').value.toLowerCase());
+function renderCrumbs(){
+  const row = document.querySelector('.crumbs-row');
+  const inOrg = currentView === 'org';
+  let html = `<span class="crumb-link ${inOrg ? 'active' : ''}" data-nav="org">⌂ blofft1</span>`;
+  if(!inOrg){
+    html += `<span class="crumb-sep">›</span><span class="crumb-link ${folderPath.length === 0 ? 'active' : ''}" data-nav="site">wknd-advanced</span>`;
+    folderPath.forEach((f, i) => {
+      html += `<span class="crumb-sep">›</span><span class="crumb-link ${i === folderPath.length - 1 ? 'active' : ''}" data-nav="folder" data-idx="${i}">${f}</span>`;
+    });
   }
+  row.innerHTML = html;
+  row.querySelectorAll('.crumb-link').forEach(c => {
+    c.addEventListener('click', () => {
+      const nav = c.dataset.nav;
+      if(nav === 'org') setView('org');
+      else if(nav === 'site') goToFolder([]);
+      else goToFolder(folderPath.slice(0, parseInt(c.dataset.idx) + 1));
+    });
+  });
 }
 
-document.querySelectorAll('.crumb-link').forEach(c => {
-  c.addEventListener('click', () => setView(c.dataset.level));
-});
+function goToFolder(pathArr){
+  currentView = 'site';
+  folderPath = pathArr;
+  selection.clear();
+  updateSelectionBar();
+  document.querySelector('.toolbar').style.display = 'flex';
+  renderCrumbs();
+  render(document.querySelector('.chip-filter.active').dataset.type, document.getElementById('searchInput').value.toLowerCase());
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function setView(level){
+  if(level === 'site'){ goToFolder([]); return; }
+  currentView = 'org';
+  folderPath = [];
+  selection.clear();
+  updateSelectionBar();
+  document.querySelector('.toolbar').style.display = 'none';
+  renderCrumbs();
+  renderOrgView();
+}
 
 const annoToggle = document.getElementById('annoToggle');
 annoToggle.addEventListener('click', () => {
@@ -538,7 +637,7 @@ function openMetaPopover(r, anchor){
   add('Permissions', r.perms);
   add('Preview', r.preview);
   add('Live', r.live);
-  const openLabel = r.kind === 'item' ? 'Open in Experience Workspace' : 'Full details';
+  const openLabel = r.kind === 'item' ? 'Open in Experience Workspace' : 'Open folder';
   pop.innerHTML = `<div class="mp-head">Details</div>${rowsHtml}<div class="mp-actions"><button class="mp-btn" data-mp="open">${openLabel}</button></div>`;
   document.body.appendChild(pop);
   const rect = anchor.getBoundingClientRect();
@@ -551,7 +650,7 @@ function openMetaPopover(r, anchor){
   if(top + ph > window.innerHeight - 10) pop.style.top = Math.max(66, rect.top - ph - 6) + 'px';
   pop.querySelector('[data-mp="open"]').addEventListener('click', () => {
     closeMetaPopover();
-    if(r.kind === 'item') openCanvas(r); else openDrawer(r);
+    if(r.kind === 'item') openCanvas(r); else goToFolder([...folderPath, r.name]);
   });
 }
 function closeMetaPopover(){ const p = document.getElementById('metaPop'); if(p) p.remove(); }
@@ -562,10 +661,11 @@ document.addEventListener('click', (e) => {
 
 // ---------- Click a file → open the Experience Workspace canvas mockup ----------
 function openCanvas(r){
-  const params = new URLSearchParams({ page: r.name, title: r.title, template: r.template || '', status: r.status || '' });
+  const params = new URLSearchParams({ page: r.name, title: r.title, template: r.template || '', status: r.status || '', path: '/' + [...folderPath, r.name].join('/') });
   window.location.href = 'canvas.html?' + params.toString();
 }
 
+renderCrumbs();
 render('all', '');
 </script>
 </body>

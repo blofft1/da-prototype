@@ -7,113 +7,121 @@
 </head>
 <body class="canvas-body">
 
-  <div class="appbar">
+  <div class="cv-topbar">
     <div class="logomark">A</div>
-    <svg class="app-switcher" viewBox="0 0 24 24" fill="none"><path d="M4 5h4v4H4V5zm0 6h4v4H4v-4zm0 6h4v4H4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4z" fill="currentColor"/></svg>
-    <div class="app-title">Document Authoring <small>Experience Workspace</small></div>
-    <div class="breadcrumb"><b>blofft1</b> / wknd-advanced / <span id="crumbPage">index</span></div>
+    <div class="cv-crumb" id="cvCrumb"><a href="index.html">blofft1</a> › <a href="index.html">wknd-advanced</a> › <b id="crumbPage">index</b></div>
     <div class="appbar-spacer"></div>
-    <button class="btn" id="backBtn">← Back to Browse</button>
-    <button class="btn" id="previewBtn">◱ Preview</button>
-    <button class="btn primary" id="publishBtn">➤ Publish</button>
+    <div class="cv-top-action" id="feedbackBtn">💬 Feedback</div>
+    <div class="cv-top-icon" title="Page source">📄</div>
+    <button class="cv-send" id="publishBtn" title="Publish">➤</button>
     <div class="avatar">B</div>
   </div>
 
-  <div class="editor-shell">
-    <div class="editor-main">
-      <div class="edit-toolbar">
-        <span class="et-status" id="etStatus">● Saved</span>
-        <div class="et-tools">
-          <button title="Bold"><b>B</b></button>
-          <button title="Italic"><i>I</i></button>
-          <button title="Underline"><u>U</u></button>
-          <button title="Link">🔗</button>
-          <button title="Heading">H</button>
-          <button title="List">☰</button>
-          <button title="Image">🖼</button>
+  <div class="cv-shell">
+    <div class="rail">
+      <div class="rail-item">⌂</div>
+      <div class="rail-item">◱</div>
+      <div class="rail-item">💡</div>
+    </div>
+
+    <!-- Left: AI assistant panel -->
+    <div class="cv-ai">
+      <div class="cv-ai-center">
+        <h2>Welcome, Bill</h2>
+        <p>What are we working on today?</p>
+      </div>
+      <div class="cv-ai-foot">
+        <div class="cv-ai-box">
+          <input placeholder="Ask anything, or type / for skills…">
+          <button class="cv-ai-plus">+</button>
         </div>
+        <p class="cv-ai-note">Responses are generated using AI, and may be inaccurate. Check before using. <a href="#">AI User Guidelines</a></p>
+      </div>
+    </div>
+
+    <!-- Center: editing canvas -->
+    <div class="cv-canvas-col">
+      <div class="cv-canvas-toolbar">
+        <div class="cv-tb-left">
+          <button title="Undo">↶</button>
+          <button title="Redo">↷</button>
+        </div>
+        <div class="cv-tb-center">
+          <div class="cv-seg" id="viewSeg">
+            <button class="active" data-view="layout">Layout</button>
+            <button data-view="content">Content</button>
+          </div>
+          <button class="cv-split" title="Split view">▤</button>
+        </div>
+        <div class="cv-tb-right"></div>
       </div>
 
-      <div class="doc-canvas" id="docCanvas">
-        <h1 contenteditable="true" id="docTitle">About Us</h1>
-        <p class="doc-sub" contenteditable="true">Click any text to edit — this is a mockup of the DA canvas editor. Blocks below mirror how content is authored in Document Authoring.</p>
-
-        <div class="block" data-block="Hero">
-          <div class="block-tag">Hero</div>
-          <div class="hero-mock">
-            <div class="hero-img">🏔</div>
-            <div class="hero-copy">
-              <h2 contenteditable="true">Trips worth taking</h2>
-              <p contenteditable="true">Discover hand-picked adventures from the WKND team — curated routes, local guides, and unforgettable views.</p>
-              <span class="mock-btn">Explore trips</span>
-            </div>
+      <div class="cv-canvas-scroll">
+        <div class="cv-doc">
+          <div class="cv-block">
+            <div class="cv-block-head">hero</div>
+            <div class="cv-hero-img" style="background-image:url('https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=60')"></div>
           </div>
-        </div>
-
-        <div class="block" data-block="Text">
-          <div class="block-tag">Text</div>
-          <p contenteditable="true">WKND is a lifestyle brand for those who live for the weekend. We believe the best stories start where the pavement ends. This paragraph is fully editable — try typing in it, and watch the save indicator update.</p>
-        </div>
-
-        <div class="block" data-block="Cards">
-          <div class="block-tag">Cards</div>
-          <div class="cards-mock">
-            <div class="card-mock"><div class="cm-img">⛺</div><div class="cm-body"><h4 contenteditable="true">Backcountry Camping</h4><p contenteditable="true">Sleep under the stars.</p></div></div>
-            <div class="card-mock"><div class="cm-img">🚵</div><div class="cm-body"><h4 contenteditable="true">Mountain Biking</h4><p contenteditable="true">Trails for every level.</p></div></div>
-            <div class="card-mock"><div class="cm-img">🛶</div><div class="cm-body"><h4 contenteditable="true">River Kayaking</h4><p contenteditable="true">Paddle wild waters.</p></div></div>
-          </div>
+          <div class="cv-img" style="background-image:url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1200&q=60')"></div>
+          <div class="cv-text" contenteditable="true">Explore · Wander · Belong</div>
         </div>
       </div>
     </div>
 
-    <div class="editor-rail">
-      <div class="er-head" id="railTitle">About Us</div>
-      <div class="er-sub" id="railPath">/wknd-advanced/about-us</div>
-
-      <div class="er-section">Blocks — drag to add</div>
-      <div class="er-item">▤ Text</div>
-      <div class="er-item">▦ Hero</div>
-      <div class="er-item">⊞ Cards</div>
-      <div class="er-item">◫ Columns</div>
-      <div class="er-item">🖼 Image</div>
-      <div class="er-item">❝ Quote</div>
-
-      <div class="er-section">Page Properties</div>
-      <div class="er-prop"><span>Template</span><b id="propTemplate">Article Page</b></div>
-      <div class="er-prop"><span>Status</span><b id="propStatus">Published</b></div>
-      <div class="er-prop"><span>Language</span><b>English</b></div>
-      <div class="er-prop"><span>Modified</span><b>Jul 20, 2026</b></div>
+    <!-- Right: Files tree -->
+    <div class="cv-files">
+      <div class="cv-files-head">▭ Files ⌄</div>
+      <div class="cv-tree">
+        <div class="cv-tree-root">⌄ wknd-advanced</div>
+        <div id="treeItems"></div>
+      </div>
     </div>
   </div>
 
 <script>
   const params = new URLSearchParams(location.search);
   const page = params.get('page') || 'index';
-  const title = params.get('title') || 'Untitled';
-  const template = params.get('template') || '';
-  const status = params.get('status') || '';
-  const statusLabel = { published:'Published', review:'In review', draft:'Draft' };
+  const title = params.get('title') || page;
 
   document.getElementById('crumbPage').textContent = page;
-  document.getElementById('docTitle').textContent = title;
-  document.getElementById('railTitle').textContent = title;
-  document.getElementById('railPath').textContent = '/wknd-advanced/' + page;
-  document.getElementById('propTemplate').textContent = template || '—';
-  document.getElementById('propStatus').textContent = statusLabel[status] || '—';
+  document.title = 'Editing ' + page + ' — Experience Workspace';
 
-  document.getElementById('backBtn').addEventListener('click', () => location.href = 'index.html');
+  // ----- File tree (mirrors the real DA Files panel) -----
+  const tree = [
+    {name:'about-us'}, {name:'already-investing'}, {name:'articles', folder:true}, {name:'articles'},
+    {name:'de', folder:true}, {name:'demo-docs', folder:true}, {name:'demo-slides', folder:true},
+    {name:'en', folder:true}, {name:'es', folder:true}, {name:'events', folder:true}, {name:'events'},
+    {name:'experimentation', folder:true}, {name:'extras'}, {name:'faqs', folder:true}, {name:'footer'},
+    {name:'forms', folder:true}, {name:'fr', folder:true}, {name:'fragments', folder:true},
+    {name:'guided-journey'}, {name:'hi', folder:true}, {name:'icons', folder:true}, {name:'index'},
+    {name:'learn', folder:true}, {name:'learn'}, {name:'media', folder:true}, {name:'nav'},
+    {name:'new-to-investing'}, {name:'products', folder:true}, {name:'products'}, {name:'search'},
+    {name:'start-here', folder:true}, {name:'start-here'}, {name:'test', folder:true},
+  ];
+  const treeEl = document.getElementById('treeItems');
+  let highlighted = false;
+  tree.forEach(t => {
+    const el = document.createElement('div');
+    const isActive = !highlighted && !t.folder && t.name === page;
+    if(isActive) highlighted = true;
+    el.className = 'cv-tree-item' + (isActive ? ' active' : '');
+    el.innerHTML = `<span class="tw">${t.folder ? '›' : ''}</span>${t.name}`;
+    if(!t.folder){
+      el.addEventListener('click', () => { location.href = 'canvas.html?page=' + encodeURIComponent(t.name) + '&title=' + encodeURIComponent(t.name); });
+    }
+    treeEl.appendChild(el);
+  });
 
-  // Fake autosave indicator
-  const st = document.getElementById('etStatus');
-  let saveTimer;
-  document.getElementById('docCanvas').addEventListener('input', () => {
-    st.textContent = '● Saving…'; st.style.color = 'var(--orange-700)';
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => { st.textContent = '● Saved'; st.style.color = 'var(--green-700)'; }, 700);
+  // ----- Layout / Content toggle (cosmetic) -----
+  document.querySelectorAll('#viewSeg button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#viewSeg button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+    });
   });
 
   document.getElementById('publishBtn').addEventListener('click', () => alert('Mockup: this would publish "' + title + '" to the live site.'));
-  document.getElementById('previewBtn').addEventListener('click', () => alert('Mockup: this would open a preview of "' + title + '".'));
+  document.getElementById('feedbackBtn').addEventListener('click', () => alert('Mockup: this would open the feedback panel.'));
 </script>
 </body>
 </html>
