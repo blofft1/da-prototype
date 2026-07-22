@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document Authoring — Browse (Redesign Prototype)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="appbar">
+    <div class="logomark">A</div>
+    <svg class="app-switcher" viewBox="0 0 24 24" fill="none"><path d="M4 5h4v4H4V5zm0 6h4v4H4v-4zm0 6h4v4H4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4z" fill="currentColor"/></svg>
+    <div class="app-title">Document Authoring <small>Site Structure</small></div>
+    <div class="breadcrumb"><b>blofft1</b> / wknd-advanced</div>
+    <div class="appbar-spacer"></div>
+    <div class="appbar-icon">⌕</div>
+    <div class="appbar-icon">?</div>
+    <div class="appbar-icon" id="inboxBtn" title="Inbox">🔔</div>
+    <div class="avatar">B</div>
+  </div>
+
+  <div class="shell">
+    <div class="rail">
+      <div class="rail-item">⌂</div>
+      <div class="rail-item active">▤</div>
+      <div class="rail-item">◱</div>
+      <div class="rail-item">💡</div>
+      <div class="rail-item rail-bottom">⚙</div>
+    </div>
+
+    <div class="main">
+      <div class="action-menu">
+        <div class="action-group">
+          <span class="action-group-label">Content</span>
+          <a class="action-item" href="translation.html">🌐 Translation</a>
+          <a class="action-item" href="msm.html">🔗 MSM</a>
+          <div class="action-item" data-app="import">⬆ Import</div>
+        </div>
+        <div class="action-divider"></div>
+        <div class="action-group">
+          <span class="action-group-label">Governance</span>
+          <div class="action-item" data-app="scheduler">⏱ Scheduler</div>
+          <div class="action-item" data-app="permissions">🔒 Permissions</div>
+        </div>
+      </div>
+
+      <div class="ai-bar-wrap">
+        <div class="ai-bar">
+          <span class="ai-icon">✦</span>
+          <input id="aiInput" placeholder="Ask AI, search, or jump to a page or folder…">
+          <button class="send" id="aiSend">➤</button>
+        </div>
+        <div class="ai-suggestions">
+          <div class="ai-chip" data-q="What's in review right now?">What's in review right now?</div>
+          <div class="ai-chip" data-q="Who can edit articles?">Who can edit articles?</div>
+          <div class="ai-chip" data-q="Create a new page in articles">Create a new page in articles</div>
+        </div>
+        <div class="ai-response" id="aiResponse"></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="chip-filter active" data-type="all">All</div>
+        <div class="chip-filter" data-type="page">Pages</div>
+        <div class="chip-filter" data-type="fragment">Fragments</div>
+        <div class="chip-filter" data-type="config">Config</div>
+        <div class="chip-filter" data-type="locale">Locales</div>
+        <div class="chip-filter" data-type="asset">Assets</div>
+        <div class="chip-filter" data-type="folder">Folders</div>
+        <div class="search-box">⌕ <input id="searchInput" placeholder="Filter by name or title…"></div>
+      </div>
+
+      <div class="table-card">
+        <div class="crumbs-row">
+          <span class="crumb-link" data-level="org">⌂ blofft1</span>
+          <span class="crumb-sep">›</span>
+          <span class="crumb-link active" data-level="site">wknd-advanced</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th data-key="name">Name<span class="sort-arrow" data-key="name"></span></th>
+              <th data-key="title">Title<span class="sort-arrow" data-key="title"></span></th>
+              <th data-key="type">Type<span class="sort-arrow" data-key="type"></span></th>
+              <th data-key="status">Status<span class="sort-arrow" data-key="status"></span></th>
+              <th data-key="modified">Modified<span class="sort-arrow" data-key="modified"></span></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="t">
+        <h2 id="dTitle">—</h2>
+        <p id="dPath">—</p>
+      </div>
+      <div class="drawer-close" id="drawerClose">✕</div>
+    </div>
+    <div class="drawer-body" id="dBody"></div>
+  </div>
+
+  <div class="anno-pin" id="pin1" style="top:86px; left:36px;">1</div>
+  <div class="anno-pin" id="pin2" style="top:150px; left:400px;">2</div>
+  <div class="anno-pin" id="pin3" style="top:296px; left:16px;">3</div>
+  <div class="anno-pin" id="pin4" style="top:340px; left:210px;">4</div>
+  <div class="anno-pin" id="pin5" style="top:340px; left:400px;">5</div>
+  <div class="anno-pin" id="pin6" style="top:340px; left:560px;">6</div>
+
+  <div class="anno-toggle" id="annoToggle"><span class="sw"></span> Show redesign notes</div>
+  <div class="anno-legend">
+    <h3>What changed vs. today's Browse view</h3>
+    <div class="row"><div class="num">1</div><div class="txt"><b>Action menu, grouped</b><span>Browse / Search / Snapshots tabs are gone. Translation and MSM are now real screens (try clicking them). Inbox moved into the existing notification bell rather than adding a 5th button.</span></div></div>
+    <div class="row"><div class="num">2</div><div class="txt"><b>Inline AI omnibar</b><span>Compact and contextual, not a separate destination. Also now the only way to create content — the old "+ Create" button is gone; that intent is AI-assisted.</span></div></div>
+    <div class="row"><div class="num">3</div><div class="txt"><b>Clickable breadcrumb</b><span>Moved directly above the table. Clicking a segment re-populates the table in place (org's site list vs. this site's content) — no page navigation.</span></div></div>
+    <div class="row"><div class="num">4</div><div class="txt"><b>Name vs. Title</b><span>Restores the AEM concept of a URL-safe Name separate from a human Title.</span></div></div>
+    <div class="row"><div class="num">5</div><div class="txt"><b>Type badge</b><span>Every row is labeled Page, Fragment, Config, Locale, or Asset instead of looking like an undifferentiated file list — and it's filterable via the chips above the table. Folder/file icons stay plain black and white; the Type column carries the signal.</span></div></div>
+    <div class="row"><div class="num">6</div><div class="txt"><b>Status</b><span>Published / In review / Draft is visible inline — this is what "Snapshots" means today, surfaced without a separate app.</span></div></div>
+  </div>
+
+<script>
+// kind: 'container' (folder-shaped icon) | 'item' (file-shaped icon)
+// category: 'page' | 'fragment' | 'config' | 'locale' | 'asset' | null (null = no confident category — stays neutral)
+const rows = [
+  {name:'about-us', title:'About Us', kind:'item', category:'page', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'Article Page', lang:'English', preview:'main--wknd-advanced--blofft1.aem.page/about-us', live:'main--wknd-advanced--blofft1.aem.live/about-us', perms:'Read: org · Write: da-authors'},
+  {name:'already-investing', title:'Already Investing', kind:'item', category:'page', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'Article Page', lang:'English', preview:'.../already-investing', live:'.../already-investing', perms:'Read: org · Write: da-authors'},
+  {name:'articles', title:'Articles', kind:'container', category:'page', status:null, modified:'—', by:'—', childCount:12},
+  {name:'articles', title:'Articles Index', kind:'item', category:'page', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'List Page', lang:'English', preview:'.../articles', live:'.../articles', perms:'Read: org · Write: da-authors'},
+  {name:'de', title:'German (de)', kind:'container', category:'locale', status:null, modified:'—', by:'—', childCount:9},
+  {name:'demo-docs', title:'Demo Docs', kind:'container', category:null, status:null, modified:'—', by:'—', childCount:4},
+  {name:'en', title:'English (en)', kind:'container', category:'locale', status:null, modified:'—', by:'—', childCount:9},
+  {name:'es', title:'Spanish (es)', kind:'container', category:'locale', status:null, modified:'—', by:'—', childCount:9},
+  {name:'events', title:'Events', kind:'item', category:'page', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'List Page', lang:'English', preview:'.../events', live:'.../events', perms:'Read: org · Write: da-authors'},
+  {name:'extras', title:'Trips Worth Taking — Extras', kind:'item', category:'page', status:'review', modified:'Jul 20, 2026', by:'B. Loeffler', template:'Article Page', lang:'English', preview:'.../extras', live:'—', perms:'Read: org · Write: da-authors', reviewNote:'Part of Snapshot "Black-Friday-2026" — locked for review, awaiting Approve & Publish.'},
+  {name:'faqs', title:'FAQs', kind:'container', category:'page', status:null, modified:'—', by:'—', childCount:6},
+  {name:'config', title:'Site Configuration', kind:'container', category:'config', status:null, modified:'—', by:'—', childCount:3},
+  {name:'footer', title:'Global Footer', kind:'item', category:'config', status:'published', modified:'Jun 2, 2026', by:'K. Robin', template:'Fragment (system)', lang:'—', perms:'Read: org · Write: da-admins'},
+  {name:'fragments', title:'Reusable Fragments', kind:'container', category:'fragment', status:null, modified:'—', by:'—', childCount:5},
+  {name:'related-articles', title:'Related Articles (Bento)', kind:'item', category:'fragment', status:'published', modified:'Jul 20, 2026', by:'K. Robin', template:'Fragment', lang:'English', preview:'.../fragments/related-articles', live:'.../fragments/related-articles', perms:'Read: org · Write: da-authors'},
+  {name:'icons', title:'Icon Assets', kind:'container', category:'asset', status:null, modified:'—', by:'—', childCount:14},
+  {name:'search.svg', title:'Search Icon', kind:'item', category:'asset', status:'published', modified:'Jul 20, 2026', by:'AI Assistant', template:'SVG Asset', lang:'—', preview:'.../icons/search.svg', live:'.../icons/search.svg', perms:'Read: org · Write: da-authors'},
+  {name:'nav', title:'Global Navigation', kind:'item', category:'config', status:'published', modified:'Jun 2, 2026', by:'K. Robin', template:'Fragment (system)', lang:'—', perms:'Read: org · Write: da-admins'},
+];
+
+const containerLabel = {page:'Pages', fragment:'Fragments', asset:'Assets', locale:'Locale', config:'Config'};
+const itemLabel = {page:'Page', fragment:'Fragment', asset:'Asset', locale:'Locale', config:'Config'};
+
+function getIconSvg(r){
+  const shape = r.kind === 'container'
+    ? '<path d="M2 5a1 1 0 011-1h4l2 2h8a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V5z" fill="currentColor"/>'
+    : '<path d="M5 2h6l4 4v12H5V2z" stroke="currentColor" stroke-width="1.3" fill="none"/>';
+  return `<svg class="ic" viewBox="0 0 20 20" fill="none">${shape}</svg>`;
+}
+
+function getBadge(r){
+  if(!r.category) return '<span class="muted">—</span>';
+  const label = r.kind === 'container' ? containerLabel[r.category] : itemLabel[r.category];
+  return `<span class="badge b-${r.category}">${label}</span>`;
+}
+
+function sortTypeLabel(r){
+  if(!r.category) return 'Folder';
+  return r.kind === 'container' ? containerLabel[r.category] : itemLabel[r.category];
+}
+
+const tbody = document.getElementById('tbody');
+
+const sortState = { key: null, dir: 'asc' };
+
+function compareRows(a, b, key){
+  let av, bv;
+  switch(key){
+    case 'name': av = a.name.toLowerCase(); bv = b.name.toLowerCase(); break;
+    case 'title': av = a.title.toLowerCase(); bv = b.title.toLowerCase(); break;
+    case 'type': av = sortTypeLabel(a).toLowerCase(); bv = sortTypeLabel(b).toLowerCase(); break;
+    case 'status': { const rank = {review:0, draft:1, published:2}; av = rank[a.status] ?? 3; bv = rank[b.status] ?? 3; break; }
+    case 'modified': { const pa = Date.parse(a.modified); const pb = Date.parse(b.modified); av = isNaN(pa) ? -Infinity : pa; bv = isNaN(pb) ? -Infinity : pb; break; }
+    default: av = bv = 0;
+  }
+  if(av < bv) return -1;
+  if(av > bv) return 1;
+  return 0;
+}
+
+function updateSortArrows(){
+  document.querySelectorAll('.sort-arrow').forEach(s => {
+    s.textContent = s.dataset.key === sortState.key ? (sortState.dir === 'asc' ? ' ▲' : ' ▼') : '';
+  });
+}
+
+document.querySelectorAll('th[data-key]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if(sortState.key === key){ sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc'; }
+    else { sortState.key = key; sortState.dir = 'asc'; }
+    updateSortArrows();
+    const activeFilter = document.querySelector('.chip-filter.active').dataset.type;
+    render(activeFilter, document.getElementById('searchInput').value.toLowerCase());
+  });
+});
+
+function render(filter, search){
+  tbody.innerHTML = '';
+  let list = rows.filter(r => {
+        if(filter === 'all') return true;
+        if(filter === 'folder') return !r.category; // uncategorized, generic containers only
+        return r.category === filter;
+      })
+      .filter(r => !search || r.name.toLowerCase().includes(search) || r.title.toLowerCase().includes(search));
+  if(sortState.key){
+    list = list.slice().sort((a, b) => compareRows(a, b, sortState.key) * (sortState.dir === 'asc' ? 1 : -1));
+  }
+  list.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="name-cell">${getIconSvg(r)}${r.name}</div></td>
+      <td class="title-cell">${r.title}</td>
+      <td>${getBadge(r)}</td>
+      <td>${r.status ? `<span class="status ${r.status}"><span class="dot"></span>${r.status==='published'?'Published':r.status==='review'?'In review':'Draft'}</span>` : '<span class="muted">—</span>'}</td>
+      <td class="modified">${r.modified}${r.by && r.by!=='—' ? ' · '+r.by : ''}</td>
+      <td class="more-btn">⋯</td>
+    `;
+    tr.addEventListener('click', () => openDrawer(r));
+    tbody.appendChild(tr);
+  });
+}
+
+document.querySelectorAll('.chip-filter').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    render(chip.dataset.type, document.getElementById('searchInput').value.toLowerCase());
+  });
+});
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const active = document.querySelector('.chip-filter.active').dataset.type;
+  render(active, e.target.value.toLowerCase());
+});
+
+const drawer = document.getElementById('drawer');
+const backdrop = document.getElementById('backdrop');
+
+function openDrawer(r){
+  document.getElementById('dTitle').textContent = r.title;
+  document.getElementById('dPath').textContent = '/wknd-advanced/' + r.name;
+  let body = `
+    <div class="prop-row"><div class="k">Name</div><div class="v">${r.name}</div></div>
+    <div class="prop-row"><div class="k">Type</div><div class="v">${sortTypeLabel(r)}${r.kind==='container' ? ' (folder)' : ''}</div></div>
+  `;
+  if(r.status){
+    body += `<div class="prop-row"><div class="k">Status</div><div class="v">${r.status==='published'?'Published':r.status==='review'?'In review':'Draft'}</div></div>`;
+  }
+  if(r.template) body += `<div class="prop-row"><div class="k">Template</div><div class="v">${r.template}</div></div>`;
+  if(r.lang) body += `<div class="prop-row"><div class="k">Language</div><div class="v">${r.lang}</div></div>`;
+  if(r.modified && r.modified!=='—') body += `<div class="prop-row"><div class="k">Modified</div><div class="v">${r.modified}</div></div>`;
+  if(r.by && r.by!=='—') body += `<div class="prop-row"><div class="k">Modified by</div><div class="v">${r.by}</div></div>`;
+  if(r.childCount) body += `<div class="prop-row"><div class="k">Contains</div><div class="v">${r.childCount} items</div></div>`;
+  if(r.perms) body += `<div class="prop-row"><div class="k">Permissions</div><div class="v">${r.perms}</div></div>`;
+  if(r.preview) body += `<div class="prop-row"><div class="k">Preview</div><div class="v" style="font-weight:400;color:var(--blue-700);">${r.preview}</div></div>`;
+  if(r.live && r.live!=='—') body += `<div class="prop-row"><div class="k">Live</div><div class="v" style="font-weight:400;color:var(--blue-700);">${r.live}</div></div>`;
+
+  if(r.reviewNote){
+    body += `<div class="review-note">🔒 ${r.reviewNote}</div>`;
+  }
+
+  body += `<div class="drawer-actions">
+    <button class="btn primary">Edit content</button>
+    <button class="btn">View live</button>
+    <button class="btn">Version history</button>
+  </div>`;
+
+  document.getElementById('dBody').innerHTML = body;
+  drawer.classList.add('open');
+  backdrop.classList.add('open');
+}
+document.getElementById('drawerClose').addEventListener('click', () => { drawer.classList.remove('open'); backdrop.classList.remove('open'); });
+backdrop.addEventListener('click', () => { drawer.classList.remove('open'); backdrop.classList.remove('open'); });
+
+// ---------- Action menu (quick-panel apps: Import, Scheduler, Permissions, Inbox) ----------
+const apps = {
+  inbox: {label:'Inbox', desc:'A unified queue of tasks assigned to you or your team — pending reviews, approvals, and workflow steps waiting on action.', parity:'The AEM Inbox / Workflow console.'},
+  scheduler: {label:'Scheduler', desc:'Schedule content — and Snapshots — to publish automatically at a future date and time, without anyone needing to be online to click Publish.', parity:'Launches with scheduled activation.'},
+  import: {label:'Import', desc:'Bring content in from an existing site, spreadsheet, or URL list and convert it into DA-ready pages.', parity:'Content migration / bulk import tooling.'},
+  permissions: {label:'Permissions', desc:'Manage who can read or write content, by group or email, down to the folder level.', parity:'The Permissions console (ACLs on the JCR tree).'},
+};
+
+function openAppPanel(key){
+  const app = apps[key];
+  document.getElementById('dTitle').textContent = app.label;
+  document.getElementById('dPath').textContent = 'Experience Workspace App';
+  document.getElementById('dBody').innerHTML = `
+    <div style="font-size:13px; line-height:1.6; color:var(--gray-800);">${app.desc}</div>
+    <div class="parity-note"><b>Classic AEM equivalent:</b> ${app.parity}</div>
+    <div class="drawer-actions"><button class="btn primary">Open ${app.label}</button></div>
+  `;
+  drawer.classList.add('open');
+  backdrop.classList.add('open');
+}
+document.querySelectorAll('.action-item[data-app]').forEach(item => {
+  item.addEventListener('click', () => openAppPanel(item.dataset.app));
+});
+document.getElementById('inboxBtn').addEventListener('click', () => openAppPanel('inbox'));
+
+// ---------- Breadcrumb: click re-populates the table in place, no page change ----------
+const orgSites = [
+  {name:'wknd-advanced', title:'WKND Advanced', status:'published', modified:'Jul 20, 2026', current:true},
+  {name:'wknd-universal', title:'WKND Universal', status:'published', modified:'Jul 18, 2026'},
+  {name:'minto', title:'Minto', status:'published', modified:'Jun 30, 2026'},
+  {name:'wehealthcareeds', title:'weHealthcare EDS', status:'draft', modified:'Jun 12, 2026'},
+  {name:'refdemoeds', title:'RefDemoEDS', status:'published', modified:'May 2, 2026'},
+  {name:'qnity', title:'Qnity', status:'published', modified:'Apr 28, 2026'},
+  {name:'nike', title:'Nike', status:'draft', modified:'Apr 2, 2026'},
+  {name:'test-site', title:'Test Site', status:'draft', modified:'Mar 14, 2026'},
+];
+
+function renderOrgView(){
+  tbody.innerHTML = '';
+  orgSites.forEach(s => {
+    const color = s.current ? 'var(--blue-700)' : 'var(--gray-400)';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="name-cell"><svg class="ic" viewBox="0 0 20 20" fill="none" style="color:${color}"><path d="M2 5a1 1 0 011-1h4l2 2h8a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V5z" fill="currentColor"/></svg>${s.name}</div></td>
+      <td class="title-cell">${s.title}</td>
+      <td><span class="badge" style="background:var(--gray-200); color:var(--gray-700);">Site</span></td>
+      <td><span class="status ${s.status}"><span class="dot"></span>${s.status==='published' ? 'Published' : 'Draft'}</span></td>
+      <td class="modified">${s.modified}</td>
+      <td class="more-btn">⋯</td>
+    `;
+    tr.addEventListener('click', () => {
+      if(s.current){
+        setView('site');
+        return;
+      }
+      document.getElementById('dTitle').textContent = s.title;
+      document.getElementById('dPath').textContent = '/' + s.name;
+      document.getElementById('dBody').innerHTML = `
+        <div class="prop-row"><div class="k">Name</div><div class="v">${s.name}</div></div>
+        <div class="prop-row"><div class="k">Status</div><div class="v">${s.status==='published' ? 'Published' : 'Draft'}</div></div>
+        <div class="prop-row"><div class="k">Modified</div><div class="v">${s.modified}</div></div>
+        <div class="parity-note">This mockup only has sample content wired up for wknd-advanced.</div>
+      `;
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+let currentView = 'site';
+
+function setView(level){
+  currentView = level;
+  document.querySelectorAll('.crumb-link').forEach(c => c.classList.toggle('active', c.dataset.level === level));
+  document.querySelector('.toolbar').style.display = level === 'site' ? 'flex' : 'none';
+  if(level === 'org'){
+    renderOrgView();
+  } else {
+    render(document.querySelector('.chip-filter.active').dataset.type, document.getElementById('searchInput').value.toLowerCase());
+  }
+}
+
+document.querySelectorAll('.crumb-link').forEach(c => {
+  c.addEventListener('click', () => setView(c.dataset.level));
+});
+
+const annoToggle = document.getElementById('annoToggle');
+annoToggle.addEventListener('click', () => {
+  annoToggle.classList.toggle('on');
+  document.body.classList.toggle('anno-on');
+});
+
+// ---------- AI omnibar ----------
+const aiInput = document.getElementById('aiInput');
+const aiResponse = document.getElementById('aiResponse');
+
+function findRowMatch(q){
+  const needle = q.trim().toLowerCase();
+  if(!needle) return null;
+  return rows.find(r => r.name.toLowerCase() === needle || r.title.toLowerCase() === needle)
+      || rows.find(r => r.name.toLowerCase().includes(needle) || r.title.toLowerCase().includes(needle));
+}
+
+function runAiQuery(q){
+  if(!q.trim()) return;
+  const match = findRowMatch(q);
+  const isQuestionLike = /^(who|what|create|show|find|can|is|are|does)\b/i.test(q.trim()) || q.trim().split(' ').length > 4;
+
+  if(match && !isQuestionLike){
+    document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
+    document.querySelector('.chip-filter[data-type="all"]').classList.add('active');
+    document.getElementById('searchInput').value = '';
+    render('all', '');
+    aiResponse.classList.remove('show');
+    openDrawer(match);
+    return;
+  }
+
+  const lower = q.toLowerCase();
+  let html = '';
+  if(/review|snapshot|approve/.test(lower)){
+    const r = rows.find(x => x.status === 'review');
+    html = `<div class="lbl">AI Assistant</div>1 item is currently in review: <b>${r.title}</b> (${r.name}), part of Snapshot "Black-Friday-2026." It's locked pending Approve &amp; Publish.<br><span class="link-btn" id="aiGoReview">Open ${r.name}</span>`;
+  } else if(/who can|permission|access/.test(lower)){
+    html = `<div class="lbl">AI Assistant</div>Most content in wknd-advanced is writable by the <b>da-authors</b> group; <b>footer</b> and <b>nav</b> are restricted to <b>da-admins</b>. Everyone in the org has read access.`;
+  } else if(/create/.test(lower)){
+    html = `<div class="lbl">AI Assistant</div>I can create that for you. What should the page be called, and should it use the <b>Article Page</b> template like the rest of /articles?`;
+  } else {
+    html = `<div class="lbl">AI Assistant</div>wknd-advanced has 9 pages, 2 fragments, and 1 item in review. Last published 2 hours ago. Ask me about a specific page, or type a name to jump straight to it.`;
+  }
+  aiResponse.innerHTML = html;
+  aiResponse.classList.add('show');
+  const goBtn = document.getElementById('aiGoReview');
+  if(goBtn){
+    goBtn.addEventListener('click', () => openDrawer(rows.find(x => x.status === 'review')));
+  }
+}
+
+document.getElementById('aiSend').addEventListener('click', () => runAiQuery(aiInput.value));
+aiInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') runAiQuery(aiInput.value); });
+document.querySelectorAll('.ai-chip').forEach(chip => {
+  chip.addEventListener('click', () => { aiInput.value = chip.dataset.q; runAiQuery(chip.dataset.q); });
+});
+
+render('all', '');
+</script>
+</body>
+</html>
