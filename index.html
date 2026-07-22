@@ -78,6 +78,7 @@
         <table>
           <thead>
             <tr>
+              <th class="col-check"><input type="checkbox" id="selectAll" title="Select all"></th>
               <th data-key="name">Name<span class="sort-arrow" data-key="name"></span></th>
               <th data-key="title">Title<span class="sort-arrow" data-key="title"></span></th>
               <th data-key="type">Type<span class="sort-arrow" data-key="type"></span></th>
@@ -91,6 +92,22 @@
       </div>
     </div>
   </div>
+
+  <div class="selection-bar" id="selectionBar">
+    <div class="sel-left"><span class="sel-x" id="selClear" title="Clear selection">✕</span><span id="selCount">1 item selected</span></div>
+    <div class="sel-actions">
+      <button data-act="rename">🖊 Rename</button>
+      <button data-act="favorite">☆ Favorite</button>
+      <button data-act="copy">⧉ Copy</button>
+      <button data-act="cut">✂ Cut</button>
+      <button data-act="delete">🗑 Delete</button>
+      <button data-act="preview">◱ Preview</button>
+      <button data-act="publish">➤ Publish</button>
+      <button data-act="share">↗ Share</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <div class="backdrop" id="backdrop"></div>
   <div class="drawer" id="drawer">
@@ -203,6 +220,9 @@ document.querySelectorAll('th[data-key]').forEach(th => {
   });
 });
 
+let currentList = [];
+const selection = new Set();
+
 function render(filter, search){
   tbody.innerHTML = '';
   let list = rows.filter(r => {
@@ -214,19 +234,28 @@ function render(filter, search){
   if(sortState.key){
     list = list.slice().sort((a, b) => compareRows(a, b, sortState.key) * (sortState.dir === 'asc' ? 1 : -1));
   }
+  currentList = list;
   list.forEach((r, i) => {
     const tr = document.createElement('tr');
+    if(selection.has(r)) tr.classList.add('row-selected');
     tr.innerHTML = `
+      <td class="col-check"><input type="checkbox" class="row-check" ${selection.has(r) ? 'checked' : ''}></td>
       <td><div class="name-cell">${getIconSvg(r)}${r.name}</div></td>
       <td class="title-cell">${r.title}</td>
       <td>${getBadge(r)}</td>
       <td>${r.status ? `<span class="status ${r.status}"><span class="dot"></span>${r.status==='published'?'Published':r.status==='review'?'In review':'Draft'}</span>` : '<span class="muted">—</span>'}</td>
       <td class="modified">${r.modified}${r.by && r.by!=='—' ? ' · '+r.by : ''}</td>
-      <td class="more-btn">⋯</td>
+      <td class="more-btn" title="Details">⋯</td>
     `;
-    tr.addEventListener('click', () => openDrawer(r));
+    const check = tr.querySelector('.row-check');
+    check.addEventListener('click', e => e.stopPropagation());
+    check.addEventListener('change', () => { toggleSelect(r, check.checked); tr.classList.toggle('row-selected', check.checked); });
+    const more = tr.querySelector('.more-btn');
+    more.addEventListener('click', e => { e.stopPropagation(); openMetaPopover(r, more); });
+    tr.addEventListener('click', () => { if(r.kind === 'item') openCanvas(r); else openDrawer(r); });
     tbody.appendChild(tr);
   });
+  updateSelectAll();
 }
 
 document.querySelectorAll('.chip-filter').forEach(chip => {
@@ -319,10 +348,13 @@ const orgSites = [
 
 function renderOrgView(){
   tbody.innerHTML = '';
+  currentList = orgSites;
   orgSites.forEach(s => {
     const color = s.current ? 'var(--blue-700)' : 'var(--gray-400)';
     const tr = document.createElement('tr');
+    if(selection.has(s)) tr.classList.add('row-selected');
     tr.innerHTML = `
+      <td class="col-check"><input type="checkbox" class="row-check" ${selection.has(s) ? 'checked' : ''}></td>
       <td><div class="name-cell"><svg class="ic" viewBox="0 0 20 20" fill="none" style="color:${color}"><path d="M2 5a1 1 0 011-1h4l2 2h8a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V5z" fill="currentColor"/></svg>${s.name}</div></td>
       <td class="title-cell">${s.title}</td>
       <td><span class="badge" style="background:var(--gray-200); color:var(--gray-700);">Site</span></td>
@@ -330,6 +362,9 @@ function renderOrgView(){
       <td class="modified">${s.modified}</td>
       <td class="more-btn">⋯</td>
     `;
+    const check = tr.querySelector('.row-check');
+    check.addEventListener('click', e => e.stopPropagation());
+    check.addEventListener('change', () => { toggleSelect(s, check.checked); tr.classList.toggle('row-selected', check.checked); });
     tr.addEventListener('click', () => {
       if(s.current){
         setView('site');
@@ -348,12 +383,15 @@ function renderOrgView(){
     });
     tbody.appendChild(tr);
   });
+  updateSelectAll();
 }
 
 let currentView = 'site';
 
 function setView(level){
   currentView = level;
+  selection.clear();
+  updateSelectionBar();
   document.querySelectorAll('.crumb-link').forEach(c => c.classList.toggle('active', c.dataset.level === level));
   document.querySelector('.toolbar').style.display = level === 'site' ? 'flex' : 'none';
   if(level === 'org'){
@@ -424,6 +462,109 @@ aiInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') runAiQuery(ai
 document.querySelectorAll('.ai-chip').forEach(chip => {
   chip.addEventListener('click', () => { aiInput.value = chip.dataset.q; runAiQuery(chip.dataset.q); });
 });
+
+// ---------- Multi-select + action bar (DA parity) ----------
+function rerender(){
+  if(currentView === 'org') renderOrgView();
+  else render(document.querySelector('.chip-filter.active').dataset.type, document.getElementById('searchInput').value.toLowerCase());
+}
+function toggleSelect(item, on){
+  if(on) selection.add(item); else selection.delete(item);
+  updateSelectionBar();
+  updateSelectAll();
+}
+function updateSelectAll(){
+  const sa = document.getElementById('selectAll');
+  if(!sa) return;
+  const sel = currentList.filter(r => selection.has(r)).length;
+  sa.checked = currentList.length > 0 && sel === currentList.length;
+  sa.indeterminate = sel > 0 && sel < currentList.length;
+}
+function updateSelectionBar(){
+  const bar = document.getElementById('selectionBar');
+  const n = selection.size;
+  if(n > 0){
+    bar.classList.add('open');
+    document.getElementById('selCount').textContent = `${n} item${n > 1 ? 's' : ''} selected`;
+  } else {
+    bar.classList.remove('open');
+  }
+}
+document.getElementById('selectAll').addEventListener('change', (e) => {
+  if(e.target.checked) currentList.forEach(r => selection.add(r));
+  else currentList.forEach(r => selection.delete(r));
+  updateSelectionBar();
+  rerender();
+});
+document.getElementById('selClear').addEventListener('click', () => { selection.clear(); updateSelectionBar(); rerender(); });
+
+const actionVerb = {rename:'Rename', favorite:'Favorited', copy:'Copied', cut:'Cut', delete:'Deleted', preview:'Preview', publish:'Published', share:'Shared'};
+document.querySelectorAll('.selection-bar button[data-act]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const act = btn.dataset.act;
+    const names = [...selection].map(r => r.name).join(', ');
+    showToast(`${actionVerb[act]}: ${names}`);
+    if(act === 'delete' || act === 'publish'){ selection.clear(); updateSelectionBar(); rerender(); }
+  });
+});
+
+// ---------- Toast ----------
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ---------- Ellipsis (⋯) → metadata popover ----------
+function openMetaPopover(r, anchor){
+  closeMetaPopover();
+  const pop = document.createElement('div');
+  pop.className = 'meta-popover';
+  pop.id = 'metaPop';
+  let rowsHtml = '';
+  const add = (k, v) => { if(v && v !== '—') rowsHtml += `<div class="mp-row"><span class="mp-k">${k}</span><span class="mp-v">${v}</span></div>`; };
+  add('Name', r.name);
+  add('Title', r.title);
+  add('Type', sortTypeLabel(r) + (r.kind === 'container' ? ' (folder)' : ''));
+  if(r.status) add('Status', r.status === 'published' ? 'Published' : r.status === 'review' ? 'In review' : 'Draft');
+  add('Template', r.template);
+  add('Language', r.lang);
+  add('Modified', r.modified);
+  add('Modified by', r.by);
+  if(r.childCount) add('Contains', r.childCount + ' items');
+  add('Permissions', r.perms);
+  add('Preview', r.preview);
+  add('Live', r.live);
+  const openLabel = r.kind === 'item' ? 'Open in Experience Workspace' : 'Full details';
+  pop.innerHTML = `<div class="mp-head">Details</div>${rowsHtml}<div class="mp-actions"><button class="mp-btn" data-mp="open">${openLabel}</button></div>`;
+  document.body.appendChild(pop);
+  const rect = anchor.getBoundingClientRect();
+  const popW = 300;
+  let left = Math.max(10, rect.right - popW);
+  let top = rect.bottom + 6;
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+  const ph = pop.getBoundingClientRect().height;
+  if(top + ph > window.innerHeight - 10) pop.style.top = Math.max(66, rect.top - ph - 6) + 'px';
+  pop.querySelector('[data-mp="open"]').addEventListener('click', () => {
+    closeMetaPopover();
+    if(r.kind === 'item') openCanvas(r); else openDrawer(r);
+  });
+}
+function closeMetaPopover(){ const p = document.getElementById('metaPop'); if(p) p.remove(); }
+document.addEventListener('click', (e) => {
+  const p = document.getElementById('metaPop');
+  if(p && !p.contains(e.target) && !e.target.classList.contains('more-btn')) closeMetaPopover();
+});
+
+// ---------- Click a file → open the Experience Workspace canvas mockup ----------
+function openCanvas(r){
+  const params = new URLSearchParams({ page: r.name, title: r.title, template: r.template || '', status: r.status || '' });
+  window.location.href = 'canvas.html?' + params.toString();
+}
 
 render('all', '');
 </script>

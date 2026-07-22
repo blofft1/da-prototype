@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document Authoring — Experience Workspace (Prototype)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="canvas-body">
+
+  <div class="appbar">
+    <div class="logomark">A</div>
+    <svg class="app-switcher" viewBox="0 0 24 24" fill="none"><path d="M4 5h4v4H4V5zm0 6h4v4H4v-4zm0 6h4v4H4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4z" fill="currentColor"/></svg>
+    <div class="app-title">Document Authoring <small>Experience Workspace</small></div>
+    <div class="breadcrumb"><b>blofft1</b> / wknd-advanced / <span id="crumbPage">index</span></div>
+    <div class="appbar-spacer"></div>
+    <button class="btn" id="backBtn">← Back to Browse</button>
+    <button class="btn" id="previewBtn">◱ Preview</button>
+    <button class="btn primary" id="publishBtn">➤ Publish</button>
+    <div class="avatar">B</div>
+  </div>
+
+  <div class="editor-shell">
+    <div class="editor-main">
+      <div class="edit-toolbar">
+        <span class="et-status" id="etStatus">● Saved</span>
+        <div class="et-tools">
+          <button title="Bold"><b>B</b></button>
+          <button title="Italic"><i>I</i></button>
+          <button title="Underline"><u>U</u></button>
+          <button title="Link">🔗</button>
+          <button title="Heading">H</button>
+          <button title="List">☰</button>
+          <button title="Image">🖼</button>
+        </div>
+      </div>
+
+      <div class="doc-canvas" id="docCanvas">
+        <h1 contenteditable="true" id="docTitle">About Us</h1>
+        <p class="doc-sub" contenteditable="true">Click any text to edit — this is a mockup of the DA canvas editor. Blocks below mirror how content is authored in Document Authoring.</p>
+
+        <div class="block" data-block="Hero">
+          <div class="block-tag">Hero</div>
+          <div class="hero-mock">
+            <div class="hero-img">🏔</div>
+            <div class="hero-copy">
+              <h2 contenteditable="true">Trips worth taking</h2>
+              <p contenteditable="true">Discover hand-picked adventures from the WKND team — curated routes, local guides, and unforgettable views.</p>
+              <span class="mock-btn">Explore trips</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="block" data-block="Text">
+          <div class="block-tag">Text</div>
+          <p contenteditable="true">WKND is a lifestyle brand for those who live for the weekend. We believe the best stories start where the pavement ends. This paragraph is fully editable — try typing in it, and watch the save indicator update.</p>
+        </div>
+
+        <div class="block" data-block="Cards">
+          <div class="block-tag">Cards</div>
+          <div class="cards-mock">
+            <div class="card-mock"><div class="cm-img">⛺</div><div class="cm-body"><h4 contenteditable="true">Backcountry Camping</h4><p contenteditable="true">Sleep under the stars.</p></div></div>
+            <div class="card-mock"><div class="cm-img">🚵</div><div class="cm-body"><h4 contenteditable="true">Mountain Biking</h4><p contenteditable="true">Trails for every level.</p></div></div>
+            <div class="card-mock"><div class="cm-img">🛶</div><div class="cm-body"><h4 contenteditable="true">River Kayaking</h4><p contenteditable="true">Paddle wild waters.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-rail">
+      <div class="er-head" id="railTitle">About Us</div>
+      <div class="er-sub" id="railPath">/wknd-advanced/about-us</div>
+
+      <div class="er-section">Blocks — drag to add</div>
+      <div class="er-item">▤ Text</div>
+      <div class="er-item">▦ Hero</div>
+      <div class="er-item">⊞ Cards</div>
+      <div class="er-item">◫ Columns</div>
+      <div class="er-item">🖼 Image</div>
+      <div class="er-item">❝ Quote</div>
+
+      <div class="er-section">Page Properties</div>
+      <div class="er-prop"><span>Template</span><b id="propTemplate">Article Page</b></div>
+      <div class="er-prop"><span>Status</span><b id="propStatus">Published</b></div>
+      <div class="er-prop"><span>Language</span><b>English</b></div>
+      <div class="er-prop"><span>Modified</span><b>Jul 20, 2026</b></div>
+    </div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const page = params.get('page') || 'index';
+  const title = params.get('title') || 'Untitled';
+  const template = params.get('template') || '';
+  const status = params.get('status') || '';
+  const statusLabel = { published:'Published', review:'In review', draft:'Draft' };
+
+  document.getElementById('crumbPage').textContent = page;
+  document.getElementById('docTitle').textContent = title;
+  document.getElementById('railTitle').textContent = title;
+  document.getElementById('railPath').textContent = '/wknd-advanced/' + page;
+  document.getElementById('propTemplate').textContent = template || '—';
+  document.getElementById('propStatus').textContent = statusLabel[status] || '—';
+
+  document.getElementById('backBtn').addEventListener('click', () => location.href = 'index.html');
+
+  // Fake autosave indicator
+  const st = document.getElementById('etStatus');
+  let saveTimer;
+  document.getElementById('docCanvas').addEventListener('input', () => {
+    st.textContent = '● Saving…'; st.style.color = 'var(--orange-700)';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { st.textContent = '● Saved'; st.style.color = 'var(--green-700)'; }, 700);
+  });
+
+  document.getElementById('publishBtn').addEventListener('click', () => alert('Mockup: this would publish "' + title + '" to the live site.'));
+  document.getElementById('previewBtn').addEventListener('click', () => alert('Mockup: this would open a preview of "' + title + '".'));
+</script>
+</body>
+</html>
