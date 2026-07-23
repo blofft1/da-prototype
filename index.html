@@ -7,6 +7,7 @@
 </head>
 <body>
 
+  <div id="siteView">
   <div class="appbar">
     <div class="logomark">A</div>
     <svg class="app-switcher" viewBox="0 0 24 24" fill="none"><path d="M4 5h4v4H4V5zm0 6h4v4H4v-4zm0 6h4v4H4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4zm6-12h4v4h-4V5zm0 6h4v4h-4v-4zm0 6h4v4h-4v-4z" fill="currentColor"/></svg>
@@ -29,6 +30,14 @@
     </div>
 
     <div class="main">
+      <div class="ews-modebar">
+        <div class="ews-seg" id="siteSeg">
+          <button class="active" data-mode="site">▤ Site</button>
+          <button data-mode="layout">▦ Layout</button>
+          <button data-mode="content">≣ Content</button>
+          <button data-mode="sbs" title="Side by side">◫</button>
+        </div>
+      </div>
       <div class="action-menu">
         <div class="action-group">
           <span class="action-group-label">Content</span>
@@ -92,6 +101,7 @@
       </div>
     </div>
   </div>
+  </div><!-- /siteView -->
 
   <div class="selection-bar" id="selectionBar">
     <div class="sel-left"><span class="sel-x" id="selClear" title="Clear selection">✕</span><span id="selCount">1 item selected</span></div>
@@ -137,6 +147,105 @@
     <div class="row"><div class="num">4</div><div class="txt"><b>Name vs. Title</b><span>Restores the AEM concept of a URL-safe Name separate from a human Title.</span></div></div>
     <div class="row"><div class="num">5</div><div class="txt"><b>Type badge</b><span>Every row is labeled Page, Fragment, Config, Locale, or Asset instead of looking like an undifferentiated file list — and it's filterable via the chips above the table. Folder/file icons stay plain black and white; the Type column carries the signal.</span></div></div>
     <div class="row"><div class="num">6</div><div class="txt"><b>Status</b><span>Published / In review / Draft is visible inline — this is what "Snapshots" means today, surfaced without a separate app.</span></div></div>
+  </div>
+
+  <div id="editorView" class="ews-hidden">
+    <div class="cv-topbar">
+      <div class="logomark">A</div>
+      <div class="cv-crumb"><a href="#" id="ewsHome">blofft1</a> › <a href="#" id="ewsSiteCrumb">wknd-advanced</a> › <b id="ewsCrumbPage">index</b></div>
+      <div class="appbar-spacer"></div>
+      <div class="cv-top-action" id="ewsFeedback">💬 Feedback</div>
+      <div class="cv-top-icon" title="Page source">📄</div>
+      <button class="cv-send" id="ewsPublish" title="Publish">➤</button>
+      <div class="avatar">B</div>
+    </div>
+    <div class="cv-shell">
+      <div class="rail">
+        <div class="rail-item">⌂</div>
+        <div class="rail-item">◱</div>
+        <div class="rail-item">💡</div>
+      </div>
+
+      <div class="cv-ai">
+        <div class="cv-ai-center">
+          <h2>Welcome, Bill</h2>
+          <p>What are we working on today?</p>
+        </div>
+        <div class="cv-ai-foot">
+          <div class="cv-ai-box">
+            <input placeholder="Ask anything, or type / for skills…">
+            <button class="cv-ai-plus">+</button>
+          </div>
+          <p class="cv-ai-note">Responses are generated using AI, and may be inaccurate. Check before using. <a href="#">AI User Guidelines</a></p>
+        </div>
+      </div>
+
+      <div class="cv-canvas-col">
+        <div class="cv-canvas-toolbar">
+          <div class="cv-tb-left"><button title="Undo">↶</button><button title="Redo">↷</button></div>
+          <div class="cv-tb-center">
+            <div class="ews-seg" id="editorSeg">
+              <button data-mode="site">▤ Site</button>
+              <button class="active" data-mode="layout">Layout</button>
+              <button data-mode="content">Content</button>
+              <button data-mode="sbs" title="Side by side">◫</button>
+            </div>
+          </div>
+          <div class="cv-tb-right"></div>
+        </div>
+
+        <div class="cv-canvas-scroll">
+          <div class="ews-canvas" id="ewsCanvas" data-mode="layout">
+            <!-- Layout: rendered page -->
+            <div class="render-doc">
+              <div class="wknd-site">
+                <header class="wknd-nav">
+                  <div class="wknd-logo">WKND</div>
+                  <nav><span>START HERE ⌄</span><span>LEARN</span><span>TOOLS ⌄</span><span>PRODUCTS ⌄</span><span>ABOUT</span><span>EVENTS</span><span>EXTRAS</span></nav>
+                  <div class="wknd-search">Search</div>
+                </header>
+                <div class="wknd-hero" style="background-image:url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1400&q=60')">
+                  <div class="wknd-hero-inner">
+                    <div class="wknd-eyebrow">Explore · Wander · Belong</div>
+                    <h1>The <em>Art</em> of the<br>Perfect Getaway</h1>
+                  </div>
+                </div>
+                <div class="wknd-card">Dig into our library of trip guides and local tips to help you travel smarter. <a href="#">Explore our guides</a></div>
+                <section class="wknd-idea">
+                  <h2>The Idea</h2>
+                  <p>The heart of <b>WKND</b> is a simple belief: the best weekends aren't bought, they're <i>lived</i>. Whether it's a coastline you've never seen, a trail that tests your legs, or a town square where you don't speak the language — great travel is about building experiences that stay with you.</p>
+                  <p>WKND grew out of a love for spontaneous escapes and slow, intentional journeys alike. From weekend road trips to once-in-a-lifetime expeditions, we curate the stories, routes, and gear that turn <i>someday</i> into <i>this</i> weekend.</p>
+                </section>
+              </div>
+            </div>
+            <!-- Content: block structure -->
+            <div class="blocks-doc">
+              <div class="blk">
+                <div class="blk-head">hero</div>
+                <div class="blk-body">
+                  <div class="blk-img" style="background-image:url('https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1000&q=60')"></div>
+                  <div class="blk-img" style="background-image:url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1000&q=60')"></div>
+                  <div class="blk-text">Explore · Wander · Belong</div>
+                  <div class="blk-h">The <em>Art</em> of the Perfect Getaway</div>
+                </div>
+              </div>
+              <div class="blk">
+                <div class="blk-head">section-metadata</div>
+                <table class="blk-meta"><tr><td>mbox</td><td>homepage-hero-mbox</td></tr></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-files">
+        <div class="cv-files-head">▭ Files ⌄</div>
+        <div class="cv-tree">
+          <div class="cv-tree-root">⌄ wknd-advanced</div>
+          <div id="ewsTree"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
 <script>
@@ -660,13 +769,70 @@ document.addEventListener('click', (e) => {
 });
 
 // ---------- Click a file → open the Experience Workspace canvas mockup ----------
-function openCanvas(r){
-  const params = new URLSearchParams({ page: r.name, title: r.title, template: r.template || '', status: r.status || '', path: '/' + [...folderPath, r.name].join('/') });
-  window.location.href = 'canvas.html?' + params.toString();
+// ---------- Unified Experience Workspace: Site / Layout / Content / Side-by-side ----------
+let ewsPage = { name: 'index', title: 'Home' };
+
+function setMode(mode){
+  const isSite = mode === 'site';
+  document.getElementById('siteView').classList.toggle('ews-hidden', !isSite);
+  document.getElementById('editorView').classList.toggle('ews-hidden', isSite);
+  document.body.classList.toggle('mode-editor', !isSite);
+  document.querySelectorAll('#siteSeg button').forEach(b => b.classList.toggle('active', b.dataset.mode === (isSite ? 'site' : mode)));
+  document.querySelectorAll('#editorSeg button').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  if(!isSite) document.getElementById('ewsCanvas').dataset.mode = mode;
+  window.scrollTo(0, 0);
 }
+
+function loadEwsPage(name, title){
+  ewsPage = { name, title: title || name };
+  document.getElementById('ewsCrumbPage').textContent = name;
+  document.querySelectorAll('#ewsTree .cv-tree-item').forEach(it => it.classList.toggle('active', it.dataset.name === name && it.dataset.folder !== 'true'));
+}
+
+// Clicking a page (row or ⋯ popover) opens it in the Workspace, defaulting to Layout mode.
+function openCanvas(r){
+  loadEwsPage(r.name, r.title);
+  setMode('layout');
+}
+
+document.querySelectorAll('#siteSeg button, #editorSeg button').forEach(b => {
+  b.addEventListener('click', () => setMode(b.dataset.mode));
+});
+document.getElementById('ewsHome').addEventListener('click', e => { e.preventDefault(); setMode('site'); });
+document.getElementById('ewsSiteCrumb').addEventListener('click', e => { e.preventDefault(); setMode('site'); });
+document.getElementById('ewsPublish').addEventListener('click', () => alert('Mockup: this would publish "' + ewsPage.name + '" to the live site.'));
+document.getElementById('ewsFeedback').addEventListener('click', () => alert('Mockup: this would open the feedback panel.'));
+
+// Editor Files tree (mirrors the real DA Files panel)
+const ewsTreeData = [
+  {name:'about-us'},{name:'already-investing'},{name:'articles',folder:true},{name:'articles'},
+  {name:'de',folder:true},{name:'demo-docs',folder:true},{name:'demo-slides',folder:true},
+  {name:'en',folder:true},{name:'es',folder:true},{name:'events',folder:true},{name:'events'},
+  {name:'experimentation',folder:true},{name:'extras'},{name:'faqs',folder:true},{name:'footer'},
+  {name:'forms',folder:true},{name:'fr',folder:true},{name:'fragments',folder:true},
+  {name:'guided-journey'},{name:'hi',folder:true},{name:'icons',folder:true},{name:'index'},
+  {name:'learn',folder:true},{name:'learn'},{name:'media',folder:true},{name:'nav'},
+  {name:'new-to-investing'},{name:'products',folder:true},{name:'products'},{name:'search'},
+  {name:'start-here',folder:true},{name:'start-here'},{name:'test',folder:true},
+];
+const ewsTreeEl = document.getElementById('ewsTree');
+ewsTreeData.forEach(t => {
+  const el = document.createElement('div');
+  el.className = 'cv-tree-item';
+  el.dataset.name = t.name;
+  if(t.folder) el.dataset.folder = 'true';
+  el.innerHTML = `<span class="tw">${t.folder ? '›' : ''}</span>${t.name}`;
+  if(!t.folder) el.addEventListener('click', () => {
+    loadEwsPage(t.name, t.name);
+    setMode(document.getElementById('ewsCanvas').dataset.mode || 'layout');
+  });
+  ewsTreeEl.appendChild(el);
+});
+loadEwsPage('index', 'Home');
 
 renderCrumbs();
 render('all', '');
+setMode('site');
 </script>
 </body>
 </html>
