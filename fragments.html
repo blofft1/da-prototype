@@ -74,6 +74,23 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="fragModalBackdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h2>Create New Fragment</h2>
+          <div class="modal-step-indicator" id="fragStep">Step 1 of 2 — Model</div>
+        </div>
+        <div class="modal-close" id="fragClose">✕</div>
+      </div>
+      <div class="modal-body" id="fragModalBody"></div>
+      <div class="modal-footer">
+        <button class="btn" id="fragBack">Back</button>
+        <button class="btn primary" id="fragNext">Next</button>
+      </div>
+    </div>
+  </div>
+
 <script>
 const fragments = [
   {name:'related-articles', title:'Related Articles (Bento)', model:'Article Reference', status:'published', modified:'Jul 20, 2026', by:'K. Robin', location:'/wknd-advanced/fragments/related-articles',
@@ -161,7 +178,103 @@ function renderList(){
 }
 
 searchEl.addEventListener('input', renderList);
-document.getElementById('createBtn').addEventListener('click', () => alert('Mockup: this would open the "Create New Fragment" flow — pick a Content Fragment Model (Article Reference, Banner, Author, Trip, Promo…) and a location, then start authoring.'));
+
+// ---------- Create New Fragment wizard ----------
+const fragModels = [
+  {name:'Article Reference', icon:'📄', desc:'Curated list of articles to surface elsewhere.', loc:'/wknd-advanced/fragments'},
+  {name:'Banner', icon:'🖼', desc:'Headline, image, and call-to-action for hero or promo areas.', loc:'/wknd-advanced/fragments'},
+  {name:'Author', icon:'👤', desc:'Name, role, bio, and contact for content bylines.', loc:'/wknd-advanced/fragments/authors'},
+  {name:'Trip', icon:'🧭', desc:'Structured trip details — price, duration, difficulty.', loc:'/wknd-advanced/fragments/trips'},
+  {name:'Promo', icon:'🏷', desc:'Short promotional message with dates and a CTA.', loc:'/wknd-advanced/fragments/promos'},
+];
+let fStep = 0;
+let fSel = { model:null, title:'', name:'', location:'' };
+
+function slugify(s){ return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+function defaultPreview(model, title){
+  if(model === 'Author') return { type:'author', initials:(title.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() || 'AA'), name:title, role:'—', bio:'New author fragment — add a bio to get started.' };
+  if(model === 'Article Reference') return { type:'list', items:['Add your first referenced article…'] };
+  return { type:'card', headline:title, body:'New ' + model.toLowerCase() + ' fragment. Open it to add content.' };
+}
+
+function openFragModal(){
+  fStep = 0;
+  fSel = { model:null, title:'', name:'', location:'' };
+  document.getElementById('fragModalBackdrop').classList.add('open');
+  renderFragWizard();
+}
+function closeFragModal(){ document.getElementById('fragModalBackdrop').classList.remove('open'); }
+
+window.pickModel = function(name){
+  fSel.model = name;
+  const m = fragModels.find(x => x.name === name);
+  if(!fSel.location) fSel.location = m.loc;
+  document.getElementById('fragNext').disabled = false;
+};
+
+function renderFragWizard(){
+  const body = document.getElementById('fragModalBody');
+  const step = document.getElementById('fragStep');
+  const back = document.getElementById('fragBack');
+  const next = document.getElementById('fragNext');
+  back.style.display = fStep === 0 ? 'none' : 'inline-block';
+  if(fStep === 0){
+    step.textContent = 'Step 1 of 2 — Model';
+    next.textContent = 'Next';
+    next.disabled = !fSel.model;
+    body.innerHTML = '<h3>Choose a Content Fragment Model</h3>' + fragModels.map(m => `
+      <label class="wizard-option">
+        <input type="radio" name="fmodel" ${fSel.model === m.name ? 'checked' : ''} onchange="pickModel('${m.name}')">
+        <div><div class="lbl">${m.icon} ${m.name}</div><div class="desc">${m.desc}</div></div>
+      </label>`).join('');
+  } else {
+    step.textContent = 'Step 2 of 2 — Details';
+    next.textContent = 'Create';
+    next.disabled = !fSel.title.trim();
+    body.innerHTML = `
+      <h3>Fragment details</h3>
+      <div class="wizard-summary-line"><span>Model</span><b>${fSel.model}</b></div>
+      <div class="prop-field" style="margin-top:14px;"><label>Title</label><input type="text" id="fTitle" value="${fSel.title}" placeholder="e.g. Summer Adventure Guide"></div>
+      <div class="prop-field"><label>Name (URL)</label><input type="text" id="fName" value="${fSel.name}" placeholder="auto-generated from title"></div>
+      <div class="prop-field"><label>Location</label><input type="text" id="fLoc" value="${fSel.location}"></div>
+      <div class="frag-loc" style="margin:10px 0 0;"><span class="k">📁 Path</span><span class="v" id="fPathPreview">${fSel.location}/${fSel.name || '…'}</span></div>`;
+    const tEl = body.querySelector('#fTitle');
+    const nEl = body.querySelector('#fName');
+    const lEl = body.querySelector('#fLoc');
+    const pv = body.querySelector('#fPathPreview');
+    let nameEdited = !!fSel.name;
+    const updatePath = () => { pv.textContent = (lEl.value || '') + '/' + (nEl.value || '…'); };
+    tEl.addEventListener('input', () => { fSel.title = tEl.value; if(!nameEdited){ nEl.value = slugify(tEl.value); fSel.name = nEl.value; } next.disabled = !fSel.title.trim(); updatePath(); });
+    nEl.addEventListener('input', () => { nameEdited = true; fSel.name = slugify(nEl.value); nEl.value = fSel.name; updatePath(); });
+    lEl.addEventListener('input', () => { fSel.location = lEl.value; updatePath(); });
+    tEl.focus();
+  }
+}
+
+document.getElementById('fragNext').addEventListener('click', () => {
+  if(fStep === 0){ if(!fSel.model) return; fStep = 1; renderFragWizard(); return; }
+  if(!fSel.title.trim()) return;
+  if(!fSel.name) fSel.name = slugify(fSel.title);
+  const nf = {
+    name: fSel.name, title: fSel.title, model: fSel.model, status:'draft',
+    modified:'Just now', by:'Bill Lofft',
+    location: (fSel.location || '/wknd-advanced/fragments') + '/' + fSel.name,
+    preview: defaultPreview(fSel.model, fSel.title), fields: {}
+  };
+  fragments.unshift(nf);
+  activeModel = 'All';
+  document.querySelectorAll('#fragFilters .chip-filter').forEach(c => c.classList.toggle('active', c.textContent === 'All'));
+  searchEl.value = '';
+  selected = nf;
+  renderList();
+  renderDetail(nf);
+  closeFragModal();
+});
+document.getElementById('fragBack').addEventListener('click', () => { if(fStep > 0){ fStep--; renderFragWizard(); } });
+document.getElementById('fragClose').addEventListener('click', closeFragModal);
+document.getElementById('fragModalBackdrop').addEventListener('click', e => { if(e.target.id === 'fragModalBackdrop') closeFragModal(); });
+document.getElementById('createBtn').addEventListener('click', openFragModal);
 
 renderList();
 renderDetail(selected);
