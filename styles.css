@@ -570,3 +570,43 @@ body.mode-editor .anno-toggle, body.mode-editor .anno-legend, body.mode-editor .
 .lib-hint{ font-size:11.5px; color:var(--gray-500); margin-bottom:10px; }
 .lib-item{ display:flex; align-items:center; gap:8px; padding:9px 11px; border:1px solid var(--gray-200); border-radius:var(--radius-s); margin-bottom:7px; font-size:12.5px; font-weight:600; color:var(--gray-700); cursor:grab; background:#fff; }
 .lib-item:hover{ border-color:var(--blue-700); color:var(--blue-700); }
+
+/* ---------- Content Fragments console ---------- */
+.frag-layout{ display:flex; gap:16px; align-items:flex-start; }
+.frag-left{ width:340px; flex:0 0 auto; }
+.frag-right{ flex:1; min-width:0; }
+.frag-search{ display:flex; align-items:center; gap:8px; background:var(--gray-50); border:1px solid var(--gray-300); border-radius:var(--radius-m); padding:8px 12px; margin-bottom:10px; }
+.frag-search input{ border:none; outline:none; font-size:13px; width:100%; background:transparent; font-family:var(--font); }
+.frag-filters{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.frag-list{ border:1px solid var(--gray-200); border-radius:var(--radius-m); overflow:hidden; background:var(--gray-50); }
+.frag-item{ display:flex; align-items:center; gap:10px; padding:11px 13px; border-bottom:1px solid var(--gray-100); cursor:pointer; }
+.frag-item:last-child{ border-bottom:none; }
+.frag-item:hover{ background:var(--gray-100); }
+.frag-item.selected{ background:var(--blue-100); }
+.frag-item .fi-main{ flex:1; min-width:0; }
+.frag-item .fi-title{ font-size:13px; font-weight:600; color:var(--gray-900); }
+.frag-item .fi-sub{ font-size:11.5px; color:var(--gray-500); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.frag-empty{ padding:22px; text-align:center; color:var(--gray-400); font-size:13px; font-style:italic; }
+
+.frag-detail{ border:1px solid var(--gray-200); border-radius:var(--radius-m); background:var(--gray-50); overflow:hidden; }
+.frag-detail-head{ display:flex; align-items:flex-start; gap:12px; padding:18px 20px; border-bottom:1px solid var(--gray-200); }
+.frag-detail-head h2{ margin:0 0 4px; font-size:18px; }
+.frag-detail-head .sub{ font-size:12.5px; color:var(--gray-600); display:flex; align-items:center; gap:8px; }
+.frag-detail-actions{ margin-left:auto; display:flex; gap:8px; }
+.frag-preview{ padding:20px 20px 4px; }
+.frag-loc{ display:flex; align-items:center; gap:10px; background:var(--gray-100); border:1px solid var(--gray-200); border-radius:var(--radius-s); padding:10px 12px; margin:8px 20px 18px; font-size:12.5px; }
+.frag-loc .k{ color:var(--gray-600); font-weight:600; flex:0 0 auto; }
+.frag-loc .v{ font-family:'SF Mono',ui-monospace,Menlo,monospace; color:var(--blue-800); word-break:break-all; }
+.frag-fields{ padding:0 20px 20px; }
+.frag-fields .fr{ display:flex; padding:9px 0; border-bottom:1px solid var(--gray-100); font-size:13px; }
+.frag-fields .fr:last-child{ border-bottom:none; }
+.frag-fields .fr .k{ flex:0 0 140px; color:var(--gray-600); }
+.frag-fields .fr .v{ color:var(--gray-900); font-weight:600; }
+
+.fpv-card{ border:1px solid var(--gray-200); border-radius:var(--radius-m); overflow:hidden; background:#fff; }
+.fpv-img{ height:150px; background-size:cover; background-position:center; background-color:var(--teal-100); }
+.fpv-body{ padding:16px; }
+.fpv-body h3{ margin:0 0 6px; font-size:16px; }
+.fpv-body p{ margin:0; font-size:13px; color:var(--gray-700); line-height:1.6; }
+.fpv-author{ display:flex; align-items:center; gap:14px; padding:16px; }
+.fpv-avatar{ width:56px; height:56px; border-radius:50%; background:var(--blue-700); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; flex:0 0 auto; }
