@@ -239,10 +239,68 @@
       </div>
 
       <div class="cv-files">
-        <div class="cv-files-head">▭ Files ⌄</div>
-        <div class="cv-tree">
-          <div class="cv-tree-root">⌄ wknd-advanced</div>
-          <div id="ewsTree"></div>
+        <div class="cv-rail-head">
+          <button class="rail-select" id="railSelect"><span>▭</span><span id="railSelLabel">Files</span><span class="ca">⌄</span></button>
+          <div class="rail-menu ews-hidden" id="railMenu">
+            <div class="rail-menu-item" data-panel="editor">Editor</div>
+            <div class="rail-menu-item" data-panel="outline">Outline</div>
+            <div class="rail-menu-item" data-panel="files">Files</div>
+            <div class="rail-menu-item" data-panel="versions">Versions</div>
+            <div class="rail-menu-item" data-panel="properties">Properties</div>
+          </div>
+        </div>
+
+        <!-- Files -->
+        <div class="rail-panel" data-panel="files">
+          <div class="cv-tree">
+            <div class="cv-tree-root">⌄ wknd-advanced</div>
+            <div id="ewsTree"></div>
+          </div>
+        </div>
+
+        <!-- Outline -->
+        <div class="rail-panel ews-hidden" data-panel="outline">
+          <div class="outline-list" id="outlineList"></div>
+          <button class="outline-add" id="outlineAdd">+ Add section</button>
+        </div>
+
+        <!-- Versions -->
+        <div class="rail-panel ews-hidden" data-panel="versions">
+          <div class="ver-tabs">
+            <button class="active" data-v="all">All</button>
+            <button data-v="me">Only me</button>
+            <span class="ver-add" title="Add version">＋</span>
+          </div>
+          <div class="ver-hint">Press ⌘ + ⌥ + S to add to version history while editing.</div>
+          <div class="ver-timeline">
+            <div class="ver-item current"><span class="ver-dot"></span><div class="ver-meta"><b>Current</b></div></div>
+            <div class="ver-group">⌄ 2 changes</div>
+            <div class="ver-item"><span class="ver-dot"></span><div class="ver-meta"><b>Published</b><span>Jul 22, 2026, 10:43 AM</span><span>BLOFFT@ADOBE.COM</span></div></div>
+            <div class="ver-item"><span class="ver-dot"></span><div class="ver-meta"><b>Published</b><span>Jul 22, 2026, 10:40 AM</span><span>BLOFFT@ADOBE.COM</span></div></div>
+            <div class="ver-item"><span class="ver-dot"></span><div class="ver-meta"><b>Published</b><span>Jul 22, 2026, 10:33 AM</span><span>BLOFFT@ADOBE.COM</span></div></div>
+            <div class="ver-item"><span class="ver-dot"></span><div class="ver-meta"><b>Previewed</b><span>Jul 22, 2026, 10:33 AM</span><span>BLOFFT@ADOBE.COM</span></div></div>
+            <div class="ver-group">⌄ 1 change</div>
+            <div class="ver-item"><span class="ver-dot"></span><div class="ver-meta"><b>Published</b><span>Jul 22, 2026, 10:29 AM</span><span>BLOFFT@ADOBE.COM</span></div></div>
+            <div class="ver-group">⌄ 1 change</div>
+            <div class="ver-item"><span class="ver-dot"></span><div class="ver-meta"><b>Published</b><span>Jul 21, 2026, 11:00 AM</span><span>BLOFFT@ADOBE.COM</span></div></div>
+          </div>
+        </div>
+
+        <!-- Properties -->
+        <div class="rail-panel ews-hidden" data-panel="properties">
+          <div id="propsBody"></div>
+        </div>
+
+        <!-- Editor (library) -->
+        <div class="rail-panel ews-hidden" data-panel="editor">
+          <div class="lib-hint">Drag a block onto the canvas to insert it.</div>
+          <div class="lib-item">▤ Text</div>
+          <div class="lib-item">▦ Hero</div>
+          <div class="lib-item">⊞ Cards</div>
+          <div class="lib-item">◫ Columns</div>
+          <div class="lib-item">🖼 Image</div>
+          <div class="lib-item">❝ Quote</div>
+          <div class="lib-item">🧩 Fragment</div>
         </div>
       </div>
     </div>
@@ -829,6 +887,172 @@ ewsTreeData.forEach(t => {
   ewsTreeEl.appendChild(el);
 });
 loadEwsPage('index', 'Home');
+
+// ---------- Right rail: panel switching ----------
+const railLabels = { editor:'Editor', outline:'Outline', files:'Files', versions:'Versions', properties:'Properties' };
+function selectPanel(name){
+  document.getElementById('railSelLabel').textContent = railLabels[name];
+  document.querySelectorAll('.rail-panel').forEach(p => p.classList.toggle('ews-hidden', p.dataset.panel !== name));
+  document.querySelectorAll('.rail-menu-item').forEach(m => {
+    const on = m.dataset.panel === name;
+    m.classList.toggle('active', on);
+    let ck = m.querySelector('.ck');
+    if(on && !ck){ ck = document.createElement('span'); ck.className = 'ck'; ck.textContent = '✓'; m.appendChild(ck); }
+    else if(!on && ck){ ck.remove(); }
+  });
+  document.getElementById('railMenu').classList.add('ews-hidden');
+  if(name === 'outline') renderOutline();
+  if(name === 'properties') renderProps(selectedBlock);
+}
+document.getElementById('railSelect').addEventListener('click', e => { e.stopPropagation(); document.getElementById('railMenu').classList.toggle('ews-hidden'); });
+document.querySelectorAll('.rail-menu-item').forEach(m => m.addEventListener('click', () => selectPanel(m.dataset.panel)));
+document.addEventListener('click', e => {
+  const menu = document.getElementById('railMenu');
+  if(menu && !menu.classList.contains('ews-hidden') && !document.getElementById('railSelect').contains(e.target) && !menu.contains(e.target)) menu.classList.add('ews-hidden');
+});
+document.querySelectorAll('.ver-tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.ver-tabs button').forEach(x => x.classList.remove('active')); b.classList.add('active');
+}));
+
+// ---------- Outline ----------
+let selectedBlock = 'hero';
+let dragIdx = null;
+let outline = [
+  { kind:'block', name:'hero' },
+  { kind:'block', name:'text' },
+  { kind:'block', name:'teaser' },
+  { kind:'block', name:'cards' },
+  { kind:'include', name:'related-articles' },
+  { kind:'block', name:'columns' },
+  { kind:'empty' },
+  { kind:'block', name:'section-metadata' },
+];
+function outlineLabel(s){
+  if(s.custom) return s.custom;
+  if(s.kind === 'include') return 'Include · ' + s.name;
+  if(s.kind === 'empty') return 'Empty section';
+  return s.name;
+}
+function renderOutline(){
+  const list = document.getElementById('outlineList');
+  list.innerHTML = '';
+  outline.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'outline-row' + (s.name && s.name === selectedBlock && s.kind !== 'empty' ? ' selected' : '');
+    row.draggable = true;
+    row.innerHTML =
+      '<span class="oh" title="Drag to reorder">⠿</span>' +
+      '<span class="olabel ' + (s.kind === 'empty' ? 'empty' : '') + '">' + outlineLabel(s) + '</span>' +
+      (s.kind === 'include' ? '<span class="otype">Include</span>' : '') +
+      '<span class="oact"><button data-act="rename" title="Rename">✎</button><button data-act="delete" title="Delete">🗑</button></span>';
+    row.addEventListener('click', e => {
+      if(e.target.closest('.oact')) return;
+      if(s.kind !== 'empty'){ selectedBlock = s.name; }
+      renderOutline();
+    });
+    const label = row.querySelector('.olabel');
+    row.querySelector('[data-act="rename"]').addEventListener('click', e => { e.stopPropagation(); startRename(label, s); });
+    label.addEventListener('dblclick', e => { e.stopPropagation(); startRename(label, s); });
+    row.querySelector('[data-act="delete"]').addEventListener('click', e => { e.stopPropagation(); outline.splice(i, 1); renderOutline(); });
+    row.addEventListener('dragstart', () => { dragIdx = i; row.classList.add('dragging'); });
+    row.addEventListener('dragend', () => { dragIdx = null; });
+    row.addEventListener('dragover', e => e.preventDefault());
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      if(dragIdx === null || dragIdx === i) return;
+      const [moved] = outline.splice(dragIdx, 1);
+      outline.splice(i, 0, moved);
+      dragIdx = null;
+      renderOutline();
+    });
+    list.appendChild(row);
+  });
+}
+function startRename(label, s){
+  label.contentEditable = 'true';
+  label.classList.remove('empty');
+  label.focus();
+  const range = document.createRange(); range.selectNodeContents(label);
+  const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  const finish = () => { label.contentEditable = 'false'; s.custom = label.textContent.trim() || undefined; renderOutline(); };
+  label.addEventListener('blur', finish, { once:true });
+  label.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); label.blur(); } });
+}
+document.getElementById('outlineAdd').addEventListener('click', () => { outline.push({ kind:'empty' }); renderOutline(); });
+
+// ---------- Properties inspector ----------
+const blockSchema = {
+  hero:    { type:'Hero', styles:['Default','Compact','Full-bleed'], align:true, bg:true, image:'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=60', cta:true },
+  text:    { type:'Text', styles:['Default','Lead','Small'], align:true, bg:true },
+  teaser:  { type:'Teaser', styles:['Default','Card','Banner'], align:true, bg:true, cta:true },
+  cards:   { type:'Cards', styles:['3-up','2-up','Carousel'], bg:true },
+  columns: { type:'Columns', styles:['50 / 50','33 / 67','Thirds'], bg:true },
+  'related-articles': { type:'Fragment include', include:true, ref:'/wknd-advanced/fragments/related-articles' },
+  'section-metadata': { type:'Section metadata', meta:true },
+};
+const propState = {};
+function renderProps(blockName){
+  const body = document.getElementById('propsBody');
+  const schema = blockSchema[blockName];
+  if(!schema){ body.innerHTML = '<div class="props-empty">Select a block in the Outline (or on the canvas) to see its properties.</div>'; return; }
+  if(schema.include){
+    body.innerHTML =
+      '<div class="props-head"><span class="pt">' + blockName + '</span><span class="badge b-fragment">Include</span></div>' +
+      '<div class="props-empty">This section references a reusable fragment. Edits happen in the fragment itself and roll out everywhere it&rsquo;s used.</div>' +
+      '<div class="prop-field"><label>Fragment path</label><input type="text" value="' + schema.ref + '" readonly></div>' +
+      '<div class="props-actions"><button class="btn primary" style="width:100%" id="openFrag">Open fragment</button></div>';
+    body.querySelector('#openFrag').addEventListener('click', () => alert('Mockup: this would open the fragment ' + schema.ref));
+    return;
+  }
+  const st = (propState[blockName] = propState[blockName] || { style:0, align:'center', bg:'none', mobile:true, cta:'Explore our guides', link:'/guides' });
+  const typeOptions = Object.keys(blockSchema).map(k => '<option ' + (k === blockName ? 'selected' : '') + '>' + k + '</option>').join('');
+  let html = '<div class="props-head"><span class="pt">' + blockName + '</span><span class="badge b-page">' + schema.type + '</span></div>';
+  html += '<div class="prop-group"><div class="pg-title">Block</div>';
+  html += '<div class="prop-field"><label>Type</label><select id="pfType">' + typeOptions + '</select></div>';
+  if(schema.styles) html += '<div class="prop-field"><label>Style</label><select id="pfStyle">' + schema.styles.map((s, i) => '<option ' + (i === st.style ? 'selected' : '') + '>' + s + '</option>').join('') + '</select></div>';
+  html += '</div>';
+  if(schema.align || schema.bg){
+    html += '<div class="prop-group"><div class="pg-title">Layout</div>';
+    if(schema.align) html += '<div class="prop-field"><label>Alignment</label><div class="seg-btns" id="pfAlign"><button data-a="left">⤎</button><button data-a="center">≡</button><button data-a="right">⤏</button></div></div>';
+    if(schema.bg) html += '<div class="prop-field"><label>Background</label><div class="swatches" id="pfBg">' +
+      ['none','#F6EFE6','#E6F1FF','#E4F5E9','#1B1B1B'].map(c => '<span class="swatch" data-c="' + c + '" style="background:' + (c === 'none' ? '#fff' : c) + '"></span>').join('') +
+      '</div></div>';
+    html += '</div>';
+  }
+  if(schema.image) html += '<div class="prop-group"><div class="pg-title">Media</div><div class="prop-thumb" style="background-image:url(' + schema.image + ')"></div><button class="btn" style="width:100%">Replace image</button></div>';
+  if(schema.cta) html += '<div class="prop-group"><div class="pg-title">Call to action</div><div class="prop-field"><label>Button text</label><input type="text" id="pfCta" value="' + st.cta + '"></div><div class="prop-field"><label>Link</label><input type="text" id="pfLink" value="' + st.link + '"></div></div>';
+  if(schema.meta) html += '<div class="prop-group"><div class="pg-title">Section metadata</div><div class="prop-field"><label>Key</label><input type="text" value="mbox"></div><div class="prop-field"><label>Value</label><input type="text" value="homepage-hero-mbox"></div></div>';
+  html += '<div class="prop-group"><div class="pg-title">Visibility</div><div class="prop-toggle">Show on mobile <span class="toggle ' + (st.mobile ? 'on' : '') + '" id="pfMobile"></span></div></div>';
+  body.innerHTML = html;
+
+  body.querySelector('#pfType').addEventListener('change', e => { selectedBlock = e.target.value; renderProps(selectedBlock); });
+  if(schema.styles) body.querySelector('#pfStyle').addEventListener('change', e => { st.style = e.target.selectedIndex; });
+  if(schema.align){
+    const seg = body.querySelector('#pfAlign');
+    seg.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.a === st.align));
+    seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { st.align = b.dataset.a; seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b)); applyHeroAlign(blockName, st.align); }));
+  }
+  if(schema.bg){
+    const sw = body.querySelector('#pfBg');
+    sw.querySelectorAll('.swatch').forEach(s => s.classList.toggle('active', s.dataset.c === st.bg));
+    sw.querySelectorAll('.swatch').forEach(s => s.addEventListener('click', () => { st.bg = s.dataset.c; sw.querySelectorAll('.swatch').forEach(x => x.classList.toggle('active', x === s)); }));
+  }
+  const mob = body.querySelector('#pfMobile');
+  mob.addEventListener('click', () => { st.mobile = !st.mobile; mob.classList.toggle('on', st.mobile); });
+  const cta = body.querySelector('#pfCta'); if(cta) cta.addEventListener('input', e => st.cta = e.target.value);
+  const link = body.querySelector('#pfLink'); if(link) link.addEventListener('input', e => st.link = e.target.value);
+  if(schema.align) applyHeroAlign(blockName, st.align);
+}
+function applyHeroAlign(blockName, align){
+  if(blockName !== 'hero') return;
+  const hero = document.querySelector('#editorView .wknd-hero');
+  const inner = document.querySelector('#editorView .wknd-hero-inner');
+  if(!hero) return;
+  hero.style.justifyContent = align === 'left' ? 'flex-start' : align === 'right' ? 'flex-end' : 'center';
+  if(inner) inner.style.textAlign = align;
+}
+
+selectPanel('files');
 
 renderCrumbs();
 render('all', '');
