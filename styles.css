@@ -612,3 +612,42 @@ body.mode-editor .anno-toggle, body.mode-editor .anno-legend, body.mode-editor .
 .fpv-body p{ margin:0; font-size:13px; color:var(--gray-700); line-height:1.6; }
 .fpv-author{ display:flex; align-items:center; gap:14px; padding:16px; }
 .fpv-avatar{ width:56px; height:56px; border-radius:50%; background:var(--blue-700); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; flex:0 0 auto; }
+
+/* ---------- Home / App launcher (enterprise CMS landing) ---------- */
+.home-main{ max-width:1120px; margin:0 auto; padding:30px 28px 64px; }
+.home-hero{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:24px; flex-wrap:wrap; }
+.home-hero h1{ font-size:28px; margin:0 0 6px; }
+.home-hero p{ margin:0; color:var(--gray-600); font-size:14px; }
+.home-hero .ctx{ display:inline-flex; align-items:center; gap:8px; background:var(--gray-75); border:1px solid var(--gray-200); border-radius:var(--radius-pill); padding:7px 15px; font-size:12.5px; color:var(--gray-700); font-weight:600; }
+.home-hero .ctx b{ color:var(--gray-900); }
+.home-stats{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:30px; }
+.home-stat{ flex:1; min-width:130px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-l); padding:16px 18px; }
+.home-stat .n{ font-size:24px; font-weight:700; line-height:1; }
+.home-stat .l{ font-size:11.5px; color:var(--gray-600); text-transform:uppercase; letter-spacing:.04em; margin-top:7px; }
+.launch-section{ margin-bottom:30px; }
+.launch-section h2{ font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--gray-500); font-weight:700; margin:0 0 14px; }
+.launch-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+.app-card{ display:flex; gap:14px; align-items:flex-start; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-l); padding:16px; cursor:pointer; text-decoration:none; transition:border-color .15s, box-shadow .15s, transform .15s; }
+.app-card:hover{ border-color:var(--blue-700); box-shadow:var(--shadow-1); transform:translateY(-1px); }
+.app-card .tile{ width:44px; height:44px; border-radius:var(--radius-m); display:flex; align-items:center; justify-content:center; font-size:21px; flex:0 0 auto; }
+.app-card .ac-body h3{ margin:0 0 3px; font-size:14px; color:var(--gray-900); display:flex; align-items:center; }
+.app-card .ac-body p{ margin:0; font-size:12px; color:var(--gray-600); line-height:1.5; }
+.badge-soon{ font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--gray-600); background:var(--gray-200); border-radius:var(--radius-pill); padding:2px 7px; margin-left:8px; }
+.tile.t-blue{ background:var(--blue-100); color:var(--blue-800); }
+.tile.t-purple{ background:var(--purple-100); color:var(--purple-700); }
+.tile.t-teal{ background:var(--teal-100); color:var(--teal-700); }
+.tile.t-orange{ background:var(--orange-100); color:var(--orange-700); }
+.tile.t-green{ background:var(--green-100); color:var(--green-700); }
+.tile.t-gray{ background:var(--gray-200); color:var(--gray-700); }
+.home-recent{ display:flex; gap:12px; flex-wrap:wrap; }
+.recent-card{ flex:1; min-width:200px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-m); padding:12px 14px; cursor:pointer; text-decoration:none; display:block; }
+.recent-card:hover{ border-color:var(--blue-700); }
+.recent-card .rt{ font-size:13px; font-weight:600; color:var(--gray-900); }
+.recent-card .rs{ font-size:11.5px; color:var(--gray-500); margin-top:3px; }
+.appsw-menu{ position:absolute; top:50px; left:48px; width:300px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-m); box-shadow:var(--shadow-2); padding:8px; z-index:40; display:none; }
+.appsw-menu.open{ display:block; }
+.appsw-label{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--gray-500); font-weight:700; padding:6px 10px 4px; }
+.appsw-item{ display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--radius-s); font-size:13px; color:var(--gray-800); cursor:pointer; text-decoration:none; }
+.appsw-item:hover{ background:var(--gray-100); }
+.appsw-item .si{ width:22px; text-align:center; }
+.app-switcher{ cursor:pointer; }
