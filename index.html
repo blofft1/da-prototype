@@ -103,6 +103,28 @@
             </div>
           </div>
         </div>
+
+        <!-- AI Visibility (LLMO) -->
+        <div class="llmo-section">
+          <div class="llmo-head">
+            <div class="lt"><h2>AI Visibility</h2><span class="llmo-badge">LLMO</span><span class="sub">Powered by Adobe LLM Optimizer</span></div>
+            <div class="llmo-platforms">
+              <span class="pf">ChatGPT</span><span class="pf">Gemini</span><span class="pf">Perplexity</span><span class="pf">Copilot</span><span class="pf">AI Overviews</span>
+              <a class="btn" href="https://play.llmo.now/org/demo-org/insights/brand-presence?siteId=frescopa.coffee" target="_blank" rel="noopener">Open in LLM Optimizer →</a>
+            </div>
+          </div>
+          <div class="llmo-metrics">
+            <div class="llmo-metric"><div class="n">62<small>/100</small></div><div class="l">Visibility score</div><div class="d up">▲ 8 this week</div></div>
+            <div class="llmo-metric"><div class="n">1,284</div><div class="l">Brand mentions</div><div class="d up">▲ 14%</div></div>
+            <div class="llmo-metric"><div class="n">96</div><div class="l">Citations</div><div class="d down">▼ 3%</div></div>
+            <div class="llmo-metric"><div class="n">18%</div><div class="l">Share of voice</div><div class="d">vs 4 competitors</div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Opportunities · readability &amp; structure</h3><a href="workspace.html">Fix in Content →</a></div>
+            <div id="llmoOps"></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -230,6 +252,30 @@ document.getElementById('appMini').innerHTML = appMini.map((a) => {
 document.querySelectorAll('#appMini [data-app]').forEach((el) => el.addEventListener('click', () => openApp(el.dataset.app)));
 
 document.getElementById('newPageBtn').addEventListener('click', () => alert('Mockup: this would start the “New page” flow — pick a template and location, then open it in the editor.'));
+
+/* ---------- AI Visibility (LLMO) opportunities ---------- */
+const catLabel = { readability:'Readability', structure:'Structure', schema:'Schema', content:'Content' };
+const llmoOps = [
+  { t:'Lead the Home hero with a direct answer', d:'The hero opens with poetic copy (“The Art of the Perfect Getaway”). LLMs extract the first clear, factual sentence — add a one-line summary of what WKND is and does.', cat:'readability', impact:'high', page:'/index' },
+  { t:'Add an FAQ block with FAQPage schema', d:'Q&A marked up with FAQPage schema is the single most-cited structure in AI answers. Mark up the existing questions on /faqs.', cat:'schema', impact:'high', page:'/faqs' },
+  { t:'Publish llms.txt + per-page summaries', d:'Give models a machine-readable map of the site and a 2–3 sentence summary per page so they index your key facts correctly.', cat:'structure', impact:'high', page:'site-wide' },
+  { t:'Break “The Idea” into scannable sub-sections', d:'Long paragraphs lower extractability. Split into short paragraphs under descriptive H2/H3 subheads.', cat:'readability', impact:'medium', page:'/index' },
+  { t:'Structure trip guides as HowTo steps', d:'Format trip articles as clear numbered steps with HowTo schema so they surface for “how to plan…” prompts.', cat:'structure', impact:'medium', page:'/articles' },
+  { t:'Add author bios and dates (E-E-A-T)', d:'Attribution and freshness raise trust and citation rate. Wire the Author fragments into article bylines.', cat:'content', impact:'medium', page:'/articles' },
+  { t:'Add descriptive alt text and fix heading order', d:'Hero and card images lack descriptive alt text, and heading levels skip — both help models parse page meaning.', cat:'structure', impact:'low', page:'/about-us' },
+  { t:'Add concrete stats and cited quotes', d:'Content with statistics and cited quotes sees ~30–40% higher LLM visibility. Add data points to your key pages.', cat:'content', impact:'low', page:'site-wide' },
+];
+document.getElementById('llmoOps').innerHTML = llmoOps.map((o) => `
+  <div class="op-row">
+    <span class="op-impact ${o.impact}"></span>
+    <div class="op-main">
+      <div class="ot">${o.t}</div>
+      <div class="od">${o.d}</div>
+      <div class="op-meta"><span class="op-cat ${o.cat}">${catLabel[o.cat]}</span><span class="op-page">${o.page}</span></div>
+    </div>
+    <span class="op-lift ${o.impact}">${o.impact} impact</span>
+  </div>`).join('');
+document.querySelectorAll('#llmoOps .op-row').forEach((r) => r.addEventListener('click', () => { window.location.href = 'workspace.html'; }));
 </script>
 </body>
 </html>
