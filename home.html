@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Document Authoring — Home</title>
+<title>WKND Advanced — Document Authoring</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -43,88 +43,64 @@
     </div>
 
     <div class="main">
-      <div class="home-main">
-        <div class="home-hero">
+      <div class="dash">
+
+        <!-- Site-specific hero -->
+        <div class="site-hero">
           <div>
-            <h1>Welcome back, Bill</h1>
-            <p>Everything you need to author, govern, and deliver content for this site.</p>
+            <div class="eyebrow">Site</div>
+            <h1>WKND Advanced</h1>
+            <div class="meta"><span class="status published"><span class="dot"></span>Published</span> · blofft1 / wknd-advanced · last published 2h ago</div>
+            <div class="hero-actions">
+              <a class="btn primary" href="index.html">Open content</a>
+              <a class="btn" href="index.html">Preview live</a>
+              <button class="btn" id="newPageBtn">+ New page</button>
+            </div>
           </div>
-          <div class="ctx">⌂ <b>blofft1</b> / wknd-advanced</div>
-        </div>
-
-        <div class="home-stats">
-          <div class="home-stat"><div class="n">8</div><div class="l">Sites</div></div>
-          <div class="home-stat"><div class="n">24</div><div class="l">Pages</div></div>
-          <div class="home-stat"><div class="n">7</div><div class="l">Fragments</div></div>
-          <div class="home-stat"><div class="n">1</div><div class="l">In review</div></div>
-          <div class="home-stat"><div class="n">3</div><div class="l">Locales</div></div>
-        </div>
-
-        <div class="launch-section">
-          <h2>Content</h2>
-          <div class="launch-grid">
-            <a class="app-card" href="index.html">
-              <div class="tile t-blue">🗂</div>
-              <div class="ac-body"><h3>Sites &amp; Content</h3><p>Browse, author, and publish pages, blocks, and structure.</p></div>
-            </a>
-            <a class="app-card" href="fragments.html">
-              <div class="tile t-purple">🧩</div>
-              <div class="ac-body"><h3>Content Fragments</h3><p>Structured, reusable content delivered to every channel.</p></div>
-            </a>
-            <a class="app-card" href="translation.html">
-              <div class="tile t-teal">🌐</div>
-              <div class="ac-body"><h3>Translation</h3><p>Localize content and keep languages in sync.</p></div>
-            </a>
-            <a class="app-card" href="aemcoder.html">
-              <div class="tile t-orange">✦</div>
-              <div class="ac-body"><h3>Import &amp; Modernize</h3><p>Bring in and convert content with AEM Coder (AI).</p></div>
-            </a>
+          <div class="hero-thumb">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="shot" style="background-image:url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=700&q=60')"></div>
           </div>
         </div>
 
-        <div class="launch-section">
-          <h2>Governance</h2>
-          <div class="launch-grid">
-            <a class="app-card" href="msm.html">
-              <div class="tile t-blue">🔗</div>
-              <div class="ac-body"><h3>Multi-Site Management</h3><p>Blueprints and live copies across regions and brands.</p></div>
-            </a>
-            <div class="app-card" data-app="permissions">
-              <div class="tile t-gray">🔒</div>
-              <div class="ac-body"><h3>Permissions <span class="badge-soon">Preview</span></h3><p>Control who can read and write, by group and folder.</p></div>
-            </div>
-            <div class="app-card" data-app="workflow">
-              <div class="tile t-green">✓</div>
-              <div class="ac-body"><h3>Workflow &amp; Governance <span class="badge-soon">Preview</span></h3><p>Reviews, approvals, and publish gates.</p></div>
-            </div>
-            <div class="app-card" data-app="scheduler">
-              <div class="tile t-orange">⏱</div>
-              <div class="ac-body"><h3>Scheduler <span class="badge-soon">Preview</span></h3><p>Schedule content and snapshots to publish automatically.</p></div>
-            </div>
-          </div>
+        <!-- Global find -->
+        <div class="find">
+          <div class="find-bar">✦ <input id="findInput" placeholder="Find a page, fragment, or asset in WKND Advanced…" autocomplete="off"></div>
+          <div class="find-results" id="findResults"></div>
         </div>
 
-        <div class="launch-section">
-          <h2>Insights</h2>
-          <div class="launch-grid">
-            <div class="app-card" data-app="versions">
-              <div class="tile t-gray">🕘</div>
-              <div class="ac-body"><h3>Versions &amp; Audit <span class="badge-soon">Preview</span></h3><p>Track every change and roll back with confidence.</p></div>
+        <!-- Dashboard -->
+        <div class="dash-grid">
+          <div class="dash-col">
+            <div class="card">
+              <div class="card-head"><h3>Site structure</h3><a href="index.html">Open in Content →</a></div>
+              <div class="mtree" id="mtree"></div>
             </div>
-            <div class="app-card" data-app="health">
-              <div class="tile t-teal">📊</div>
-              <div class="ac-body"><h3>Content Health <span class="badge-soon">Preview</span></h3><p>Freshness, orphaned pages, and SEO checks.</p></div>
+            <div class="card">
+              <div class="card-head"><h3>Latest updates</h3><a href="#">View all →</a></div>
+              <div class="card-body" id="activity"></div>
             </div>
           </div>
-        </div>
 
-        <div class="launch-section">
-          <h2>Jump back in</h2>
-          <div class="home-recent">
-            <a class="recent-card" href="index.html"><div class="rt">Home (index)</div><div class="rs">Page · edited 2h ago</div></a>
-            <a class="recent-card" href="index.html"><div class="rt">About Us</div><div class="rs">Page · edited yesterday</div></a>
-            <a class="recent-card" href="index.html"><div class="rt">Trips Worth Taking — Extras</div><div class="rs">Page · in review</div></a>
-            <a class="recent-card" href="fragments.html"><div class="rt">Homepage Hero Banner</div><div class="rs">Fragment · edited 3d ago</div></a>
+          <div class="dash-col">
+            <div class="card">
+              <div class="card-head"><h3>My queue</h3><span style="font-size:12px;color:var(--gray-500);">3 items</span></div>
+              <div class="card-body" id="queue"></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>Apps</h3><a href="#" id="allApps">All apps →</a></div>
+              <div class="app-mini-grid" id="appMini"></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>Site status</h3></div>
+              <div class="stat-list">
+                <div class="stat-line"><span class="k">Publish status</span><span class="v" style="color:var(--green-700);">Published</span></div>
+                <div class="stat-line"><span class="k">Last published</span><span class="v">Jul 20, 2026 · 2h ago</span></div>
+                <div class="stat-line"><span class="k">Pages</span><span class="v">24</span></div>
+                <div class="stat-line"><span class="k">In review</span><span class="v">1</span></div>
+                <div class="stat-line"><span class="k">Locales</span><span class="v">3 · 2 in sync</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -145,17 +121,15 @@
   </div>
 
 <script>
+/* ---------- Preview-app modals ---------- */
 const apps = {
   permissions: { title:'Permissions', desc:'Manage who can read or write content — by group or individual, down to the folder level.', parity:'The AEM Permissions console (ACLs on the content tree).' },
   workflow: { title:'Workflow & Governance', desc:'Route content through reviews and approvals with publish gates, so nothing ships until it’s signed off.', parity:'AEM Workflow + the Inbox / task console.' },
   scheduler: { title:'Scheduler', desc:'Schedule content — and snapshots — to publish or unpublish automatically at a future date and time.', parity:'Scheduled activation / launches.' },
-  versions: { title:'Versions & Audit', desc:'A full history of every change, who made it, and one-click rollback.', parity:'Version history + audit log.' },
-  health: { title:'Content Health', desc:'Surface stale pages, orphaned content, broken links, and SEO issues across the site.', parity:'Content insights / site health dashboards.' },
 };
 const backdrop = document.getElementById('appModalBackdrop');
 function openApp(key){
-  const a = apps[key];
-  if(!a) return;
+  const a = apps[key]; if(!a) return;
   document.getElementById('appModalTitle').textContent = a.title;
   document.getElementById('appModalBody').innerHTML =
     `<div style="font-size:13px; line-height:1.6; color:var(--gray-800);">${a.desc}</div>` +
@@ -163,17 +137,99 @@ function openApp(key){
   backdrop.classList.add('open');
 }
 function closeApp(){ backdrop.classList.remove('open'); }
-document.querySelectorAll('[data-app]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); openApp(el.dataset.app); }));
 document.getElementById('appModalClose').addEventListener('click', closeApp);
 document.getElementById('appModalOk').addEventListener('click', closeApp);
 backdrop.addEventListener('click', (e) => { if(e.target === backdrop) closeApp(); });
 
-// App-switcher menu in the top bar
+/* ---------- App-switcher menu ---------- */
 const sw = document.getElementById('appSwitcher');
 const swMenu = document.getElementById('appswMenu');
-sw.addEventListener('click', (e) => { e.stopPropagation(); swMenu.classList.toggle('open'); });
+function toggleSw(e){ e.stopPropagation(); swMenu.classList.toggle('open'); }
+sw.addEventListener('click', toggleSw);
+document.getElementById('allApps').addEventListener('click', (e) => { e.preventDefault(); toggleSw(e); });
 document.addEventListener('click', (e) => { if(!swMenu.contains(e.target) && e.target !== sw) swMenu.classList.remove('open'); });
 swMenu.querySelectorAll('[data-app]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); swMenu.classList.remove('open'); openApp(el.dataset.app); }));
+
+/* ---------- Find ---------- */
+const findIndex = [
+  { t:'Home (index)', ty:'Page', c:'c-blue', p:'/index' },
+  { t:'About Us', ty:'Page', c:'c-blue', p:'/about-us' },
+  { t:'Already Investing', ty:'Page', c:'c-blue', p:'/already-investing' },
+  { t:'Events', ty:'Page', c:'c-blue', p:'/events' },
+  { t:'Articles Index', ty:'Page', c:'c-blue', p:'/articles' },
+  { t:'Trips Worth Taking — Extras', ty:'Page', c:'c-blue', p:'/extras' },
+  { t:'Related Articles (Bento)', ty:'Fragment', c:'c-purple', p:'/fragments/related-articles' },
+  { t:'Homepage Hero Banner', ty:'Fragment', c:'c-purple', p:'/fragments/hero-banner' },
+  { t:'German (de)', ty:'Locale', c:'c-teal', p:'/de' },
+  { t:'Spanish (es)', ty:'Locale', c:'c-teal', p:'/es' },
+  { t:'Search Icon', ty:'Asset', c:'c-orange', p:'/icons/search.svg' },
+];
+const findInput = document.getElementById('findInput');
+const findResults = document.getElementById('findResults');
+function renderFind(){
+  const q = findInput.value.toLowerCase().trim();
+  if(!q){ findResults.classList.remove('open'); return; }
+  const hits = findIndex.filter((r) => r.t.toLowerCase().includes(q) || r.p.toLowerCase().includes(q)).slice(0, 7);
+  findResults.innerHTML = hits.length
+    ? hits.map((r) => `<a class="find-row" href="index.html"><span class="fr-type ${r.c}">${r.ty}</span>${r.t}<span class="fr-path">${r.p}</span></a>`).join('')
+    : '<div class="find-row" style="color:var(--gray-500);cursor:default;">No matches</div>';
+  findResults.classList.add('open');
+}
+findInput.addEventListener('input', renderFind);
+findInput.addEventListener('focus', renderFind);
+document.addEventListener('click', (e) => { if(!document.querySelector('.find').contains(e.target)) findResults.classList.remove('open'); });
+
+/* ---------- Site structure quick view ---------- */
+const mtreeData = [
+  { n:'index', ic:'📄' }, { n:'about-us', ic:'📄' }, { n:'articles', ic:'📁', c:12 },
+  { n:'events', ic:'📄' }, { n:'en', ic:'📁', c:9 }, { n:'de', ic:'📁', c:9 },
+  { n:'es', ic:'📁', c:9 }, { n:'fragments', ic:'📁', c:7 }, { n:'config', ic:'📁', c:3 },
+];
+document.getElementById('mtree').innerHTML = mtreeData.map((r) =>
+  `<a class="mtree-row" href="index.html"><span class="mt-ic">${r.ic}</span>${r.n}${r.c ? `<span class="mt-count">${r.c}</span>` : ''}</a>`
+).join('');
+
+/* ---------- Latest updates ---------- */
+const activity = [
+  { av:'KR', c:'c-blue', txt:'<b>K. Robin</b> published <b>About Us</b>', t:'2 hours ago' },
+  { av:'BL', c:'c-purple', txt:'<b>B. Loeffler</b> sent <b>Trips Worth Taking — Extras</b> for review', t:'3 hours ago' },
+  { av:'AI', c:'c-teal', txt:'<b>AI Assistant</b> imported 4 pages via AEM Coder', t:'yesterday' },
+  { av:'KR', c:'c-blue', txt:'<b>K. Robin</b> updated <b>Global Navigation</b>', t:'2 days ago' },
+  { av:'BL', c:'c-purple', txt:'<b>B. Loeffler</b> created fragment <b>Author Bio</b>', t:'3 days ago' },
+];
+document.getElementById('activity').innerHTML = activity.map((a) =>
+  `<div class="act-row"><div class="act-av ${a.c}">${a.av}</div><div class="act-txt">${a.txt}<span class="t">${a.t}</span></div></div>`
+).join('');
+
+/* ---------- My queue ---------- */
+const queue = [
+  { ic:'⏳', c:'c-purple', t:'Trips Worth Taking — Extras', s:'Awaiting your review', btn:'Review', prim:true },
+  { ic:'✎', c:'c-blue', t:'Fall Preview', s:'Draft you started', btn:'Resume' },
+  { ic:'🌐', c:'c-teal', t:'German (de) rollout', s:'Translation ready to approve', btn:'Approve' },
+];
+document.getElementById('queue').innerHTML = queue.map((q) =>
+  `<div class="q-row"><div class="q-ic ${q.c}">${q.ic}</div><div class="q-main"><div class="qt">${q.t}</div><div class="qs">${q.s}</div></div><button class="q-btn ${q.prim ? 'primary' : ''}">${q.btn}</button></div>`
+).join('');
+document.querySelectorAll('#queue .q-btn').forEach((b, i) => b.addEventListener('click', () => { window.location.href = 'index.html'; }));
+
+/* ---------- Apps (compact) ---------- */
+const appMini = [
+  { l:'Content', ic:'🗂', c:'c-blue', href:'index.html' },
+  { l:'Fragments', ic:'🧩', c:'c-purple', href:'fragments.html' },
+  { l:'Translation', ic:'🌐', c:'c-teal', href:'translation.html' },
+  { l:'MSM', ic:'🔗', c:'c-blue', href:'msm.html' },
+  { l:'Import', ic:'✦', c:'c-orange', href:'aemcoder.html' },
+  { l:'Permissions', ic:'🔒', c:'c-gray', app:'permissions' },
+  { l:'Workflow', ic:'✓', c:'c-green', app:'workflow' },
+  { l:'Scheduler', ic:'⏱', c:'c-orange', app:'scheduler' },
+];
+document.getElementById('appMini').innerHTML = appMini.map((a) => {
+  const inner = `<div class="am-tile ${a.c}">${a.ic}</div><div class="am-l">${a.l}</div>`;
+  return a.href ? `<a class="app-mini" href="${a.href}">${inner}</a>` : `<div class="app-mini" data-app="${a.app}">${inner}</div>`;
+}).join('');
+document.querySelectorAll('#appMini [data-app]').forEach((el) => el.addEventListener('click', () => openApp(el.dataset.app)));
+
+document.getElementById('newPageBtn').addEventListener('click', () => alert('Mockup: this would start the “New page” flow — pick a template and location, then open it in the editor.'));
 </script>
 </body>
 </html>
