@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WKND Advanced — Document Authoring</title>
+<base target="_blank">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -269,7 +270,7 @@ mtree.addEventListener('click', (e) => {
     return;
   }
   const pageRow = e.target.closest('.tree-row.page');
-  if(pageRow){ window.location.href = 'workspace.html?page=' + encodeURIComponent(pageRow.dataset.page); }
+  if(pageRow){ window.open('workspace.html?page=' + encodeURIComponent(pageRow.dataset.page), '_blank'); }
 });
 
 /* ---------- Latest updates ---------- */
@@ -293,7 +294,7 @@ const queue = [
 document.getElementById('queue').innerHTML = queue.map((q) =>
   `<div class="q-row"><div class="q-ic ${q.c}">${q.ic}</div><div class="q-main"><div class="qt">${q.t}</div><div class="qs">${q.s}</div></div><button class="q-btn ${q.prim ? 'primary' : ''}">${q.btn}</button></div>`
 ).join('');
-document.querySelectorAll('#queue .q-btn').forEach((b, i) => b.addEventListener('click', () => { window.location.href = 'workspace.html'; }));
+document.querySelectorAll('#queue .q-btn').forEach((b, i) => b.addEventListener('click', () => { window.open('workspace.html', '_blank'); }));
 
 /* ---------- Apps (compact) ---------- */
 const appMini = [
@@ -336,7 +337,7 @@ document.getElementById('llmoOps').innerHTML = llmoOps.map((o) => `
     </div>
     <span class="op-lift ${o.impact}">${o.impact} impact</span>
   </div>`).join('');
-document.querySelectorAll('#llmoOps .op-row').forEach((r) => r.addEventListener('click', () => { window.location.href = 'workspace.html'; }));
+document.querySelectorAll('#llmoOps .op-row').forEach((r) => r.addEventListener('click', () => { window.open('workspace.html', '_blank'); }));
 </script>
 </body>
 </html>
