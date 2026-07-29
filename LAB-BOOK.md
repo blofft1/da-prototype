@@ -102,6 +102,8 @@ Confirm each item; check the box. If any fail, note it and we'll fix before cont
 
 ## Part 2 — Forms & gated content
 
+> ⚠️ **Depends on Cloudflare Workers.** The block/worker *code* is in the repo (inherited from the bbird fork), but worker **deployment was skipped** for the first WKND demo. Until the `auth` and `contact_us` workers are deployed for wknd-advanced, run Labs 9–11 against the **live bbird site** (`demo.bbird.live`) instead, or deploy the workers first (needs dev help).
+
 ### Lab 9 — Add a form
 **Goal:** Capture a submission through the EDS form pipeline.
 1. New page `lab-contact`; insert the **Form** block (or reference the `contact-us` fragment).
