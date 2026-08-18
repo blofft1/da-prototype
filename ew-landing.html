@@ -184,6 +184,48 @@
   .da-table .dots{color:#9aa0ab;font-weight:800;text-align:center}
   .da-funnel{color:#c3c7cf;margin-right:8px}
   [hidden]{display:none !important}
+
+  /* ---------- content browser (tree + enhanced table) ---------- */
+  .browser{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-l);box-shadow:var(--shadow);overflow:hidden}
+  .browserhdr{display:flex;align-items:center;gap:14px;padding:16px 18px 12px;flex-wrap:wrap}
+  .browserhdr h2{font-size:16px;letter-spacing:-.2px}
+  .browserhdr .sub{font-size:12.5px;color:var(--gray-600)}
+  .typefilter{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:3px;gap:2px;margin-left:auto;flex-wrap:wrap}
+  .typefilter button{border:none;background:transparent;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--gray-600);padding:6px 13px;border-radius:var(--radius-pill);cursor:pointer}
+  .typefilter button.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.10)}
+  .typefilter button:not(.on):hover{color:var(--gray-800)}
+  .browserbody{display:flex;border-top:1px solid var(--gray-100)}
+  .tree{width:222px;flex:0 0 222px;border-right:1px solid var(--gray-100);padding:12px 10px;display:flex;flex-direction:column;gap:1px}
+  .treelabel{font-size:10.5px;font-weight:800;letter-spacing:.6px;color:var(--gray-500);text-transform:uppercase;padding:4px 10px 8px}
+  .tnode{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-s);font-size:13px;font-weight:600;color:var(--gray-800);cursor:pointer;user-select:none}
+  .tnode:hover{background:var(--gray-75)}
+  .tnode.on{background:var(--accent-wash);color:var(--accent)}
+  .tnode .caret{width:14px;flex:0 0 14px;color:var(--gray-500);transition:transform .12s}
+  .tnode.open .caret{transform:rotate(90deg)}
+  .tnode .fi{flex:0 0 16px;color:var(--gray-500)}
+  .tnode.on .fi{color:var(--accent)}
+  .tnode .cnt{margin-left:auto;font-size:11px;font-weight:800;color:var(--gray-500)}
+  .tchildren{margin-left:14px;display:none;flex-direction:column;gap:1px}
+  .tchildren.show{display:flex}
+  .btablewrap{flex:1;min-width:0;overflow-x:auto}
+  .btable{width:100%;border-collapse:collapse;font-size:13px}
+  .btable thead td{color:var(--gray-500);font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:11px 12px;border-bottom:1px solid var(--gray-100);white-space:nowrap}
+  .btable tbody tr{border-bottom:1px solid var(--gray-75);cursor:pointer}
+  .btable tbody tr:hover{background:var(--gray-75)}
+  .btable td{padding:11px 12px;vertical-align:middle}
+  .bname{display:flex;align-items:center;gap:11px}
+  .bname .bico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex:0 0 28px}
+  .bname .bt{font-weight:700;color:var(--gray-900)}
+  .bname .bp{font-size:11px;color:var(--gray-500)}
+  .typebadge{font-size:10.5px;font-weight:800;letter-spacing:.3px;padding:3px 9px;border-radius:var(--radius-pill);text-transform:uppercase;white-space:nowrap}
+  .tb-page{background:var(--accent-wash);color:var(--accent)} .tb-sheet{background:var(--pos-wash);color:var(--pos)}
+  .tb-doc{background:var(--gray-100);color:var(--gray-700)} .tb-media{background:#efe7fb;color:#7c4bd6}
+  .tb-fragment{background:#fbe7da;color:#b8730b}
+  .cellstate{display:flex;flex-direction:column;gap:2px}
+  .cellstate .tm{font-size:11px;color:var(--gray-500)}
+  .btable .rowdots{color:var(--gray-400);font-weight:800;text-align:center}
+  .bempty{padding:26px;text-align:center;color:var(--gray-600);font-size:13px}
+  .bcount{font-size:11.5px;color:var(--gray-500);padding:9px 14px;border-top:1px solid var(--gray-100)}
 </style>
 </head>
 <body>
@@ -195,7 +237,7 @@
       <b>Experience Workspace</b>
       <span class="concept">Concept · Spectrum 2</span>
     </div>
-    <div class="switcher"><span class="dot"></span> scdemos / demo <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></div>
+    <a class="switcher" href="sites.html" title="Switch site — open Sites Explorer"><span class="dot"></span> scdemos / demo <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></a>
     <div class="viewtoggle" id="viewtoggle" title="Switch landing layout">
       <button data-view="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Guided Home</button>
       <button data-view="classic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg> Classic DA</button>
@@ -209,6 +251,7 @@
   <div class="shell" id="view-home">
     <!-- ============ LABELED SIDE NAV ============ -->
     <nav class="nav">
+      <a class="navitem" href="sites.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 0 0 18M3 12h18"/></svg> All Sites</a>
       <div class="navitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> Site Home</div>
       <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/></svg> Content <span class="count">248</span></div>
       <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Apps</div>
@@ -262,6 +305,36 @@
         </div>
         <div class="chips" id="chips"></div>
         <div class="taskresults" id="taskresults"></div>
+      </section>
+
+      <!-- CONTENT BROWSER (tree + enhanced fields) -->
+      <section class="browser">
+        <div class="browserhdr">
+          <div>
+            <h2>Content</h2>
+            <div class="sub">Browse the site tree — now with type, preview &amp; publish state on every row</div>
+          </div>
+          <div class="typefilter" id="typefilter">
+            <button data-type="all" class="on">All</button>
+            <button data-type="page">Pages</button>
+            <button data-type="sheet">Sheets</button>
+            <button data-type="doc">Documents</button>
+            <button data-type="media">Media</button>
+            <button data-type="fragment">Fragments</button>
+          </div>
+        </div>
+        <div class="browserbody">
+          <div class="tree" id="tree"></div>
+          <div class="btablewrap">
+            <table class="btable">
+              <thead><tr>
+                <td>Name</td><td>Type</td><td>Modified</td><td>Preview</td><td>Publish</td><td></td>
+              </tr></thead>
+              <tbody id="btbody"></tbody>
+            </table>
+            <div class="bcount" id="bcount"></div>
+          </div>
+        </div>
       </section>
 
       <!-- CONTENT COLUMNS -->
@@ -422,6 +495,72 @@ function runSearch(v){
 }
 q.addEventListener('input', e=>runSearch(e.target.value));
 chipsEl.addEventListener('click', e=>{ if(e.target.classList.contains('chip')){ q.value=e.target.textContent; runSearch(q.value); q.focus(); }});
+
+// ---------- content browser: tree + enhanced-field table ----------
+const content = [
+  {t:'Home',            p:'/',                  folder:'/',          type:'page',     mod:'Aug 12',  prev:['live','Aug 12'],  pub:['live','Aug 12']},
+  {t:'About Us',        p:'/about-us',          folder:'/',          type:'page',     mod:'Jul 20',  prev:['live','Jul 20'],  pub:['live','Jul 20']},
+  {t:'Contact',         p:'/contact',           folder:'/',          type:'page',     mod:'Aug 02',  prev:['previewed','Aug 09'], pub:['draft','—']},
+  {t:'Nav',             p:'/nav',               folder:'/',          type:'fragment', mod:'Jul 28',  prev:['live','Jul 28'],  pub:['live','Jul 28']},
+  {t:'Footer',          p:'/footer',            folder:'/',          type:'fragment', mod:'Jul 28',  prev:['live','Jul 28'],  pub:['live','Jul 28']},
+  {t:'Articles Index',  p:'/articles',          folder:'articles',   type:'page',     mod:'Jul 30',  prev:['live','Jul 30'],  pub:['live','Jul 30']},
+  {t:'Trail Guide 2026',p:'/articles/trail-guide', folder:'articles',type:'page',     mod:'Aug 14',  prev:['review','Aug 14'], pub:['draft','—']},
+  {t:'Gear Review',     p:'/articles/gear',     folder:'articles',   type:'page',     mod:'Aug 08',  prev:['previewed','Aug 08'], pub:['live','Aug 01']},
+  {t:'Authors',         p:'/articles/authors',  folder:'articles',   type:'sheet',    mod:'Jul 15',  prev:['live','Jul 15'],  pub:['live','Jul 15']},
+  {t:'Karriere',        p:'/de/karriere',       folder:'de',         type:'page',     mod:'Aug 10',  prev:['review','Aug 10'], pub:['draft','—']},
+  {t:'Über Uns',        p:'/de/uber-uns',       folder:'de',         type:'page',     mod:'Jul 22',  prev:['live','Jul 22'],  pub:['live','Jul 22']},
+  {t:'Getting Started', p:'/demo-docs/start',   folder:'demo-docs',  type:'doc',      mod:'Aug 05',  prev:['live','Aug 05'],  pub:['live','Aug 05']},
+  {t:'How to Reskin',   p:'/demo-docs/reskin',  folder:'demo-docs',  type:'doc',      mod:'Aug 06',  prev:['previewed','Aug 07'], pub:['draft','—']},
+  {t:'Hero — Coast',    p:'/products/hero-coast.jpg', folder:'products', type:'media', mod:'Aug 03', prev:['live','Aug 03'], pub:['live','Aug 03']},
+  {t:'Promo Video',     p:'/products/promo.mp4',folder:'products',   type:'media',    mod:'Jul 26',  prev:['live','Jul 26'],  pub:['live','Jul 26']},
+  {t:'Product Specs',   p:'/products/specs',    folder:'products',   type:'sheet',    mod:'Aug 11',  prev:['previewed','Aug 11'], pub:['live','Aug 04']},
+  {t:'Home (EN)',       p:'/en/home',           folder:'en',         type:'page',     mod:'Aug 12',  prev:['live','Aug 12'],  pub:['live','Aug 12']},
+  {t:'Redirects',       p:'/en/redirects',      folder:'en',         type:'sheet',    mod:'Jul 19',  prev:['live','Jul 19'],  pub:['live','Jul 19']},
+];
+const folders = [
+  {id:'/',         label:'All content', count:content.length},
+  {id:'articles',  label:'articles',    count:content.filter(c=>c.folder==='articles').length},
+  {id:'de',        label:'de',          count:content.filter(c=>c.folder==='de').length},
+  {id:'demo-docs', label:'demo-docs',   count:content.filter(c=>c.folder==='demo-docs').length},
+  {id:'en',        label:'en',          count:content.filter(c=>c.folder==='en').length},
+  {id:'products',  label:'products',    count:content.filter(c=>c.folder==='products').length},
+];
+const typeMeta = {
+  page:{cls:'tb-page', ico:'<path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/>', glyph:'📄'},
+  sheet:{cls:'tb-sheet', ico:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>', glyph:'▦'},
+  doc:{cls:'tb-doc', ico:'<path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7M9 8h3"/>', glyph:'📃'},
+  media:{cls:'tb-media', ico:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 17l-5-5-9 8"/>', glyph:'🖼'},
+  fragment:{cls:'tb-fragment', ico:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/>', glyph:'◈'},
+};
+const statusCls = {live:'s-live', previewed:'s-prev', review:'s-review', draft:'s-draft'};
+const statusLabel = {live:'Live', previewed:'Preview', review:'Review', draft:'Draft'};
+
+let curType='all', curFolder='/';
+const tree=document.getElementById('tree'), btbody=document.getElementById('btbody'), bcount=document.getElementById('bcount');
+tree.innerHTML = '<div class="treelabel">wknd-advanced</div>' + folders.map(f=>{
+  const icon = f.id==='/' ? '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>' : '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>';
+  return `<div class="tnode ${f.id===curFolder?'on':''}" data-folder="${f.id}">
+    <svg class="fi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${icon}</svg>
+    <span>${f.label}</span><span class="cnt">${f.count}</span></div>`;
+}).join('');
+
+function statusPill(arr){ const [s,tm]=arr; return `<div class="cellstate"><span class="status ${statusCls[s]}">${statusLabel[s]}</span>${tm&&tm!=='—'?`<span class="tm">${tm}</span>`:''}</div>`; }
+function renderRows(){
+  const rows = content.filter(c => (curFolder==='/'||c.folder===curFolder) && (curType==='all'||c.type===curType));
+  if(!rows.length){ btbody.innerHTML=`<tr><td colspan="6"><div class="bempty">No ${curType==='all'?'':curType+' '}items in this folder.</div></td></tr>`; }
+  else btbody.innerHTML = rows.map(c=>{ const m=typeMeta[c.type]; return `<tr>
+    <td><div class="bname"><div class="bico ${m.cls}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${m.ico}</svg></div>
+      <div><div class="bt">${c.t}</div><div class="bp">${c.p}</div></div></div></td>
+    <td><span class="typebadge ${m.cls}">${c.type}</span></td>
+    <td style="color:var(--gray-600)">${c.mod}</td>
+    <td>${statusPill(c.prev)}</td>
+    <td>${statusPill(c.pub)}</td>
+    <td class="rowdots">&#8943;</td></tr>`; }).join('');
+  bcount.textContent = `${rows.length} item${rows.length===1?'':'s'}${curFolder!=='/'?' in /'+curFolder:''}${curType!=='all'?' · '+curType:''}`;
+}
+tree.addEventListener('click', e=>{ const n=e.target.closest('.tnode'); if(!n)return; curFolder=n.dataset.folder; tree.querySelectorAll('.tnode').forEach(x=>x.classList.toggle('on',x===n)); renderRows(); });
+document.getElementById('typefilter').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return; curType=b.dataset.type; document.querySelectorAll('#typefilter button').forEach(x=>x.classList.toggle('on',x===b)); renderRows(); });
+renderRows();
 
 // ---------- view toggle: Guided Home <-> Classic DA (remembers the choice) ----------
 const KEY='ew-view-pref';
