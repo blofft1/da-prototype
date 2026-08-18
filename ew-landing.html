@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experience Workspace — Site Home (Spectrum 2 concept)</title>
+<style>
+  :root{
+    --gray-25:#fdfdfd; --gray-50:#f8f8f8; --gray-75:#f3f3f3; --gray-100:#eeeeee;
+    --gray-200:#e4e4e4; --gray-300:#d3d3d3; --gray-400:#b6b6b6; --gray-500:#8f8f8f;
+    --gray-600:#6d6d6d; --gray-700:#4a4a4a; --gray-800:#2b2b2b; --gray-900:#181818;
+    --accent:#3b63fb; --accent-hover:#2f4fd6; --accent-wash:#eef1ff; --accent-border:#c7d2ff;
+    --pos:#0a8055; --pos-wash:#e6f5ee; --notice:#b8730b; --notice-wash:#fbefda;
+    --neg:#cf2a25; --info:#0a6cd6; --info-wash:#e6f0fd;
+    --radius-s:8px; --radius-m:12px; --radius-l:16px; --radius-pill:999px;
+    --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(20,24,40,.06);
+    --shadow-hover:0 2px 6px rgba(0,0,0,.08),0 14px 34px rgba(20,24,40,.12);
+    --font:'adobe-clean','Adobe Clean',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--gray-75);color:var(--gray-900);font-family:var(--font);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .app{min-height:100vh;display:flex;flex-direction:column}
+
+  /* ---------- top app bar ---------- */
+  .appbar{height:56px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:18px;padding:0 18px;position:sticky;top:0;z-index:40}
+  .brand{display:flex;align-items:center;gap:10px}
+  .alogo{width:30px;height:30px;background:#EB1000;border-radius:8px;color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center}
+  .brand b{font-size:15.5px;letter-spacing:-.1px}
+  .brand .concept{margin-left:8px;font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase}
+  .switcher{display:flex;align-items:center;gap:8px;margin-left:6px;padding:6px 12px;border:1px solid var(--gray-300);border-radius:var(--radius-pill);font-size:13px;font-weight:600;cursor:pointer;background:#fff}
+  .switcher:hover{background:var(--gray-75)}
+  .switcher .dot{width:7px;height:7px;border-radius:50%;background:var(--pos)}
+  .spacer{flex:1}
+  .gsearch{display:flex;align-items:center;gap:9px;width:340px;max-width:32vw;background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:8px 14px;color:var(--gray-600);font-size:13px}
+  .gsearch svg{flex:0 0 16px}
+  .iconbtn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gray-700);cursor:pointer}
+  .iconbtn:hover{background:var(--gray-100)}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6b8cff,#3b63fb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+
+  /* ---------- shell ---------- */
+  .shell{flex:1;display:flex;align-items:stretch}
+  /* labeled side nav — fixes "mystery meat" */
+  .nav{width:214px;flex:0 0 214px;background:#fff;border-right:1px solid var(--gray-200);padding:14px 12px;display:flex;flex-direction:column;gap:3px}
+  .nav .grouplabel{font-size:10.5px;font-weight:800;letter-spacing:.6px;color:var(--gray-500);text-transform:uppercase;padding:14px 10px 6px}
+  .navitem{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:var(--radius-s);font-size:13.5px;font-weight:600;color:var(--gray-800);cursor:pointer}
+  .navitem svg{flex:0 0 18px;color:var(--gray-600)}
+  .navitem:hover{background:var(--gray-75)}
+  .navitem.on{background:var(--accent-wash);color:var(--accent)}
+  .navitem.on svg{color:var(--accent)}
+  .navitem .count{margin-left:auto;font-size:11px;font-weight:800;background:var(--gray-100);color:var(--gray-700);border-radius:var(--radius-pill);padding:1px 8px}
+  .navitem.on .count{background:#fff;color:var(--accent)}
+
+  .main{flex:1;min-width:0;padding:22px 26px 40px;display:flex;flex-direction:column;gap:20px}
+
+  /* ---------- orientation hero ---------- */
+  .hero{background:linear-gradient(120deg,#ffffff 0%,#f6f8ff 100%);border:1px solid var(--gray-200);border-radius:var(--radius-l);padding:22px 24px;box-shadow:var(--shadow)}
+  .crumb{font-size:12px;color:var(--gray-600);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+  .crumb b{color:var(--gray-800)}
+  .herorow{display:flex;align-items:flex-start;gap:22px;flex-wrap:wrap}
+  .heroleft{flex:1;min-width:280px}
+  .herotitle{display:flex;align-items:center;gap:12px}
+  .herotitle h1{font-size:25px;letter-spacing:-.4px}
+  .envpill{font-size:11.5px;font-weight:700;color:var(--pos);background:var(--pos-wash);border-radius:var(--radius-pill);padding:4px 11px}
+  .herometa{margin-top:8px;color:var(--gray-600);font-size:13px;display:flex;gap:16px;flex-wrap:wrap}
+  .herometa a{color:var(--accent);font-weight:600}
+  .heroactions{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
+  .btn{border:none;cursor:pointer;font-family:var(--font);font-weight:700;font-size:13.5px;border-radius:var(--radius-pill);padding:10px 20px;display:inline-flex;align-items:center;gap:8px}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-hover)}
+  .btn.secondary{background:#fff;color:var(--gray-900);border:1px solid var(--gray-300)}
+  .btn.secondary:hover{background:var(--gray-75)}
+
+  /* pipeline summary (visibility of system status) */
+  .pipe{display:flex;gap:10px;min-width:280px}
+  .pcard{flex:1;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:12px 14px;min-width:96px}
+  .pcard .n{font-size:22px;font-weight:800;letter-spacing:-.5px}
+  .pcard .l{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-top:2px;display:flex;align-items:center;gap:6px}
+  .pcard .l::before{content:"";width:8px;height:8px;border-radius:50%}
+  .pcard.live .l::before{background:var(--pos)} .pcard.prev .l::before{background:var(--info)}
+  .pcard.draft .l::before{background:var(--gray-400)} .pcard.review .l::before{background:var(--notice)}
+
+  /* ---------- command / task bar (information scent) ---------- */
+  .cmd{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-l);padding:18px 20px;box-shadow:var(--shadow)}
+  .cmd h2{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+  .cmd h2 span{color:var(--gray-500);font-weight:600;font-size:12.5px}
+  .cmdinput{display:flex;align-items:center;gap:11px;border:1.5px solid var(--gray-300);border-radius:var(--radius-pill);padding:12px 18px}
+  .cmdinput:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+  .cmdinput svg{flex:0 0 18px;color:var(--gray-500)}
+  .cmdinput input{border:none;outline:none;font-family:var(--font);font-size:15px;flex:1;color:var(--gray-900);background:transparent}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .chip{font-size:12.5px;font-weight:600;color:var(--gray-800);background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:6px 13px;cursor:pointer}
+  .chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-wash)}
+  /* task results */
+  .taskresults{margin-top:14px;display:none}
+  .taskresults.show{display:block}
+  .taskrow{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-s);cursor:pointer}
+  .taskrow:hover{background:var(--gray-75)}
+  .taskrow .ti{width:30px;height:30px;border-radius:8px;background:var(--accent-wash);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:0 0 30px}
+  .taskrow .tt{font-size:13.5px;font-weight:600}
+  .taskrow .td{font-size:12px;color:var(--gray-600)}
+  .taskrow .go{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--gray-500)}
+  .noresult{padding:12px;color:var(--gray-600);font-size:13px}
+
+  /* ---------- content columns ---------- */
+  .cols{display:flex;gap:20px;align-items:flex-start}
+  .colmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:20px}
+  .colside{width:320px;flex:0 0 320px;display:flex;flex-direction:column;gap:18px}
+  .sectionhdr{display:flex;align-items:baseline;gap:10px;margin-bottom:2px}
+  .sectionhdr h2{font-size:16px;letter-spacing:-.2px}
+  .sectionhdr .sub{font-size:12.5px;color:var(--gray-600)}
+
+  /* capability groups (scope + discoverability of hidden apps) */
+  .capgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .cap{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-l);padding:16px 16px 12px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s}
+  .cap:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+  .cap .caphdr{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+  .cap .capico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 36px}
+  .cap h3{font-size:14.5px}
+  .cap .capdesc{font-size:12px;color:var(--gray-600);margin:0 0 10px}
+  .applist{display:flex;flex-direction:column;gap:2px}
+  .applink{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:var(--radius-s);font-size:12.8px;font-weight:600;color:var(--gray-800);cursor:pointer}
+  .applink:hover{background:var(--gray-75)}
+  .applink .adot{width:6px;height:6px;border-radius:50%;background:var(--gray-400);flex:0 0 6px}
+  .applink .hidden{margin-left:auto;font-size:10px;font-weight:800;letter-spacing:.3px;color:var(--notice);background:var(--notice-wash);padding:2px 7px;border-radius:var(--radius-pill);text-transform:uppercase}
+  .applink .newp{margin-left:auto;font-size:10px;font-weight:800;letter-spacing:.3px;color:var(--info);background:var(--info-wash);padding:2px 7px;border-radius:var(--radius-pill)}
+
+  /* tints */
+  .t-access{background:#eaf0ff;color:#2f4fd6}.t-authoring{background:#e6f5ee;color:#0a8055}
+  .t-publish{background:#fbe7da;color:#b8730b}.t-loc{background:#efe7fb;color:#7c4bd6}
+  .t-gov{background:#fde7ea;color:#cf2a25}.t-dev{background:#e2f2f5;color:#0a7d94}
+
+  /* side rail cards */
+  .rail{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-l);padding:15px 16px;box-shadow:var(--shadow)}
+  .rail h3{font-size:13.5px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .rail h3 .badge{margin-left:auto;font-size:11px;font-weight:800;background:var(--accent-wash);color:var(--accent);border-radius:var(--radius-pill);padding:1px 9px}
+  .qrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--gray-100)}
+  .qrow:first-of-type{border-top:none}
+  .qrow .qn{font-size:13px;font-weight:600}
+  .qrow .qm{font-size:11.5px;color:var(--gray-600)}
+  .status{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.3px;padding:3px 9px;border-radius:var(--radius-pill);text-transform:uppercase;white-space:nowrap}
+  .s-live{background:var(--pos-wash);color:var(--pos)}.s-prev{background:var(--info-wash);color:var(--info)}
+  .s-draft{background:var(--gray-100);color:var(--gray-600)}.s-review{background:var(--notice-wash);color:var(--notice)}
+  .s-sched{background:var(--accent-wash);color:var(--accent)}
+  .qbody{display:flex;flex-direction:column;min-width:0}
+  .jobline{display:flex;align-items:center;gap:9px;padding:8px 0;font-size:12.5px;border-top:1px solid var(--gray-100)}
+  .jobline:first-of-type{border-top:none}
+  .jobline .spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent-border);border-top-color:var(--accent);flex:0 0 14px;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .jobline .ok{color:var(--pos)}
+  .jobline .jm{margin-left:auto;color:var(--gray-500);font-size:11px}
+  .drift{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:9px 11px;background:var(--notice-wash);border:1px solid #f0d9b3;border-radius:var(--radius-s);color:#8a5a09;font-weight:600;margin-top:4px}
+  .footnote{color:var(--gray-500);font-size:11px;margin-top:10px;line-height:1.5}
+  .linkmore{display:inline-flex;align-items:center;gap:5px;color:var(--accent);font-weight:700;font-size:12px;margin-top:10px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ============ APP BAR ============ -->
+  <header class="appbar">
+    <div class="brand">
+      <div class="alogo">A</div>
+      <b>Experience Workspace</b>
+      <span class="concept">Concept · Spectrum 2</span>
+    </div>
+    <div class="switcher"><span class="dot"></span> scdemos / demo <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></div>
+    <div class="spacer"></div>
+    <div class="gsearch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> Search content, apps, people…</div>
+    <div class="iconbtn" title="Help"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg></div>
+    <div class="avatar">BL</div>
+  </header>
+
+  <div class="shell">
+    <!-- ============ LABELED SIDE NAV ============ -->
+    <nav class="nav">
+      <div class="navitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> Site Home</div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/></svg> Content <span class="count">248</span></div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Apps</div>
+      <div class="grouplabel">Operate</div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg> Governance</div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 0 0 18M3 12h18"/></svg> Localization</div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Reports</div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 0 0-1.7-1l-.3-2.5H10l-.3 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.3 2.5h3.4l.3-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.6c.1-.3.1-.7.1-1z"/></svg> Settings</div>
+      <div class="grouplabel">Build</div>
+      <div class="navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg> Develop</div>
+    </nav>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+      <!-- ORIENTATION HERO -->
+      <section class="hero">
+        <div class="crumb">scdemos <span>›</span> <b>demo</b> <span>·</span> Site control center</div>
+        <div class="herorow">
+          <div class="heroleft">
+            <div class="herotitle">
+              <h1>WKND Demo Site</h1>
+              <span class="envpill">● Live · Edge Delivery</span>
+            </div>
+            <div class="herometa">
+              <span>248 pages · 5 locales</span>
+              <span><a href="#">demo.bbird.live ↗</a></span>
+              <span>Editor: <b>Experience Workspace</b></span>
+            </div>
+            <div class="heroactions">
+              <button class="btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Author a page</button>
+              <button class="btn secondary">Import content</button>
+              <button class="btn secondary">Manage access</button>
+            </div>
+          </div>
+          <!-- pipeline status = visibility of system status -->
+          <div class="pipe">
+            <div class="pcard live"><div class="n">231</div><div class="l">Live</div></div>
+            <div class="pcard prev"><div class="n">9</div><div class="l">Previewed</div></div>
+            <div class="pcard review"><div class="n">4</div><div class="l">In review</div></div>
+            <div class="pcard draft"><div class="n">4</div><div class="l">Draft</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMAND / TASK BAR -->
+      <section class="cmd">
+        <h2>What do you want to do? <span>Type a task — we route you to the right app or tool</span></h2>
+        <div class="cmdinput">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="taskq" type="text" placeholder="e.g. lock a page · rename a URL · report pages by template · roll back · schedule publish" autocomplete="off">
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="taskresults" id="taskresults"></div>
+      </section>
+
+      <!-- CONTENT COLUMNS -->
+      <div class="cols">
+        <div class="colmain">
+          <div class="sectionhdr"><h2>Everything this site can do</h2><span class="sub">Every admin app — including the ones that used to be hidden or unlisted</span></div>
+          <div class="capgrid" id="capgrid"></div>
+        </div>
+
+        <!-- RIGHT RAIL: my work + system state -->
+        <aside class="colside">
+          <div class="rail">
+            <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--notice)" stroke-width="2"><path d="M12 8v5l3 2"/><circle cx="12" cy="12" r="9"/></svg> Needs your approval <span class="badge">4</span></h3>
+            <div class="qrow"><div class="qbody"><span class="qn">spring-campaign</span><span class="qm">Requested by martin · 2h ago</span></div><span class="status s-review">Review</span></div>
+            <div class="qrow"><div class="qbody"><span class="qn">pricing-2026</span><span class="qm">Requested by lena · 4h ago</span></div><span class="status s-review">Review</span></div>
+            <div class="qrow"><div class="qbody"><span class="qn">de/karriere</span><span class="qm">Requested by priya · today</span></div><span class="status s-review">Review</span></div>
+            <span class="linkmore">Open approvals inbox →</span>
+          </div>
+
+          <div class="rail">
+            <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Scheduled &amp; running</h3>
+            <div class="jobline"><div class="spin"></div> Publishing 5 assets <span class="jm">in progress</span></div>
+            <div class="jobline"><svg class="ok" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg> Rollout → de, fr <span class="jm">done 12m ago</span></div>
+            <div class="qrow"><div class="qbody"><span class="qn">homepage + 1</span><span class="qm">Tomorrow 6:00 AM</span></div><span class="status s-sched">Scheduled</span></div>
+            <span class="footnote">Every async job shows live status here — parsing, rollout, publish — so “still processing” never reads as “failed.”</span>
+          </div>
+
+          <div class="rail">
+            <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--pos)" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0M3 12h18"/></svg> Localization health</h3>
+            <div class="qrow"><div class="qbody"><span class="qn">German (de)</span><span class="qm">98% coverage</span></div><span class="status s-live">Synced</span></div>
+            <div class="qrow"><div class="qbody"><span class="qn">French (fr)</span><span class="qm">91% coverage</span></div><span class="status s-live">Synced</span></div>
+            <div class="drift"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg> es · 3 pages drifted from source</div>
+            <span class="footnote">Master → locale → live drift is visible <b>before</b> a rollout propagates stale content.</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+// ---------- data model built from the admin/apps deck ----------
+const groups = [
+  { key:'access', title:'Access &amp; Security', tint:'t-access', desc:'Who can author, preview, publish, and view — across DA and Edge Delivery.',
+    icon:'<path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/>',
+    apps:[ {n:'DA Permissions', tag:'hidden'}, {n:'Publish &amp; Preview Permissions'}, {n:'User Admin'}, {n:'Access-control config'} ] },
+  { key:'authoring', title:'Authoring', tint:'t-authoring', desc:'Everything an author touches day to day — library, import, plugins, schema.',
+    icon:'<path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13.5 6.5l3 3"/>',
+    apps:[ {n:'Library (blocks, templates, icons)'}, {n:'Import'}, {n:'Prepare-menu plugins', tag:'hidden'}, {n:'Schema Editor'}, {n:'AEM Assets picker'} ] },
+  { key:'publish', title:'Publishing &amp; Workflow', tint:'t-publish', desc:'Preflight, scheduled publishing, and multi-step review before content goes live.',
+    icon:'<path d="M12 19V5M5 12l7-7 7 7"/>',
+    apps:[ {n:'Scheduler'}, {n:'Reviews &amp; Approvals', tag:'hidden'}, {n:'Preflight (page QC)'}, {n:'Unpublish'} ] },
+  { key:'loc', title:'Localization &amp; Multi-site', tint:'t-loc', desc:'Translate, roll out to markets, and manage base/satellite site inheritance.',
+    icon:'<circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 0 0 18M3 12h18"/>',
+    apps:[ {n:'Translate'}, {n:'Multi-Site Manager', tag:'unlisted'}, {n:'Localization projects'}, {n:'Locale asset fallback', tag:'new'} ] },
+  { key:'gov', title:'Governance &amp; Operations', tint:'t-gov', desc:'Snapshots, recovery, platform limits, and the operational tooling for resilience.',
+    icon:'<path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/>',
+    apps:[ {n:'Snapshots / Disaster Recovery'}, {n:'Trash bin (/.trash)'}, {n:'Edge Delivery Log Viewer'}, {n:'BYO CDN checker'}, {n:'Platform limits'} ] },
+  { key:'dev', title:'Develop &amp; Extend', tint:'t-dev', desc:'Build custom fullscreen apps, library plugins, and automate via the Admin API.',
+    icon:'<path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/>',
+    apps:[ {n:'DA App SDK'}, {n:'Admin API (admin.da.live)'}, {n:'Config editors'}, {n:'Custom apps &amp; tools'} ] },
+];
+
+// task catalog — the customer-tech-lead POC jobs, made findable (information scent)
+const tasks = [
+  {t:'Lock a page so others can’t edit or publish', d:'Governance → checkout', k:'lock checkout prevent edit publish'},
+  {t:'Rename a URL and redirect + update all references', d:'Content → rename with references', k:'rename url redirect references vanity slug'},
+  {t:'Create a vanity URL', d:'Content → redirects', k:'vanity url redirect alias'},
+  {t:'Report: pages by template', d:'Reports → template usage', k:'report pages template usage inventory'},
+  {t:'Report: pages modified before a date', d:'Reports → activity', k:'report modified date changed audit'},
+  {t:'Report: pages currently in editing', d:'Reports → live activity', k:'report editing in progress lock who'},
+  {t:'Find &amp; replace text across all pages', d:'Content → bulk edit', k:'find replace bulk text all pages search'},
+  {t:'Convert pages from template 1 → template 2', d:'Content → convert template', k:'convert template migrate change'},
+  {t:'Schedule publish (pages &amp; assets)', d:'Publishing → Scheduler', k:'schedule publish time pages assets defer'},
+  {t:'Roll back a page to a previous version', d:'Governance → versions', k:'roll back version restore revert previous history'},
+  {t:'Send a page for review / approval', d:'Publishing → Approvals', k:'review approval send publish workflow gate'},
+  {t:'Translate a page / set up a connector', d:'Localization → Translate', k:'translate localization connector transperfect smartling trados'},
+  {t:'Add translated-asset fallback (avoid broken links)', d:'Localization → asset fallback', k:'fallback asset locale broken link redirect en'},
+  {t:'Restrict a user to an area of the site', d:'Access → scoped permissions', k:'restrict user area permission scope path'},
+  {t:'Centralize promo content (fragments)', d:'Authoring → fragments', k:'fragment reuse promo centralize experience'},
+  {t:'Disable caching for specific pages', d:'Settings → CDN &amp; caching', k:'cache caching disable pages cdn headers'},
+  {t:'Create a locale site and sync a page to US', d:'Localization → Multi-Site', k:'locale site sync msm livecopy market'},
+  {t:'Gate an asset from all access', d:'Governance → asset gating', k:'gate asset access restrict landing redirect'},
+  {t:'Host a React application', d:'Develop → custom app', k:'react app host custom build sdk'},
+];
+
+// ---------- render capability cards ----------
+const capgrid = document.getElementById('capgrid');
+function tagHTML(tag){
+  if(tag==='hidden') return '<span class="hidden">was hidden</span>';
+  if(tag==='unlisted') return '<span class="hidden">was unlisted</span>';
+  if(tag==='new') return '<span class="newp">gap → fix</span>';
+  return '';
+}
+capgrid.innerHTML = groups.map(g=>`
+  <div class="cap" data-key="${g.key}">
+    <div class="caphdr">
+      <div class="capico ${g.tint}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${g.icon}</svg></div>
+      <h3>${g.title}</h3>
+    </div>
+    <p class="capdesc">${g.desc}</p>
+    <div class="applist">
+      ${g.apps.map(a=>`<div class="applink"><span class="adot"></span>${a.n}${tagHTML(a.tag)}</div>`).join('')}
+    </div>
+  </div>`).join('');
+
+// ---------- render chips ----------
+const chipSeeds = ['Lock a page','Rename a URL','Report by template','Roll back','Schedule publish','Send for review','Translate','Restrict a user'];
+const chipsEl = document.getElementById('chips');
+chipsEl.innerHTML = chipSeeds.map(c=>`<span class="chip">${c}</span>`).join('');
+
+// ---------- task search (findability) ----------
+const q = document.getElementById('taskq');
+const results = document.getElementById('taskresults');
+function runSearch(v){
+  v = (v||'').trim().toLowerCase();
+  if(!v){ results.classList.remove('show'); results.innerHTML=''; return; }
+  const hits = tasks.filter(t => (t.t+' '+t.k).toLowerCase().includes(v)).slice(0,6);
+  results.classList.add('show');
+  if(!hits.length){ results.innerHTML = `<div class="noresult">No task matches “${v}”. Try “report”, “lock”, “redirect”, or “translate”.</div>`; return; }
+  results.innerHTML = hits.map(h=>`
+    <div class="taskrow">
+      <div class="ti"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5L20 6"/></svg></div>
+      <div><div class="tt">${h.t}</div><div class="td">${h.d}</div></div>
+      <span class="go">Open →</span>
+    </div>`).join('');
+}
+q.addEventListener('input', e=>runSearch(e.target.value));
+chipsEl.addEventListener('click', e=>{ if(e.target.classList.contains('chip')){ q.value=e.target.textContent; runSearch(q.value); q.focus(); }});
+</script>
+</body>
+</html>
