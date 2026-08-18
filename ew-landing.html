@@ -152,6 +152,38 @@
   .drift{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:9px 11px;background:var(--notice-wash);border:1px solid #f0d9b3;border-radius:var(--radius-s);color:#8a5a09;font-weight:600;margin-top:4px}
   .footnote{color:var(--gray-500);font-size:11px;margin-top:10px;line-height:1.5}
   .linkmore{display:inline-flex;align-items:center;gap:5px;color:var(--accent);font-weight:700;font-size:12px;margin-top:10px;cursor:pointer}
+
+  /* ---------- view toggle (guided ↔ classic) ---------- */
+  .viewtoggle{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:3px;gap:2px}
+  .viewtoggle button{border:none;background:transparent;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--gray-600);padding:6px 13px;border-radius:var(--radius-pill);cursor:pointer;display:flex;align-items:center;gap:7px}
+  .viewtoggle button svg{width:14px;height:14px}
+  .viewtoggle button.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.10)}
+  .viewtoggle button:not(.on):hover{color:var(--gray-800)}
+
+  /* ---------- classic DA file-browser view ---------- */
+  .da-shell{flex:1;display:flex;background:#fff}
+  .da-rail{width:52px;flex:0 0 52px;background:#fbfbfb;border-right:1px solid #f0f0f0;padding-top:16px;display:flex;flex-direction:column;align-items:center;gap:26px;color:#6b7280}
+  .da-rail .ico{width:24px;height:24px;opacity:.75}
+  .da-content{flex:1;padding:16px 26px 10px;position:relative}
+  .da-hint{display:flex;align-items:center;gap:10px;background:var(--accent-wash);border:1px solid var(--accent-border);color:var(--gray-800);font-size:12.5px;border-radius:var(--radius-s);padding:9px 13px;margin:2px 0 4px}
+  .da-hint a{color:var(--accent);font-weight:700;cursor:pointer}
+  .da-panelicon{width:22px;height:18px;border:1.6px solid #b9bdc6;border-radius:3px;margin-top:8px}
+  .da-tabs{display:flex;gap:26px;margin:22px 0 6px;font-size:14px;font-weight:700;letter-spacing:.4px}
+  .da-tabs .on{color:#1f2430;border-bottom:2px solid #1f2430;padding-bottom:7px}
+  .da-tabs .off{color:#8a9099}
+  .da-crumb{display:flex;align-items:center;gap:8px;font-size:15px;margin:16px 0 6px}
+  .da-crumb .b{color:#8a9099}.da-crumb .cur{font-weight:700}
+  .da-crumb .chip{width:16px;height:16px;border-radius:50%;border:1.5px solid #c3c7cf;color:#8a9099;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+  .da-table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .da-table thead td{color:#9aa0ab;font-size:13px;padding:12px 6px;border-bottom:1px solid #eef0f3}
+  .da-table tbody td{padding:15px 6px;border-bottom:1px solid #f3f4f7}
+  .da-table .chk{width:15px;height:15px;border:1.6px solid #c3c7cf;border-radius:3px;display:inline-block}
+  .da-table .fileico{font-size:16px;margin-right:10px}
+  .da-table .nm{font-weight:700}.da-table .md{color:#6b7280}
+  .da-table tr.sel td{background:#eef3ff}
+  .da-table .dots{color:#9aa0ab;font-weight:800;text-align:center}
+  .da-funnel{color:#c3c7cf;margin-right:8px}
+  [hidden]{display:none !important}
 </style>
 </head>
 <body>
@@ -164,13 +196,17 @@
       <span class="concept">Concept · Spectrum 2</span>
     </div>
     <div class="switcher"><span class="dot"></span> scdemos / demo <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></div>
+    <div class="viewtoggle" id="viewtoggle" title="Switch landing layout">
+      <button data-view="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Guided Home</button>
+      <button data-view="classic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg> Classic DA</button>
+    </div>
     <div class="spacer"></div>
     <div class="gsearch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> Search content, apps, people…</div>
     <div class="iconbtn" title="Help"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg></div>
     <div class="avatar">BL</div>
   </header>
 
-  <div class="shell">
+  <div class="shell" id="view-home">
     <!-- ============ LABELED SIDE NAV ============ -->
     <nav class="nav">
       <div class="navitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> Site Home</div>
@@ -264,6 +300,37 @@
       </div>
     </main>
   </div>
+
+  <!-- ============ CLASSIC DA VIEW (revert for power users) ============ -->
+  <div id="view-classic" class="da-shell" hidden>
+    <div class="da-rail">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 1 4 10c-.7.7-1 1.5-1 2H9c0-.5-.3-1.3-1-2A6 6 0 0 1 12 3z"/></svg>
+    </div>
+    <div class="da-content">
+      <div class="da-hint">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        Classic DA — the familiar file browser. <a data-view="home" class="jsview">Switch to Guided Home →</a>
+      </div>
+      <div class="da-panelicon"></div>
+      <div class="da-tabs"><span class="on">BROWSE</span><span class="off">SEARCH</span></div>
+      <div class="da-crumb"><span class="b">blofft1</span><span class="b">&rsaquo;</span><span class="cur">wknd-advanced</span><span class="chip">&#9881;</span><span class="b">&rsaquo;</span><span class="chip">+</span></div>
+      <table class="da-table">
+        <thead><tr><td style="width:34px"><span class="chk"></span></td><td><span class="da-funnel">&#9662;</span>Name</td><td style="width:210px">Modified</td><td style="width:40px"></td></tr></thead>
+        <tbody>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128196;</span><span class="nm">about-us</span></td><td class="md">Jul 20, 2026 9:19 PM</td><td class="dots">&#8943;</td></tr>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128193;</span><span class="nm">articles</span></td><td></td><td class="dots">&#8943;</td></tr>
+          <tr class="sel"><td><span class="chk"></span></td><td><span class="fileico">&#128196;</span><span class="nm">articles</span></td><td class="md">Jul 30, 2026 9:34 PM</td><td class="dots">&#8943;</td></tr>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128193;</span><span class="nm">de</span></td><td></td><td class="dots">&#8943;</td></tr>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128193;</span><span class="nm">demo-docs</span></td><td></td><td class="dots">&#8943;</td></tr>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128193;</span><span class="nm">demo-slides</span></td><td></td><td class="dots">&#8943;</td></tr>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128193;</span><span class="nm">docs</span></td><td></td><td class="dots">&#8943;</td></tr>
+          <tr><td><span class="chk"></span></td><td><span class="fileico">&#128193;</span><span class="nm">en</span></td><td></td><td class="dots">&#8943;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -355,6 +422,25 @@ function runSearch(v){
 }
 q.addEventListener('input', e=>runSearch(e.target.value));
 chipsEl.addEventListener('click', e=>{ if(e.target.classList.contains('chip')){ q.value=e.target.textContent; runSearch(q.value); q.focus(); }});
+
+// ---------- view toggle: Guided Home <-> Classic DA (remembers the choice) ----------
+const KEY='ew-view-pref';
+const homeView=document.getElementById('view-home');
+const classicView=document.getElementById('view-classic');
+const toggle=document.getElementById('viewtoggle');
+function setView(v){
+  const classic = v==='classic';
+  homeView.hidden = classic;
+  classicView.hidden = !classic;
+  toggle.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.view===v));
+  try{ localStorage.setItem(KEY, v); }catch(e){}
+}
+toggle.addEventListener('click', e=>{ const b=e.target.closest('button'); if(b) setView(b.dataset.view); });
+// in-page "Switch to Guided Home" links inside the classic view
+document.querySelectorAll('.jsview').forEach(el=>el.addEventListener('click', ()=>setView(el.dataset.view)));
+// restore saved preference on load (power users who picked Classic stay in Classic)
+let saved='home'; try{ saved = localStorage.getItem(KEY) || 'home'; }catch(e){}
+setView(saved);
 </script>
 </body>
 </html>
