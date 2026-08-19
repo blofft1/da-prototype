@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experience Workspace — Unified Content Rail (Spectrum 2 concept)</title>
+<style>
+  :root{
+    --gray-25:#fdfdfd;--gray-50:#f8f8f8;--gray-75:#f3f3f3;--gray-100:#eeeeee;--gray-200:#e4e4e4;
+    --gray-300:#d3d3d3;--gray-400:#b6b6b6;--gray-500:#8f8f8f;--gray-600:#6d6d6d;--gray-700:#4a4a4a;--gray-800:#2b2b2b;--gray-900:#181818;
+    --accent:#3b63fb;--accent-hover:#2f4fd6;--accent-wash:#eef1ff;--accent-border:#c7d2ff;
+    --pos:#0a8055;--pos-wash:#e6f5ee;--notice:#b8730b;--notice-wash:#fbefda;--neg:#cf2a25;--info:#0a6cd6;--info-wash:#e6f0fd;
+    --purple:#7c4bd6;--purple-wash:#efe7fb;--teal:#0a7d94;--teal-wash:#e2f2f5;
+    --radius-s:8px;--radius-m:12px;--radius-l:16px;--radius-pill:999px;
+    --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(20,24,40,.06);
+    --shadow-hover:0 3px 8px rgba(0,0,0,.09),0 16px 36px rgba(20,24,40,.13);
+    --font:'adobe-clean','Adobe Clean',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--gray-100);color:var(--gray-900);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow:hidden}
+  a{color:inherit;text-decoration:none}
+  .app{height:100vh;display:flex;flex-direction:column}
+
+  /* ---- app bar ---- */
+  .appbar{height:52px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:14px;padding:0 14px;flex:0 0 52px}
+  .alogo{width:28px;height:28px;background:#EB1000;border-radius:7px;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .crumb{font-size:13.5px;color:var(--gray-600);display:flex;align-items:center;gap:7px}
+  .crumb b{color:var(--gray-900)}
+  .spacer{flex:1}
+  .actions{display:flex;align-items:center;gap:4px;padding:3px;background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill)}
+  .actbtn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--gray-700);padding:6px 11px;border-radius:var(--radius-pill);cursor:pointer;white-space:nowrap}
+  .actbtn:hover{background:#fff;color:var(--gray-900);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .actbtn svg{width:14px;height:14px}
+  .concept{font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase}
+  .send{background:var(--accent);color:#fff;font-weight:700;font-size:13px;border:none;border-radius:var(--radius-pill);padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6b8cff,#3b63fb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+
+  /* ---- body ---- */
+  .body{flex:1;display:flex;min-height:0}
+  .iconrail{width:48px;flex:0 0 48px;background:#fff;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:16px;color:var(--gray-500)}
+  .iconrail svg{width:22px;height:22px;cursor:pointer}
+  .iconrail svg:hover{color:var(--gray-800)}
+
+  /* ---- canvas ---- */
+  .canvaswrap{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--gray-100)}
+  .subbar{height:44px;flex:0 0 44px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;padding:0 16px}
+  .seg{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:3px;gap:2px}
+  .seg button{border:none;background:transparent;font-family:var(--font);font-weight:700;font-size:12px;color:var(--gray-600);padding:6px 13px;border-radius:var(--radius-pill);cursor:pointer}
+  .seg button.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.10)}
+  .subbar .ib{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--gray-600);cursor:pointer}
+  .subbar .ib:hover{background:var(--gray-75)}
+  .canvasscroll{flex:1;overflow:auto;padding:24px;display:flex;justify-content:center}
+  .page{width:760px;max-width:100%;background:#fff;border-radius:var(--radius-l);box-shadow:var(--shadow);overflow:hidden}
+  .sec{position:relative;padding:2px}
+  .sec .seclabel{position:absolute;top:6px;left:8px;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-400);z-index:3;opacity:0;transition:opacity .12s}
+  .sec:hover .seclabel{opacity:1}
+  .sec{cursor:pointer}
+  .sec:hover{background:var(--gray-50)}
+  .sec.selected{outline:2px solid var(--accent);outline-offset:-2px;border-radius:6px}
+  .sec.selected:hover{background:transparent}
+  .sec.selected .seclabel{opacity:1;color:var(--accent)}
+  .sec.draghot{outline:2px dashed var(--accent);outline-offset:-2px;border-radius:6px;background:var(--accent-wash)}
+  .hero{height:230px;background:linear-gradient(160deg,#2a4d6e,#5c8bb0);display:flex;flex-direction:column;justify-content:flex-end;padding:26px;color:#fff}
+  .hero h1{font-size:30px;letter-spacing:-.6px;max-width:70%}
+  .hero p{opacity:.9;margin-top:6px;font-size:14px}
+  .block{padding:22px 26px}
+  .block h2{font-size:19px;margin-bottom:14px;letter-spacing:-.3px}
+  .cardsrow{display:flex;gap:14px}
+  .pcard{flex:1;border:1px solid var(--gray-200);border-radius:var(--radius-m);overflow:hidden}
+  .pcard .ph{height:96px}
+  .pcard .pb{padding:11px 13px}
+  .pcard .pb b{font-size:14px}
+  .pcard .pb p{font-size:12px;color:var(--gray-600);margin-top:3px}
+  .dropslot{flex:1;min-height:150px;border:2px dashed var(--accent-border);border-radius:var(--radius-m);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--accent);font-size:12.5px;font-weight:700;background:var(--accent-wash)}
+  .dropslot.hot{background:#e0e7ff;border-color:var(--accent)}
+  .dropslot svg{width:22px;height:22px}
+
+  /* ---- RIGHT RAIL (the redesign) ---- */
+  .rail{width:392px;flex:0 0 392px;background:#fff;border-left:1px solid var(--gray-200);display:flex;flex-direction:column;min-height:0}
+  .railtabs{display:flex;gap:2px;padding:8px 8px 0;border-bottom:1px solid var(--gray-100)}
+  .railtab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 9px;font-size:11px;font-weight:700;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;border-radius:6px 6px 0 0}
+  .railtab svg{width:18px;height:18px}
+  .railtab:hover{color:var(--gray-800);background:var(--gray-75)}
+  .railtab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .railbody{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+
+  /* content mode */
+  .csearch{display:flex;align-items:center;gap:9px;margin:14px 14px 10px;background:var(--gray-75);border:1.5px solid var(--gray-200);border-radius:var(--radius-pill);padding:10px 14px}
+  .csearch:focus-within{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-wash)}
+  .csearch svg{flex:0 0 16px;color:var(--gray-500)}
+  .csearch input{border:none;outline:none;background:transparent;font-family:var(--font);font-size:13.5px;flex:1}
+  .srcfilter{display:flex;gap:6px;padding:0 14px 12px;flex-wrap:wrap}
+  .srcchip{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--gray-700);background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:6px 11px;cursor:pointer}
+  .srcchip .sd{width:7px;height:7px;border-radius:2px}
+  .srcchip:hover{border-color:var(--accent);color:var(--accent)}
+  .srcchip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .srcchip.on .sd{background:#fff !important}
+  .ctxbar{margin:0 14px 10px;display:flex;align-items:center;gap:9px;background:var(--accent-wash);border:1px solid var(--accent-border);border-radius:var(--radius-s);padding:8px 12px;font-size:12px;color:var(--gray-800)}
+  .ctxbar svg{width:15px;height:15px;color:var(--accent);flex:0 0 15px}
+  .ctxbar b{color:var(--accent)}
+  .crumbrow{display:flex;align-items:center;gap:7px;padding:0 15px 10px;font-size:12px;color:var(--gray-600);flex-wrap:wrap}
+  .crumbrow .cc{cursor:pointer;font-weight:600}.crumbrow .cc:hover{color:var(--accent)}
+  .crumbrow .folderchip{font-size:11.5px;font-weight:600;border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:4px 10px;cursor:pointer}
+  .crumbrow .folderchip.on{background:var(--accent-wash);border-color:var(--accent-border);color:var(--accent)}
+  .grid{flex:1;overflow:auto;padding:2px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start}
+  .item{position:relative;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:10px;cursor:grab;background:#fff;transition:box-shadow .12s,transform .12s;display:flex;flex-direction:column;gap:9px}
+  .item:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:var(--gray-300)}
+  .item:active{cursor:grabbing}
+  .thumb{height:74px;border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .thumb svg{width:26px;height:26px}
+  .item .meta{display:flex;flex-direction:column;gap:3px}
+  .item .nm{font-size:12.5px;font-weight:700;line-height:1.2;word-break:break-word}
+  .item .orow{display:flex;align-items:center;gap:6px}
+  .tbadge{font-size:9.5px;font-weight:800;letter-spacing:.3px;padding:2px 7px;border-radius:var(--radius-pill);text-transform:uppercase}
+  .origin{font-size:10.5px;color:var(--gray-500);font-weight:600}
+  .insertbtn{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--gray-300);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .12s;box-shadow:0 1px 3px rgba(0,0,0,.12);z-index:2}
+  .item:hover .insertbtn{opacity:1}
+  .insertbtn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .draghandle{position:absolute;top:8px;left:8px;color:#fff;opacity:0;font-size:12px;text-shadow:0 1px 2px rgba(0,0,0,.4);z-index:2}
+  .item:hover .draghandle{opacity:.85}
+  .gridcount{padding:8px 15px;border-top:1px solid var(--gray-100);font-size:11px;color:var(--gray-500);display:flex;justify-content:space-between}
+  .hint{color:var(--gray-500)}
+
+  /* type tints */
+  .t-block{background:var(--accent-wash);color:var(--accent)} .tb-block{background:var(--accent-wash);color:var(--accent)}
+  .t-fragment{background:var(--notice-wash);color:var(--notice)} .tb-fragment{background:var(--notice-wash);color:var(--notice)}
+  .t-asset{background:var(--purple-wash);color:var(--purple)} .tb-asset{background:var(--purple-wash);color:var(--purple)}
+  .t-media{background:var(--teal-wash);color:var(--teal)} .tb-media{background:var(--teal-wash);color:var(--teal)}
+  .t-icon{background:var(--gray-100);color:var(--gray-600)} .tb-icon{background:var(--gray-100);color:var(--gray-600)}
+  .t-template{background:var(--pos-wash);color:var(--pos)} .tb-template{background:var(--pos-wash);color:var(--pos)}
+
+  /* other rail modes (stubs, to show the rail replaces the dropdown) */
+  .stub{padding:16px;overflow:auto}
+  .stub h4{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);margin:6px 0 8px}
+  .stubrow{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-s);font-size:13px;font-weight:600;color:var(--gray-800)}
+  .stubrow:hover{background:var(--gray-75)}
+  .stubrow.on{background:var(--accent-wash);color:var(--accent)}
+  .stubrow.on .sc{color:var(--accent)}
+  .stubrow .sc{margin-left:auto;font-size:11px;color:var(--gray-500);font-weight:600}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:11px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-500);margin-bottom:5px}
+  .field .ctrl{border:1px solid var(--gray-300);border-radius:var(--radius-s);padding:9px 12px;font-size:13px;color:var(--gray-800);background:#fff;display:flex;align-items:center;justify-content:space-between}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:var(--radius-pill);box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;transition:.2s;z-index:100;display:flex;align-items:center;gap:9px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast svg{width:16px;height:16px;color:#7ee0b0}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="appbar">
+    <div class="alogo">A</div>
+    <div class="crumb">blofft1 <span>›</span> wknd-advanced <span>›</span> <b>index</b></div>
+    <span class="concept">Concept · Spectrum 2</span>
+    <div class="spacer"></div>
+    <!-- verbs (formerly Extensions/publish items) live here, out of the content flow -->
+    <div class="actions" title="Page actions — formerly scattered in the dropdown">
+      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg> Generate Variations</div>
+      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20.6 13.4 12 22l-9-9V4h9z"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></svg> Tag</div>
+      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 7 4M20 12a8 8 0 0 1-8 8 8 8 0 0 1-7-4"/><path d="M19 3v5h-5M5 21v-5h5"/></svg> Roll out</div>
+      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h16v12H5.2L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg> Request Publish</div>
+    </div>
+    <button class="send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-6 16-3-6-7-2z"/></svg> Send</button>
+    <div class="avatar">BL</div>
+  </header>
+
+  <div class="body">
+    <div class="iconrail">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 4 10c-.7.7-1 1.5-1 2H9c0-.5-.3-1.3-1-2A6 6 0 0 1 12 3z"/></svg>
+    </div>
+
+    <div class="canvaswrap">
+      <div class="subbar">
+        <div class="seg"><button class="on">Layout</button><button>Content</button></div>
+        <div class="ib" title="Undo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></div>
+        <div class="ib" title="Redo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg></div>
+        <div class="spacer" style="flex:1"></div>
+        <div class="ib" title="Preview"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+      </div>
+      <div class="canvasscroll">
+        <div class="page">
+          <div class="sec" data-sec="Hero"><span class="seclabel">Section · Hero</span>
+            <div class="hero"><h1>Find your next adventure</h1><p>Trips, gear, and guides for the great outdoors.</p></div>
+          </div>
+          <div class="sec" data-sec="Cards" id="targetsec"><span class="seclabel">Section · Cards</span>
+            <div class="block"><h2>Popular activities</h2>
+              <div class="cardsrow" id="dropzone">
+                <div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#8a7a63,#b6a488)"></div><div class="pb"><b>Rock Climbing</b><p>Find routes near you</p></div></div>
+                <div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#5c8bb0,#7fb0d6)"></div><div class="pb"><b>Cycling</b><p>Trails &amp; road routes</p></div></div>
+                <div class="dropslot" id="dropslot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Drag content here<br>or click + on any item</div>
+              </div>
+            </div>
+          </div>
+          <div class="sec" data-sec="Related articles"><span class="seclabel">Section · Related articles</span>
+            <div class="block"><h2>Related reading</h2><div class="cardsrow"><div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#6f9e6f,#a9cba9)"></div><div class="pb"><b>Trail guide 2026</b></div></div><div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#c98b5e,#e8b98a)"></div><div class="pb"><b>Gear review</b></div></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ THE REDESIGNED RIGHT RAIL ============ -->
+    <aside class="rail">
+      <div class="railtabs" id="railtabs">
+        <div class="railtab on" data-mode="content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Content</div>
+        <div class="railtab" data-mode="outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Outline</div>
+        <div class="railtab" data-mode="props"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Properties</div>
+        <div class="railtab" data-mode="files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Files</div>
+        <div class="railtab" data-mode="versions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Versions</div>
+      </div>
+      <div class="railbody" id="railbody"></div>
+    </aside>
+  </div>
+</div>
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg><span id="toasttext"></span></div>
+
+<script>
+const SRC = {
+  block:{label:'Blocks', origin:'Library', color:'var(--accent)'},
+  fragment:{label:'Fragments', origin:'Fragments', color:'var(--notice)'},
+  asset:{label:'Assets', origin:'Content Advisor · AEM Assets', color:'var(--purple)'},
+  media:{label:'Media', origin:'DA Media', color:'var(--teal)'},
+  icon:{label:'Icons', origin:'Icons', color:'var(--gray-500)'},
+  template:{label:'Templates', origin:'Templates', color:'var(--pos)'},
+};
+const glyphs = {
+  block:'<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="8" height="6" rx="1.5"/><rect x="13" y="14" width="8" height="6" rx="1.5"/>',
+  fragment:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/>',
+  media:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9l5 3-5 3z"/>',
+  icon:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+  template:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+};
+const items = [
+  {n:'Hero',t:'block',note:'placeholder'},{n:'Cards',t:'block'},{n:'Columns (3)',t:'block'},
+  {n:'Carousel',t:'block'},{n:'Accordion',t:'block'},{n:'Quote',t:'block'},{n:'Embed',t:'block'},
+  {n:'start-here-quiz',t:'fragment'},{n:'hero-control',t:'fragment'},{n:'whats-next',t:'fragment'},
+  {n:'tabs-about-us',t:'fragment'},{n:'learn-home-teaser',t:'fragment'},
+  {n:'climber-gear-outdoor.jpg',t:'asset',folder:'climbing',c1:'#8a7a63',c2:'#b6a488'},
+  {n:'climber-gear-rope.jpg',t:'asset',folder:'climbing',c1:'#6b7280',c2:'#9aa0ab'},
+  {n:'ice-climbing.jpg',t:'asset',folder:'climbing',c1:'#5c8bb0',c2:'#a9cbe6'},
+  {n:'coast-sunrise.jpg',t:'asset',folder:'adventures',c1:'#e0a86b',c2:'#f0cfa0'},
+  {n:'trail-map.png',t:'asset',folder:'hiking',c1:'#6f9e6f',c2:'#a9cba9'},
+  {n:'promo.mp4',t:'media'},{n:'brand-logo.svg',t:'media'},
+  {n:'search',t:'icon'},{n:'globe',t:'icon'},{n:'menu',t:'icon'},{n:'star',t:'icon'},
+  {n:'Landing page',t:'template'},{n:'Article',t:'template'},{n:'Campaign',t:'template'},
+];
+const assetFolders = ['All','climbing','adventures','hiking'];
+
+let mode='content', src='all', q='', folder='All', selectedSection='Cards';
+const railbody=document.getElementById('railbody');
+
+function contentHTML(){
+  const chips = [['all','All','var(--gray-400)'],['block','Blocks','var(--accent)'],['fragment','Fragments','var(--notice)'],
+    ['asset','Assets','var(--purple)'],['media','Media','var(--teal)'],['icon','Icons','var(--gray-500)'],['template','Templates','var(--pos)']];
+  return `
+    <div class="csearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="cq" type="text" placeholder="Search all content — assets, blocks, fragments, media…" value="${q}"></div>
+    <div class="srcfilter" id="srcfilter">
+      ${chips.map(([k,l,c])=>`<span class="srcchip ${src===k?'on':''}" data-src="${k}"><span class="sd" style="background:${c}"></span>${l}</span>`).join('')}
+    </div>
+    <div class="ctxbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Composing into&nbsp;<b>Section · ${selectedSection}</b></div>
+    ${src==='asset' ? `<div class="crumbrow"><span class="cc" data-src="asset">Assets</span><span>▸</span>${assetFolders.map(f=>`<span class="folderchip ${folder===f?'on':''}" data-folder="${f}">${f}</span>`).join('')}</div>`:''}
+    <div class="grid" id="grid"></div>
+    <div class="gridcount"><span id="gc"></span><span class="hint">Drag ⇢ page &nbsp;·&nbsp; no pop-ups</span></div>`;
+}
+function renderGrid(){
+  const grid=document.getElementById('grid'); if(!grid) return;
+  let list=items.filter(it=>{
+    const okSrc = src==='all'||it.t===src;
+    const okFolder = !(src==='asset') || folder==='All' || it.folder===folder;
+    const okQ = !q || (it.n+' '+SRC[it.t].label).toLowerCase().includes(q.toLowerCase());
+    return okSrc && okFolder && okQ;
+  });
+  grid.innerHTML = list.map((it,i)=>{
+    const meta=SRC[it.t];
+    const thumb = it.t==='asset'
+      ? `<div class="thumb" style="background:linear-gradient(135deg,${it.c1},${it.c2})"></div>`
+      : `<div class="thumb t-${it.t}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${glyphs[it.t]}</svg></div>`;
+    return `<div class="item" draggable="true" data-name="${it.n}" data-type="${it.t}">
+      <span class="draghandle">⣿</span>
+      <button class="insertbtn" data-name="${it.n}" data-type="${it.t}" title="Insert into Cards"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></button>
+      ${thumb}
+      <div class="meta"><div class="nm">${it.n}</div>
+        <div class="orow"><span class="tbadge tb-${it.t}">${it.t}</span><span class="origin">${meta.origin}</span></div>
+      </div></div>`;
+  }).join('') || `<div style="grid-column:1/-1;color:var(--gray-600);font-size:13px;padding:24px;text-align:center">No content matches.</div>`;
+  const gc=document.getElementById('gc'); if(gc) gc.textContent = `${list.length} item${list.length===1?'':'s'}${src!=='all'?' · '+SRC[src].label:' · all sources'}`;
+  wireGrid();
+}
+const caret = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>';
+const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--gray-400)"><path d="M9 6l6 6-6 6"/></svg>';
+const fico = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/></svg>';
+
+// WKND page outline — clickable, syncs with canvas selection
+const outline = [
+  {sec:'Hero', block:'Hero block', kids:['Heading · “Find your next adventure”','Background · coast-hero.jpg']},
+  {sec:'Cards', block:'Cards · “Popular activities”', kids:['Rock Climbing','Cycling']},
+  {sec:'Related articles', block:'Cards · “Related reading”', kids:['Trail guide 2026','Gear review','start-here-quiz (fragment)']},
+];
+function propsFor(name){
+  const rows = {
+    'Hero':[['Block type','Hero'],['Heading','Find your next adventure'],['Background image','coast-hero.jpg'],['Overlay opacity','40%'],['CTA','Explore trips']],
+    'Cards':[['Block type','Cards'],['Layout','Grid'],['Columns','3'],['Card style','Elevated'],['Content source','Manual']],
+    'Related articles':[['Block type','Cards (auto)'],['Content source','Query'],['Query','/articles by date desc'],['Limit','6'],['Locale fallback','en']],
+  }[name] || [['Block type',name]];
+  return `<div class="stub"><h4>Selected · Section ${name}</h4>
+    ${rows.map(([k,v],i)=>`<div class="field"><label>${k}</label><div class="ctrl">${v} ${i>0?caret:''}</div></div>`).join('')}</div>`;
+}
+function railHTML(m){
+  if(m==='outline') return `<div class="stub"><h4>index · page outline</h4>
+    ${outline.map(o=>`
+      <div class="stubrow" data-outline="${o.sec}" style="cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/></svg><b style="font-weight:700">${o.sec}</b><span class="sc">${o.block}</span></div>
+      ${o.kids.map(k=>`<div class="stubrow" style="padding-left:30px;color:var(--gray-600);font-weight:500">${chev}${k}</div>`).join('')}
+    `).join('')}
+    <div class="stubrow" style="color:var(--gray-500)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg>nav &amp; footer<span class="sc">fragments</span></div></div>`;
+  if(m==='props') return propsFor(selectedSection);
+  if(m==='files') return `<div class="stub"><h4>index · files</h4>
+    ${[['index','page · edited 2h ago'],['nav','fragment'],['footer','fragment'],['metadata','sheet'],['placeholders','sheet'],['/drafts/spring-campaign','page · draft']].map(([f,meta])=>`<div class="stubrow">${fico}${f}<span class="sc">${meta}</span></div>`).join('')}</div>`;
+  if(m==='versions') return `<div class="stub"><h4>index · version history</h4>
+    ${[['Now','Autosave · you'],['20m ago','Previewed · you'],['2h ago','Published · you'],['Yesterday','Edited · martin'],['Aug 12','Rollout → de, fr'],['Aug 08','Restored from live']].map(([t,w])=>`<div class="stubrow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg><b style="font-weight:700">${t}</b><span class="sc">${w}</span></div>`).join('')}</div>`;
+  return '';
+}
+function render(){
+  if(mode==='content'){ railbody.innerHTML=contentHTML(); wireContent(); renderGrid(); }
+  else {
+    railbody.innerHTML = railHTML(mode);
+    if(mode==='outline'){
+      railbody.querySelectorAll('[data-outline]').forEach(el=>{
+        el.classList.toggle('on', el.dataset.outline===selectedSection);
+        el.addEventListener('click',()=>selectSection(el.dataset.outline));
+      });
+    }
+  }
+}
+function wireContent(){
+  const cq=document.getElementById('cq'); if(cq) cq.addEventListener('input',e=>{q=e.target.value;renderGrid();});
+  const sf=document.getElementById('srcfilter'); if(sf) sf.addEventListener('click',e=>{const c=e.target.closest('.srcchip');if(!c)return;src=c.dataset.src;folder='All';render();});
+  railbody.querySelectorAll('[data-folder]').forEach(el=>el.addEventListener('click',()=>{folder=el.dataset.folder;renderGrid(); railbody.querySelectorAll('[data-folder]').forEach(x=>x.classList.toggle('on',x===el));}));
+  railbody.querySelectorAll('.crumbrow .cc').forEach(el=>el.addEventListener('click',()=>{folder='All';renderGrid();}));
+}
+function wireGrid(){
+  railbody.querySelectorAll('.insertbtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();insert(b.dataset.name,b.dataset.type);}));
+  railbody.querySelectorAll('.item').forEach(it=>{
+    it.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',JSON.stringify({n:it.dataset.name,t:it.dataset.type}));});
+  });
+}
+// tabs
+document.getElementById('railtabs').addEventListener('click',e=>{const t=e.target.closest('.railtab');if(!t)return;mode=t.dataset.mode;document.querySelectorAll('.railtab').forEach(x=>x.classList.toggle('on',x===t));render();});
+
+// ---- canvas selection: clicking a section drives the rail context ----
+function selectSection(name){
+  selectedSection=name;
+  document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('selected', s.dataset.sec===name));
+  const b=document.querySelector('.ctxbar b'); if(b) b.textContent='Section · '+name;      // update Content banner live
+  if(mode==='props') render();                                                              // Properties reflects the new selection
+  document.querySelectorAll('[data-outline]').forEach(o=>o.classList.toggle('on', o.dataset.outline===name));
+}
+
+// ---- insertion into the currently selected section ----
+function insert(name,type){
+  const sec = document.querySelector('.sec.selected') || document.getElementById('targetsec');
+  let row = sec.querySelector('.cardsrow');
+  if(!row){ const b=document.createElement('div'); b.className='block'; row=document.createElement('div'); row.className='cardsrow'; b.appendChild(row); sec.appendChild(b); }
+  const el=document.createElement('div'); el.className='pcard';
+  const head = type==='asset' ? `<div class="ph" style="background:linear-gradient(135deg,#8a7a63,#b6a488)"></div>` : `<div class="ph t-${type}" style="display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${glyphs[type]||glyphs.block}</svg></div>`;
+  el.innerHTML = head + `<div class="pb"><b>${name}</b><p>${SRC[type].label}</p></div>`;
+  const slot = row.querySelector('.dropslot');
+  if(slot) row.insertBefore(el, slot); else row.appendChild(el);
+  toast(`Inserted “${name}” into Section · ${sec.dataset.sec}`);
+}
+
+// ---- section click + drag-drop (every section is a target) ----
+document.querySelectorAll('.sec').forEach(sec=>{
+  sec.addEventListener('click',e=>{ if(e.target.closest('.insertbtn')) return; selectSection(sec.dataset.sec); });
+  sec.addEventListener('dragover',e=>{e.preventDefault(); sec.classList.add('draghot'); const ds=sec.querySelector('.dropslot'); if(ds) ds.classList.add('hot');});
+  sec.addEventListener('dragleave',e=>{ if(!sec.contains(e.relatedTarget)){ sec.classList.remove('draghot'); const ds=sec.querySelector('.dropslot'); if(ds) ds.classList.remove('hot'); }});
+  sec.addEventListener('drop',e=>{e.preventDefault(); sec.classList.remove('draghot'); const ds=sec.querySelector('.dropslot'); if(ds) ds.classList.remove('hot'); selectSection(sec.dataset.sec); try{const d=JSON.parse(e.dataTransfer.getData('text/plain')); insert(d.n,d.t);}catch(_){}} );
+});
+
+let toastT; function toast(msg){const el=document.getElementById('toast');document.getElementById('toasttext').textContent=msg;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2200);}
+
+selectSection('Cards');   // default selection on load
+render();
+</script>
+</body>
+</html>
