@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Experience Workspace — Unified Content Rail (Spectrum 2 concept)</title>
+<title>Experience Workspace — Compose a page (Spectrum 2 concept)</title>
 <style>
   :root{
     --gray-25:#fdfdfd;--gray-50:#f8f8f8;--gray-75:#f3f3f3;--gray-100:#eeeeee;--gray-200:#e4e4e4;
     --gray-300:#d3d3d3;--gray-400:#b6b6b6;--gray-500:#8f8f8f;--gray-600:#6d6d6d;--gray-700:#4a4a4a;--gray-800:#2b2b2b;--gray-900:#181818;
     --accent:#3b63fb;--accent-hover:#2f4fd6;--accent-wash:#eef1ff;--accent-border:#c7d2ff;
     --pos:#0a8055;--pos-wash:#e6f5ee;--notice:#b8730b;--notice-wash:#fbefda;--neg:#cf2a25;--info:#0a6cd6;--info-wash:#e6f0fd;
-    --purple:#7c4bd6;--purple-wash:#efe7fb;--teal:#0a7d94;--teal-wash:#e2f2f5;
+    --purple:#7c4bd6;--purple-wash:#efe7fb;
     --radius-s:8px;--radius-m:12px;--radius-l:16px;--radius-pill:999px;
     --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(20,24,40,.06);
     --shadow-hover:0 3px 8px rgba(0,0,0,.09),0 16px 36px rgba(20,24,40,.13);
@@ -21,62 +21,81 @@
   a{color:inherit;text-decoration:none}
   .app{height:100vh;display:flex;flex-direction:column}
 
-  /* ---- app bar ---- */
   .appbar{height:52px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:14px;padding:0 14px;flex:0 0 52px}
   .alogo{width:28px;height:28px;background:#EB1000;border-radius:7px;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
   .crumb{font-size:13.5px;color:var(--gray-600);display:flex;align-items:center;gap:7px}
   .crumb b{color:var(--gray-900)}
   .spacer{flex:1}
+  .concept{font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase}
   .actions{display:flex;align-items:center;gap:4px;padding:3px;background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill)}
   .actbtn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--gray-700);padding:6px 11px;border-radius:var(--radius-pill);cursor:pointer;white-space:nowrap}
   .actbtn:hover{background:#fff;color:var(--gray-900);box-shadow:0 1px 2px rgba(0,0,0,.08)}
   .actbtn svg{width:14px;height:14px}
-  .concept{font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase}
   .send{background:var(--accent);color:#fff;font-weight:700;font-size:13px;border:none;border-radius:var(--radius-pill);padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:7px}
   .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6b8cff,#3b63fb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
 
-  /* ---- body ---- */
   .body{flex:1;display:flex;min-height:0}
   .iconrail{width:48px;flex:0 0 48px;background:#fff;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:16px;color:var(--gray-500)}
   .iconrail svg{width:22px;height:22px;cursor:pointer}
-  .iconrail svg:hover{color:var(--gray-800)}
 
-  /* ---- canvas ---- */
   .canvaswrap{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--gray-100)}
   .subbar{height:44px;flex:0 0 44px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;padding:0 16px}
   .seg{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:3px;gap:2px}
   .seg button{border:none;background:transparent;font-family:var(--font);font-weight:700;font-size:12px;color:var(--gray-600);padding:6px 13px;border-radius:var(--radius-pill);cursor:pointer}
   .seg button.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.10)}
-  .subbar .ib{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--gray-600);cursor:pointer}
-  .subbar .ib:hover{background:var(--gray-75)}
+  .ib{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--gray-600);cursor:pointer}
+  .ib:hover{background:var(--gray-75)}
   .canvasscroll{flex:1;overflow:auto;padding:24px;display:flex;justify-content:center}
-  .page{width:760px;max-width:100%;background:#fff;border-radius:var(--radius-l);box-shadow:var(--shadow);overflow:hidden}
-  .sec{position:relative;padding:2px}
-  .sec .seclabel{position:absolute;top:6px;left:8px;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-400);z-index:3;opacity:0;transition:opacity .12s}
-  .sec:hover .seclabel{opacity:1}
-  .sec{cursor:pointer}
-  .sec:hover{background:var(--gray-50)}
-  .sec.selected{outline:2px solid var(--accent);outline-offset:-2px;border-radius:6px}
-  .sec.selected:hover{background:transparent}
-  .sec.selected .seclabel{opacity:1;color:var(--accent)}
-  .sec.draghot{outline:2px dashed var(--accent);outline-offset:-2px;border-radius:6px;background:var(--accent-wash)}
-  .hero{height:230px;background:linear-gradient(160deg,#2a4d6e,#5c8bb0);display:flex;flex-direction:column;justify-content:flex-end;padding:26px;color:#fff}
-  .hero h1{font-size:30px;letter-spacing:-.6px;max-width:70%}
-  .hero p{opacity:.9;margin-top:6px;font-size:14px}
-  .block{padding:22px 26px}
-  .block h2{font-size:19px;margin-bottom:14px;letter-spacing:-.3px}
-  .cardsrow{display:flex;gap:14px}
-  .pcard{flex:1;border:1px solid var(--gray-200);border-radius:var(--radius-m);overflow:hidden}
-  .pcard .ph{height:96px}
-  .pcard .pb{padding:11px 13px}
-  .pcard .pb b{font-size:14px}
-  .pcard .pb p{font-size:12px;color:var(--gray-600);margin-top:3px}
-  .dropslot{flex:1;min-height:150px;border:2px dashed var(--accent-border);border-radius:var(--radius-m);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--accent);font-size:12.5px;font-weight:700;background:var(--accent-wash)}
-  .dropslot.hot{background:#e0e7ff;border-color:var(--accent)}
-  .dropslot svg{width:22px;height:22px}
+  .page{width:820px;max-width:100%;background:#fff;border-radius:var(--radius-l);box-shadow:var(--shadow);overflow:hidden;min-height:560px;align-self:flex-start}
+  .page.pageselected{outline:2px solid var(--accent);outline-offset:2px}
 
-  /* ---- RIGHT RAIL (the redesign) ---- */
-  .rail{width:392px;flex:0 0 392px;background:#fff;border-left:1px solid var(--gray-200);display:flex;flex-direction:column;min-height:0}
+  /* empty template */
+  .emptystate{min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--gray-500);text-align:center;padding:40px}
+  .emptystate .big{width:64px;height:64px;border-radius:16px;background:var(--accent-wash);color:var(--accent);display:flex;align-items:center;justify-content:center}
+  .emptystate .big svg{width:30px;height:30px}
+  .emptystate h3{font-size:17px;color:var(--gray-800)}
+  .emptystate p{font-size:13.5px;max-width:340px}
+  .emptystate.hot{background:var(--accent-wash);outline:2px dashed var(--accent);outline-offset:-12px}
+
+  /* rendered blocks */
+  .cblock{position:relative;cursor:pointer;border:2px solid transparent}
+  .cblock .blabel{position:absolute;top:6px;left:8px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#fff;background:rgba(20,24,40,.55);padding:2px 8px;border-radius:var(--radius-pill);z-index:5;opacity:0;transition:.12s}
+  .cblock:hover .blabel{opacity:1}
+  .cblock.sel{border-color:var(--accent);border-radius:6px}
+  .cblock.sel .blabel{opacity:1;background:var(--accent)}
+  .cblock.drophot{outline:3px dashed var(--accent);outline-offset:-6px;background:var(--accent-wash)}
+
+  .c-hero{min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;padding:34px;color:#fff;background-size:cover;background-position:center;position:relative}
+  .c-hero.noimg{background:repeating-linear-gradient(45deg,#eef1ff,#eef1ff 12px,#e4e9ff 12px,#e4e9ff 24px);color:var(--gray-600);align-items:center;justify-content:center;text-align:center}
+  .c-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.55));z-index:0}
+  .c-hero.noimg::after{display:none}
+  .c-hero>*{position:relative;z-index:1}
+  .c-hero .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:.92;margin-bottom:8px}
+  .c-hero h1{line-height:1.08;letter-spacing:-.5px;max-width:80%}
+  .c-hero .subhead{margin-top:12px;font-size:15px;opacity:.94;max-width:70%}
+  .c-hero .hcta{margin-top:18px;display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--gray-900);font-weight:700;font-size:13px;padding:9px 16px;border-radius:var(--radius-pill);width:max-content}
+  .c-hero .imgdrop{border:2px dashed var(--accent-border);border-radius:12px;padding:14px 20px;color:var(--accent);font-weight:700;font-size:13px;background:#fff}
+
+  .c-cards{padding:26px 30px}
+  .c-cards h2{font-size:20px;margin-bottom:16px;letter-spacing:-.3px}
+  .c-cardrow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tc{border:1px solid var(--gray-200);border-radius:var(--radius-m);overflow:hidden;background:#fff;display:flex;flex-direction:column}
+  .tc .tcimg{height:140px;background:var(--gray-100);background-size:cover;background-position:center}
+  .tc .tcb{padding:13px 15px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .tc .tcb b{font-size:15px;letter-spacing:-.2px}
+  .tc .tcb p{font-size:12.5px;color:var(--gray-600);line-height:1.4}
+  .tc .tcb .cta{margin-top:auto;font-size:12.5px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:5px;padding-top:4px}
+  .c-cardrow .slot{border:2px dashed var(--accent-border);border-radius:var(--radius-m);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--accent);font-weight:700;font-size:12px;background:var(--accent-wash);text-align:center;padding:12px}
+  .c-cardrow .slot svg{width:20px;height:20px}
+
+  .c-generic{padding:26px 30px}
+  .c-generic .gbox{border:1.5px dashed var(--gray-300);border-radius:var(--radius-m);padding:26px;text-align:center;color:var(--gray-500);font-size:13px}
+  .c-generic .gbox b{color:var(--gray-700);font-size:14px;display:block;margin-bottom:3px}
+  .c-image img{width:100%;display:block}
+  .c-divider{padding:8px 30px}.c-divider hr{border:none;border-top:1px solid var(--gray-200)}
+
+  /* ============ RIGHT RAIL ============ */
+  .rail{width:400px;flex:0 0 400px;background:#fff;border-left:1px solid var(--gray-200);display:flex;flex-direction:column;min-height:0}
   .railtabs{display:flex;gap:2px;padding:8px 8px 0;border-bottom:1px solid var(--gray-100)}
   .railtab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 9px;font-size:11px;font-weight:700;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;border-radius:6px 6px 0 0}
   .railtab svg{width:18px;height:18px}
@@ -84,13 +103,12 @@
   .railtab.on{color:var(--accent);border-bottom-color:var(--accent)}
   .railbody{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 
-  /* content mode */
   .csearch{display:flex;align-items:center;gap:9px;margin:14px 14px 10px;background:var(--gray-75);border:1.5px solid var(--gray-200);border-radius:var(--radius-pill);padding:10px 14px}
   .csearch:focus-within{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-wash)}
   .csearch svg{flex:0 0 16px;color:var(--gray-500)}
   .csearch input{border:none;outline:none;background:transparent;font-family:var(--font);font-size:13.5px;flex:1}
   .srcfilter{display:flex;gap:6px;padding:0 14px 12px;flex-wrap:wrap}
-  .srcchip{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--gray-700);background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:6px 11px;cursor:pointer}
+  .srcchip{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--gray-700);background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:6px 12px;cursor:pointer}
   .srcchip .sd{width:7px;height:7px;border-radius:2px}
   .srcchip:hover{border-color:var(--accent);color:var(--accent)}
   .srcchip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -98,66 +116,83 @@
   .ctxbar{margin:0 14px 10px;display:flex;align-items:center;gap:9px;background:var(--accent-wash);border:1px solid var(--accent-border);border-radius:var(--radius-s);padding:8px 12px;font-size:12px;color:var(--gray-800)}
   .ctxbar svg{width:15px;height:15px;color:var(--accent);flex:0 0 15px}
   .ctxbar b{color:var(--accent)}
-  .crumbrow{display:flex;align-items:center;gap:7px;padding:0 15px 10px;font-size:12px;color:var(--gray-600);flex-wrap:wrap}
-  .crumbrow .cc{cursor:pointer;font-weight:600}.crumbrow .cc:hover{color:var(--accent)}
-  .crumbrow .folderchip{font-size:11.5px;font-weight:600;border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:4px 10px;cursor:pointer}
-  .crumbrow .folderchip.on{background:var(--accent-wash);border-color:var(--accent-border);color:var(--accent)}
-  .grid{flex:1;overflow:auto;padding:2px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start}
-  .item{position:relative;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:10px;cursor:grab;background:#fff;transition:box-shadow .12s,transform .12s;display:flex;flex-direction:column;gap:9px}
-  .item:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:var(--gray-300)}
-  .item:active{cursor:grabbing}
-  .thumb{height:74px;border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-  .thumb svg{width:26px;height:26px}
-  .item .meta{display:flex;flex-direction:column;gap:3px}
-  .item .nm{font-size:12.5px;font-weight:700;line-height:1.2;word-break:break-word}
-  .item .orow{display:flex;align-items:center;gap:6px}
-  .tbadge{font-size:9.5px;font-weight:800;letter-spacing:.3px;padding:2px 7px;border-radius:var(--radius-pill);text-transform:uppercase}
-  .origin{font-size:10.5px;color:var(--gray-500);font-weight:600}
-  .insertbtn{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--gray-300);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .12s;box-shadow:0 1px 3px rgba(0,0,0,.12);z-index:2}
-  .item:hover .insertbtn{opacity:1}
-  .insertbtn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .draghandle{position:absolute;top:8px;left:8px;color:#fff;opacity:0;font-size:12px;text-shadow:0 1px 2px rgba(0,0,0,.4);z-index:2}
-  .item:hover .draghandle{opacity:.85}
+  .reslist{flex:1;overflow:auto;padding:2px 12px 14px}
+  .subhead2{font-size:10.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);margin:12px 2px 8px;display:flex;align-items:center;gap:8px}
+  .subhead2 .ln{flex:1;height:1px;background:var(--gray-100)}
+
+  .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bitem{position:relative;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:12px;cursor:grab;background:#fff;display:flex;flex-direction:column;gap:9px;transition:box-shadow .12s,transform .12s}
+  .bitem:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:var(--gray-300)}
+  .bthumb{height:58px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--accent-wash);color:var(--accent)}
+  .bthumb svg{width:26px;height:26px}
+  .bitem .bn{font-size:12.5px;font-weight:700}
+  .bitem .bo{font-size:10.5px;color:var(--gray-500);font-weight:600}
+
+  /* asset thumbs (real images) */
+  .agrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .aitem{position:relative;border:1px solid var(--gray-200);border-radius:var(--radius-m);overflow:hidden;cursor:grab;background:#fff;transition:box-shadow .12s,transform .12s}
+  .aitem:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+  .aitem .aimg{height:96px;background-size:cover;background-position:center;background-color:var(--gray-100)}
+  .aitem .ab{padding:8px 10px}
+  .aitem .an{font-size:11.5px;font-weight:700;word-break:break-word}
+  .aitem .ao{font-size:10px;color:var(--purple);font-weight:700;margin-top:2px}
+  .abadge{position:absolute;top:8px;left:8px;background:var(--purple);color:#fff;font-size:9px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;padding:2px 7px;border-radius:var(--radius-pill)}
+
+  /* fragment content rows (searchable, with preview) */
+  .fitem{display:flex;gap:12px;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:10px;cursor:grab;background:#fff;margin-bottom:10px;transition:box-shadow .12s,transform .12s;align-items:stretch}
+  .fitem:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:var(--gray-300)}
+  .fprev{width:88px;flex:0 0 88px;border-radius:8px;background-size:cover;background-position:center;background-color:var(--gray-100)}
+  .fbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+  .ftop{display:flex;align-items:center;gap:7px}
+  .ftag{font-size:9px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;background:var(--notice-wash);color:var(--notice);padding:2px 7px;border-radius:var(--radius-pill)}
+  .fbody .ft{font-size:13.5px;font-weight:700;letter-spacing:-.2px}
+  .fbody .fd{font-size:11.5px;color:var(--gray-600);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .fmeta{font-size:10.5px;color:var(--gray-500);font-weight:600;display:flex;gap:10px;margin-top:2px}
   .gridcount{padding:8px 15px;border-top:1px solid var(--gray-100);font-size:11px;color:var(--gray-500);display:flex;justify-content:space-between}
-  .hint{color:var(--gray-500)}
 
-  /* type tints */
-  .t-block{background:var(--accent-wash);color:var(--accent)} .tb-block{background:var(--accent-wash);color:var(--accent)}
-  .t-fragment{background:var(--notice-wash);color:var(--notice)} .tb-fragment{background:var(--notice-wash);color:var(--notice)}
-  .t-asset{background:var(--purple-wash);color:var(--purple)} .tb-asset{background:var(--purple-wash);color:var(--purple)}
-  .t-media{background:var(--teal-wash);color:var(--teal)} .tb-media{background:var(--teal-wash);color:var(--teal)}
-  .t-icon{background:var(--gray-100);color:var(--gray-600)} .tb-icon{background:var(--gray-100);color:var(--gray-600)}
-  .t-template{background:var(--pos-wash);color:var(--pos)} .tb-template{background:var(--pos-wash);color:var(--pos)}
-
-  /* other rail modes (stubs, to show the rail replaces the dropdown) */
-  .stub{padding:16px;overflow:auto}
-  .stub h4{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-500);margin:6px 0 8px}
-  .stubrow{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-s);font-size:13px;font-weight:600;color:var(--gray-800)}
-  .stubrow:hover{background:var(--gray-75)}
-  .stubrow.on{background:var(--accent-wash);color:var(--accent)}
-  .stubrow.on .sc{color:var(--accent)}
-  .stubrow .sc{margin-left:auto;font-size:11px;color:var(--gray-500);font-weight:600}
-  .field{margin-bottom:12px}
-  .field label{display:block;font-size:11px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-500);margin-bottom:5px}
-  .field .ctrl{border:1px solid var(--gray-300);border-radius:var(--radius-s);padding:9px 12px;font-size:13px;color:var(--gray-800);background:#fff;display:flex;align-items:center;justify-content:space-between}
+  /* properties */
+  .stub{padding:14px 15px;overflow:auto}
+  .stub h4{font-size:12px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-600);margin:2px 0 12px;display:flex;align-items:center;gap:8px}
+  .stub h4 .pill{margin-left:auto;font-size:10px;background:var(--accent-wash);color:var(--accent);border-radius:var(--radius-pill);padding:2px 8px}
+  details{border:1px solid var(--gray-200);border-radius:var(--radius-m);margin-bottom:10px;overflow:hidden}
+  details>summary{list-style:none;cursor:pointer;padding:11px 13px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;background:var(--gray-50)}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"";width:8px;height:8px;border-right:2px solid var(--gray-500);border-bottom:2px solid var(--gray-500);transform:rotate(-45deg);transition:.15s;margin-right:2px}
+  details[open]>summary::before{transform:rotate(45deg)}
+  details .dc{padding:12px 13px}
+  .field{margin-bottom:13px}
+  .field:last-child{margin-bottom:0}
+  .field label{display:block;font-size:11px;font-weight:700;color:var(--gray-700);margin-bottom:5px}
+  .field input[type=text],.field textarea,.field .selctrl{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-s);padding:9px 11px;font-family:var(--font);font-size:13px;color:var(--gray-900);background:#fff;outline:none}
+  .field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+  .field textarea{resize:vertical;min-height:60px;line-height:1.4}
+  .field .selctrl{display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:var(--gray-500)}
+  .field .selctrl.set{color:var(--gray-900)}
+  .field .help{font-size:11px;color:var(--gray-500);margin-top:5px;line-height:1.4}
+  .pseg{display:inline-flex;flex-wrap:wrap;gap:4px}
+  .pseg button{border:1px solid var(--gray-300);background:#fff;font-family:var(--font);font-weight:700;font-size:12px;color:var(--gray-700);padding:6px 12px;border-radius:var(--radius-s);cursor:pointer}
+  .pseg button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .imgprop{display:flex;gap:11px;align-items:center}
+  .imgprop .ipthumb{width:64px;height:48px;border-radius:8px;background-size:cover;background-position:center;background:var(--gray-100);flex:0 0 64px;border:1px solid var(--gray-200)}
+  .imgprop .ipmeta{font-size:12px}.imgprop .ipmeta b{font-size:12.5px}.imgprop .ipmeta span{color:var(--gray-500);font-size:11px}
+  .imgprop .ipnone{color:var(--gray-500);font-size:12px}
 
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:var(--radius-pill);box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;transition:.2s;z-index:100;display:flex;align-items:center;gap:9px}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast svg{width:16px;height:16px;color:#7ee0b0}
+  [hidden]{display:none !important}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="appbar">
     <div class="alogo">A</div>
-    <div class="crumb">blofft1 <span>›</span> wknd-advanced <span>›</span> <b>index</b></div>
+    <div class="crumb">blofft1 <span>›</span> wknd-advanced <span>›</span> <b>new-page</b></div>
     <span class="concept">Concept · Spectrum 2</span>
     <div class="spacer"></div>
-    <!-- verbs (formerly Extensions/publish items) live here, out of the content flow -->
-    <div class="actions" title="Page actions — formerly scattered in the dropdown">
-      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg> Generate Variations</div>
+    <div class="actions">
+      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 3v4M3 5h4M13 3l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg> Generate Variations</div>
       <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20.6 13.4 12 22l-9-9V4h9z"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></svg> Tag</div>
-      <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 7 4M20 12a8 8 0 0 1-8 8 8 8 0 0 1-7-4"/><path d="M19 3v5h-5M5 21v-5h5"/></svg> Roll out</div>
       <div class="actbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h16v12H5.2L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg> Request Publish</div>
     </div>
     <button class="send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-6 16-3-6-7-2z"/></svg> Send</button>
@@ -176,31 +211,14 @@
         <div class="seg"><button class="on">Layout</button><button>Content</button></div>
         <div class="ib" title="Undo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></div>
         <div class="ib" title="Redo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg></div>
-        <div class="spacer" style="flex:1"></div>
+        <div class="spacer"></div>
         <div class="ib" title="Preview"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
       </div>
       <div class="canvasscroll">
-        <div class="page">
-          <div class="sec" data-sec="Hero"><span class="seclabel">Section · Hero</span>
-            <div class="hero"><h1>Find your next adventure</h1><p>Trips, gear, and guides for the great outdoors.</p></div>
-          </div>
-          <div class="sec" data-sec="Cards" id="targetsec"><span class="seclabel">Section · Cards</span>
-            <div class="block"><h2>Popular activities</h2>
-              <div class="cardsrow" id="dropzone">
-                <div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#8a7a63,#b6a488)"></div><div class="pb"><b>Rock Climbing</b><p>Find routes near you</p></div></div>
-                <div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#5c8bb0,#7fb0d6)"></div><div class="pb"><b>Cycling</b><p>Trails &amp; road routes</p></div></div>
-                <div class="dropslot" id="dropslot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Drag content here<br>or click + on any item</div>
-              </div>
-            </div>
-          </div>
-          <div class="sec" data-sec="Related articles"><span class="seclabel">Section · Related articles</span>
-            <div class="block"><h2>Related reading</h2><div class="cardsrow"><div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#6f9e6f,#a9cba9)"></div><div class="pb"><b>Trail guide 2026</b></div></div><div class="pcard"><div class="ph" style="background:linear-gradient(135deg,#c98b5e,#e8b98a)"></div><div class="pb"><b>Gear review</b></div></div></div></div>
-          </div>
-        </div>
+        <div class="page" id="page"></div>
       </div>
     </div>
 
-    <!-- ============ THE REDESIGNED RIGHT RAIL ============ -->
     <aside class="rail">
       <div class="railtabs" id="railtabs">
         <div class="railtab on" data-mode="content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Content</div>
@@ -216,172 +234,290 @@
 <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg><span id="toasttext"></span></div>
 
 <script>
-const SRC = {
-  block:{label:'Blocks', origin:'Library', color:'var(--accent)'},
-  fragment:{label:'Fragments', origin:'Fragments', color:'var(--notice)'},
-  asset:{label:'Assets', origin:'Content Advisor · AEM Assets', color:'var(--purple)'},
-  media:{label:'Media', origin:'DA Media', color:'var(--teal)'},
-  icon:{label:'Icons', origin:'Icons', color:'var(--gray-500)'},
-  template:{label:'Templates', origin:'Templates', color:'var(--pos)'},
+const M=(h,ext='jpg')=>`https://main--wknd-advanced--blofft1.aem.live/media_${h}.${ext}?width=800&format=webply&optimize=medium`;
+const IMG={
+  snowpeak:M('1994e62b1ad1745891391175e662c33f9f908f138'),
+  ridge:M('1c6555a75de13e198a7ec341350d070192879fb9d'),
+  redrock:M('19e00abac7639e3984075153bf1421b18e737a29c'),
+  ocean:M('1b9606cdf72aa25aca100e9559f6486fcada0830f'),
+  alpine:M('170deb2cd23a2d0d5d06c0674f1c3e863441a6512'),
+  fjord:M('16596b410095c24a52885a665185b31acacd7a1cc'),
+  camp:M('1863bf166a77cbb14b23cba19c69a83d62230cc99','avif'),
+  mtb:M('14ef837ca9287e0665c72c2f9006f798f7c233c71'),
+  kayak:M('1748fc092434d881bed49fcaa7e082d2090d611dd','avif'),
 };
-const glyphs = {
-  block:'<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="8" height="6" rx="1.5"/><rect x="13" y="14" width="8" height="6" rx="1.5"/>',
-  fragment:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/>',
-  media:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9l5 3-5 3z"/>',
-  icon:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
-  template:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
-};
-const items = [
-  {n:'Hero',t:'block',note:'placeholder'},{n:'Cards',t:'block'},{n:'Columns (3)',t:'block'},
-  {n:'Carousel',t:'block'},{n:'Accordion',t:'block'},{n:'Quote',t:'block'},{n:'Embed',t:'block'},
-  {n:'start-here-quiz',t:'fragment'},{n:'hero-control',t:'fragment'},{n:'whats-next',t:'fragment'},
-  {n:'tabs-about-us',t:'fragment'},{n:'learn-home-teaser',t:'fragment'},
-  {n:'climber-gear-outdoor.jpg',t:'asset',folder:'climbing',c1:'#8a7a63',c2:'#b6a488'},
-  {n:'climber-gear-rope.jpg',t:'asset',folder:'climbing',c1:'#6b7280',c2:'#9aa0ab'},
-  {n:'ice-climbing.jpg',t:'asset',folder:'climbing',c1:'#5c8bb0',c2:'#a9cbe6'},
-  {n:'coast-sunrise.jpg',t:'asset',folder:'adventures',c1:'#e0a86b',c2:'#f0cfa0'},
-  {n:'trail-map.png',t:'asset',folder:'hiking',c1:'#6f9e6f',c2:'#a9cba9'},
-  {n:'promo.mp4',t:'media'},{n:'brand-logo.svg',t:'media'},
-  {n:'search',t:'icon'},{n:'globe',t:'icon'},{n:'menu',t:'icon'},{n:'star',t:'icon'},
-  {n:'Landing page',t:'template'},{n:'Article',t:'template'},{n:'Campaign',t:'template'},
+// real WKND blocks
+const G={hero:'<rect x="3" y="4" width="18" height="9" rx="1.5"/><rect x="3" y="16" width="10" height="2.4" rx="1"/>',
+ cards:'<rect x="3" y="4" width="7" height="16" rx="1.5"/><rect x="14" y="4" width="7" height="16" rx="1.5"/>',
+ columns:'<rect x="3" y="4" width="5" height="16"/><rect x="10" y="4" width="4" height="16"/><rect x="16" y="4" width="5" height="16"/>',
+ teaser:'<rect x="3" y="4" width="9" height="16" rx="1.5"/><path d="M14 7h7M14 11h7M14 15h4"/>',
+ carousel:'<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M3 12h1M20 12h1"/>',
+ accordion:'<rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/>',
+ quote:'<path d="M7 7h4v5c0 2-1.5 4-4 4M14 7h4v5c0 2-1.5 4-4 4"/>',
+ tabs:'<path d="M3 9h5V5h13v14H3z"/>',
+ embed:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l4 3-4 3z"/>',
+ related:'<rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="11" width="18" height="3" rx="1"/><rect x="3" y="16" width="12" height="3" rx="1"/>',
+ table:'<rect x="3" y="4" width="18" height="16"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/>',
+ divider:'<path d="M3 12h18"/>'};
+const BLOCKS=[
+ {n:'Hero',k:'hero'},{n:'Cards',k:'cards'},{n:'Columns',k:'columns'},{n:'Teaser',k:'teaser'},
+ {n:'Carousel',k:'carousel'},{n:'Accordion',k:'accordion'},{n:'Quote',k:'quote'},{n:'Tabs',k:'tabs'},
+ {n:'Embed',k:'embed'},{n:'Related Articles',k:'related'},{n:'Table',k:'table'},{n:'Divider',k:'divider'}];
+// 10 WKND trip fragments (content) mapped to real images
+const TRIPS=[
+ {t:'Ski Touring Mont Blanc',r:'Chamonix, France',s:'Winter',img:IMG.alpine,cta:'Explore Now',d:'Embark on a guided ski tour of Mont Blanc — breathtaking alpine views and exclusive backcountry trails.'},
+ {t:"Cycle Through Southern Utah's Beauty",r:'Utah, USA',s:'Spring',img:IMG.redrock,cta:'Start Your Journey',d:"Ride stunning red-rock landscapes and diverse desert trails. Whether you're a beginner or pro, there's a path for you."},
+ {t:'Sunrise Ridge Trek',r:'Dolomites, Italy',s:'Summer',img:IMG.ridge,cta:'Read more',d:'Chase first light along a knife-edge alpine ridge and watch the whole range ignite at dawn.'},
+ {t:'Snowcapped Summit Hike',r:'Banff, Canada',s:'Summer',img:IMG.snowpeak,cta:'Read more',d:'Stand above the clouds on a classic snow-capped summit with panoramic glacier views.'},
+ {t:'Pacific Coast Surf Camp',r:'Tofino, Canada',s:'Summer',img:IMG.ocean,cta:'Book a spot',d:'Catch your first wave — or your best — on wild Pacific breaks with expert coaching.'},
+ {t:'Norwegian Fjords Escape',r:'Geiranger, Norway',s:'Autumn',img:IMG.fjord,cta:'Plan your trip',d:'Slow down among colorful harbor streets, misty peaks, and salt-bright air on Norway’s dramatic fjords.'},
+ {t:'Backcountry Camping, Sierra',r:'Sierra Nevada, USA',s:'Summer',img:IMG.camp,cta:'Read more',d:'Unplug under the stars on a multi-day backcountry route through granite basins and alpine lakes.'},
+ {t:'Whistler Mountain Biking',r:'Whistler, Canada',s:'Summer',img:IMG.mtb,cta:'Explore Now',d:'Flow, jump, and descend world-famous singletrack in the bike-park capital of the world.'},
+ {t:'Whitewater Kayaking, Colorado',r:'Colorado, USA',s:'Spring',img:IMG.kayak,cta:'Book a spot',d:'Read the river and run playful whitewater with certified guides on legendary Rocky Mountain runs.'},
+ {t:'Bergen Fjord Getaway',r:'Bergen, Norway',s:'Autumn',img:IMG.fjord,cta:'Plan your trip',d:'Slip into Bergen’s fjord light and mountain calm — waterfront walks, fresh seafood, easy fjord access.'},
 ];
-const assetFolders = ['All','climbing','adventures','hiking'];
+// real assets
+const ASSETS=[
+ {f:'alpine-ski-village.jpg',alt:'Alpine ski village in snow',img:IMG.alpine,folder:'Mountains'},
+ {f:'snowcapped-peak-hiker.jpg',alt:'Hiker at a snow-capped peak',img:IMG.snowpeak,folder:'Mountains'},
+ {f:'ridge-sunrise-trek.jpg',alt:'Ridge sunrise trek',img:IMG.ridge,folder:'Mountains'},
+ {f:'red-rock-cyclist.jpg',alt:'Cyclist in red-rock canyons',img:IMG.redrock,folder:'Activities'},
+ {f:'coastal-ocean-waves.jpg',alt:'Aerial coastal ocean waves',img:IMG.ocean,folder:'Coast'},
+ {f:'autumn-fjord-village.jpg',alt:'Autumn fjord village',img:IMG.fjord,folder:'Coast'},
+ {f:'backcountry-camping.jpg',alt:'Backcountry camping',img:IMG.camp,folder:'Activities'},
+ {f:'mountain-biking.jpg',alt:'Mountain biking trail',img:IMG.mtb,folder:'Activities'},
+ {f:'river-kayaking.jpg',alt:'River kayaking',img:IMG.kayak,folder:'Activities'},
+];
+const ASSET_FOLDERS=['All','Mountains','Coast','Activities'];
 
-let mode='content', src='all', q='', folder='All', selectedSection='Cards';
-const railbody=document.getElementById('railbody');
+let railMode='content', src='all', q='', assetFolder='All', sel='page', uid=1;
+let page=[]; // {id,type,props}
+const railbody=document.getElementById('railbody'), pageEl=document.getElementById('page');
 
-function contentHTML(){
-  const chips = [['all','All','var(--gray-400)'],['block','Blocks','var(--accent)'],['fragment','Fragments','var(--notice)'],
-    ['asset','Assets','var(--purple)'],['media','Media','var(--teal)'],['icon','Icons','var(--gray-500)'],['template','Templates','var(--pos)']];
+/* ---------------- CONTENT PANEL ---------------- */
+function blockCard(b){return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">Library block</div></div>`;}
+function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ao">Content Advisor · AEM Assets</div></div></div>`;}
+function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Trip · fragment</span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
+function matchTrip(t){const s=(t.t+' '+t.d+' '+t.r+' '+t.s).toLowerCase();return !q||s.includes(q.toLowerCase());}
+function matchBlock(b){return !q||b.n.toLowerCase().includes(q.toLowerCase());}
+function matchAsset(a){const s=(a.f+' '+a.alt+' '+a.folder).toLowerCase();return (!q||s.includes(q.toLowerCase()))&&(assetFolder==='All'||a.folder===assetFolder);}
+
+function contentPanel(){
+  const chips=[['all','All','var(--gray-400)'],['block','Blocks','var(--accent)'],['fragment','Fragments','var(--notice)'],['asset','Assets','var(--purple)']];
+  const blocks=BLOCKS.filter(matchBlock), trips=TRIPS.filter(matchTrip), assets=ASSETS.filter(matchAsset);
+  let body='';
+  const blocksSec=`<div class="subhead2">Blocks<span class="ln"></span></div><div class="bgrid">${blocks.map(blockCard).join('')}</div>`;
+  const tripsSec=`<div class="subhead2">Fragments · WKND trips<span class="ln"></span></div>${trips.map((t)=>tripRow(t,TRIPS.indexOf(t))).join('')||'<div style="color:var(--gray-500);font-size:12.5px;padding:6px">No trips match.</div>'}`;
+  const assetsSec=`<div class="subhead2">Assets<span class="ln"></span></div><div class="agrid">${assets.map(assetCard).join('')}</div>`;
+  if(src==='all') body=blocksSec+tripsSec+assetsSec;
+  else if(src==='block') body=`<div class="bgrid">${blocks.map(blockCard).join('')}</div>`;
+  else if(src==='fragment') body=trips.map((t)=>tripRow(t,TRIPS.indexOf(t))).join('')||'<div style="color:var(--gray-500);font-size:13px;padding:20px;text-align:center">No trips match.</div>';
+  else if(src==='asset') body=`<div class="agrid">${assets.map(assetCard).join('')}</div>`;
+  const count = src==='block'?blocks.length+' blocks': src==='fragment'?trips.length+' trips': src==='asset'?assets.length+' assets': (blocks.length+trips.length+assets.length)+' items';
   return `
     <div class="csearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input id="cq" type="text" placeholder="Search all content — assets, blocks, fragments, media…" value="${q}"></div>
-    <div class="srcfilter" id="srcfilter">
-      ${chips.map(([k,l,c])=>`<span class="srcchip ${src===k?'on':''}" data-src="${k}"><span class="sd" style="background:${c}"></span>${l}</span>`).join('')}
-    </div>
-    <div class="ctxbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Composing into&nbsp;<b>Section · ${selectedSection}</b></div>
-    ${src==='asset' ? `<div class="crumbrow"><span class="cc" data-src="asset">Assets</span><span>▸</span>${assetFolders.map(f=>`<span class="folderchip ${folder===f?'on':''}" data-folder="${f}">${f}</span>`).join('')}</div>`:''}
-    <div class="grid" id="grid"></div>
-    <div class="gridcount"><span id="gc"></span><span class="hint">Drag ⇢ page &nbsp;·&nbsp; no pop-ups</span></div>`;
+      <input id="cq" type="text" placeholder="Search blocks, trips, assets…" value="${q}"></div>
+    <div class="srcfilter" id="srcfilter">${chips.map(([k,l,c])=>`<span class="srcchip ${src===k?'on':''}" data-src="${k}"><span class="sd" style="background:${c}"></span>${l}</span>`).join('')}</div>
+    ${src==='asset'?`<div class="srcfilter" style="padding-top:0">${ASSET_FOLDERS.map(f=>`<span class="srcchip ${assetFolder===f?'on':''}" data-folder="${f}" style="${assetFolder===f?'':'background:#fff'}">${f}</span>`).join('')}</div>`:''}
+    <div class="ctxbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg>Drag onto the page to compose &nbsp;·&nbsp; <b>no pop-ups</b></div>
+    <div class="reslist">${body}</div>
+    <div class="gridcount"><span>${count}</span><span>Assets = Content Advisor</span></div>`;
 }
-function renderGrid(){
-  const grid=document.getElementById('grid'); if(!grid) return;
-  let list=items.filter(it=>{
-    const okSrc = src==='all'||it.t===src;
-    const okFolder = !(src==='asset') || folder==='All' || it.folder===folder;
-    const okQ = !q || (it.n+' '+SRC[it.t].label).toLowerCase().includes(q.toLowerCase());
-    return okSrc && okFolder && okQ;
-  });
-  grid.innerHTML = list.map((it,i)=>{
-    const meta=SRC[it.t];
-    const thumb = it.t==='asset'
-      ? `<div class="thumb" style="background:linear-gradient(135deg,${it.c1},${it.c2})"></div>`
-      : `<div class="thumb t-${it.t}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${glyphs[it.t]}</svg></div>`;
-    return `<div class="item" draggable="true" data-name="${it.n}" data-type="${it.t}">
-      <span class="draghandle">⣿</span>
-      <button class="insertbtn" data-name="${it.n}" data-type="${it.t}" title="Insert into Cards"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></button>
-      ${thumb}
-      <div class="meta"><div class="nm">${it.n}</div>
-        <div class="orow"><span class="tbadge tb-${it.t}">${it.t}</span><span class="origin">${meta.origin}</span></div>
-      </div></div>`;
-  }).join('') || `<div style="grid-column:1/-1;color:var(--gray-600);font-size:13px;padding:24px;text-align:center">No content matches.</div>`;
-  const gc=document.getElementById('gc'); if(gc) gc.textContent = `${list.length} item${list.length===1?'':'s'}${src!=='all'?' · '+SRC[src].label:' · all sources'}`;
-  wireGrid();
-}
-const caret = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>';
-const chev = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--gray-400)"><path d="M9 6l6 6-6 6"/></svg>';
-const fico = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/></svg>';
 
-// WKND page outline — clickable, syncs with canvas selection
-const outline = [
-  {sec:'Hero', block:'Hero block', kids:['Heading · “Find your next adventure”','Background · coast-hero.jpg']},
-  {sec:'Cards', block:'Cards · “Popular activities”', kids:['Rock Climbing','Cycling']},
-  {sec:'Related articles', block:'Cards · “Related reading”', kids:['Trail guide 2026','Gear review','start-here-quiz (fragment)']},
-];
-function propsFor(name){
-  const rows = {
-    'Hero':[['Block type','Hero'],['Heading','Find your next adventure'],['Background image','coast-hero.jpg'],['Overlay opacity','40%'],['CTA','Explore trips']],
-    'Cards':[['Block type','Cards'],['Layout','Grid'],['Columns','3'],['Card style','Elevated'],['Content source','Manual']],
-    'Related articles':[['Block type','Cards (auto)'],['Content source','Query'],['Query','/articles by date desc'],['Limit','6'],['Locale fallback','en']],
-  }[name] || [['Block type',name]];
-  return `<div class="stub"><h4>Selected · Section ${name}</h4>
-    ${rows.map(([k,v],i)=>`<div class="field"><label>${k}</label><div class="ctrl">${v} ${i>0?caret:''}</div></div>`).join('')}</div>`;
+/* ---------------- PROPERTIES (context sensitive) ---------------- */
+function pageProps(){return `<div class="stub">
+  <h4>Page properties<span class="pill">whole page</span></h4>
+  <div class="field"><label>Page title</label><input type="text" value="WKND — Real Trips. Real Routes."><div class="help">Main title for search results &amp; browser tab (50–60 chars).</div></div>
+  <details open><summary>SEO</summary><div class="dc">
+    <div class="field"><label>Meta description</label><textarea placeholder="Brief summary shown in search results (150–160 characters)"></textarea></div>
+    <div class="field"><label>Schema.org type</label><div class="selctrl">Choose an option ▾</div><div class="help">Structured data type — enables rich results.</div></div>
+    <div class="field"><label>Robots meta tag</label><div class="selctrl set">index, follow ▾</div><div class="help">Use “No index” for draft/duplicate content.</div></div>
+  </div></details>
+  <details><summary>Open Graph</summary><div class="dc">
+    <div class="field"><label>OG title</label><input type="text" placeholder="Title when shared on social"></div>
+    <div class="field"><label>OG image</label><div class="selctrl">Choose from Assets ▾</div></div>
+    <div class="field"><label>OG description</label><textarea></textarea></div>
+  </div></details>
+  <details><summary>AEO · Answer Engine Optimization</summary><div class="dc">
+    <div class="field"><label>Primary question</label><input type="text" placeholder="e.g. What are the best weekend adventure trips?"></div>
+    <div class="field"><label>Concise answer</label><textarea placeholder="A short, quotable answer for AI assistants &amp; featured snippets"></textarea><div class="help">Optimizes for voice assistants &amp; “People also ask.”</div></div>
+    <div class="field"><label>FAQ schema</label><div class="selctrl set">Enabled ▾</div></div>
+  </div></details>
+  <details><summary>GEO · Generative Engine Optimization</summary><div class="dc">
+    <div class="field"><label>Generative summary</label><textarea placeholder="Summary LLMs can cite when generating answers about this page"></textarea><div class="help">Feeds ChatGPT, Perplexity, Gemini &amp; AI Overviews.</div></div>
+    <div class="field"><label>Cited sources / authority</label><input type="text" placeholder="Add supporting URLs &amp; author credentials"></div>
+    <div class="field"><label>Brand entity</label><div class="selctrl set">WKND Adventures ▾</div></div>
+    <div class="field"><label>Include in llms.txt</label><div class="selctrl set">Yes ▾</div></div>
+  </div></details>
+  <details><summary>Advanced settings</summary><div class="dc">
+    <div class="field"><label>Canonical URL</label><input type="text" placeholder="https://…"></div>
+    <div class="field"><label>Redirect from</label><input type="text" placeholder="/old-path"></div>
+  </div></details>
+</div>`;}
+
+function heroProps(b){const p=b.props;
+  const lv=['H1','H2','H3','H4','H5','H6'], sz=['2XL','XL','L','M'];
+  const asvg=d=>`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${d}</svg>`;
+  const al=[['left',asvg('<path d="M3 6h18M3 12h11M3 18h15"/>')],['center',asvg('<path d="M3 6h18M6 12h12M5 18h14"/>')],['right',asvg('<path d="M3 6h18M10 12h11M6 18h15"/>')]];
+  return `<div class="stub"><h4>Selected · Hero block<span class="pill">block</span></h4>
+    <details open><summary>Heading</summary><div class="dc">
+      <div class="field"><label>Eyebrow</label><input type="text" data-prop="eyebrow" value="${(p.eyebrow||'').replace(/"/g,'&quot;')}" placeholder="Small label above the headline"></div>
+      <div class="field"><label>Headline</label><input type="text" data-prop="headline" value="${(p.headline||'').replace(/"/g,'&quot;')}" placeholder="Main headline"></div>
+      <div class="field"><label>Subhead</label><textarea data-prop="subhead" placeholder="Supporting sentence">${p.subhead||''}</textarea></div>
+      <div class="field"><label>Level</label><div class="pseg" data-seg="level">${lv.map(l=>`<button data-val="${l}" class="${p.level===l?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="field"><label>Heading size</label><div class="pseg" data-seg="size">${sz.map(s=>`<button data-val="${s}" class="${p.size===s?'on':''}">${s}</button>`).join('')}</div></div>
+      <div class="field"><label>Align</label><div class="pseg" data-seg="align">${al.map(([v,g])=>`<button data-val="${v}" class="${p.align===v?'on':''}">${g}</button>`).join('')}</div></div>
+    </div></details>
+    <details open><summary>Image settings</summary><div class="dc">
+      <div class="field"><label>Background image</label>
+        ${p.image?`<div class="imgprop"><div class="ipthumb" style="background-image:url('${p.image}')"></div><div class="ipmeta"><b>From Assets</b><br><span>Drag a new image here to replace</span></div></div>`
+          :`<div class="imgprop"><div class="ipthumb"></div><div class="ipnone">None — drag an image from <b>Assets</b> onto the hero.</div></div>`}
+      </div>
+    </div></details>
+    <details><summary>Call to action</summary><div class="dc">
+      <div class="field"><label>Button label</label><input type="text" data-prop="cta" value="${(p.cta||'').replace(/"/g,'&quot;')}" placeholder="e.g. Explore trips"></div>
+    </div></details>
+  </div>`;}
+
+function cardsProps(){return `<div class="stub"><h4>Selected · Cards block<span class="pill">block</span></h4>
+  <details open><summary>Layout</summary><div class="dc">
+    <div class="field"><label>Columns</label><div class="pseg"><button>2</button><button class="on">3</button><button>4</button></div></div>
+    <div class="field"><label>Card style</label><div class="selctrl set">Elevated ▾</div></div>
+    <div class="field"><label>Content source</label><div class="selctrl set">Fragments (manual) ▾</div><div class="help">Drop WKND trip fragments to fill this block.</div></div>
+  </div></details></div>`;}
+
+function genericProps(b){return `<div class="stub"><h4>Selected · ${b.props.label} block<span class="pill">block</span></h4>
+  <details open><summary>Settings</summary><div class="dc"><div class="field"><label>Style</label><div class="selctrl set">Default ▾</div></div><div class="field"><label>Spacing</label><div class="selctrl set">Medium ▾</div></div></div></details></div>`;}
+
+function propsPanel(){
+  if(sel==='page') return pageProps();
+  const b=page.find(x=>x.id===sel);
+  if(!b) return `<div class="stub"><h4>Properties</h4><div style="color:var(--gray-500);font-size:13px">Select a block on the page, or click empty space for page properties.</div></div>`;
+  if(b.type==='hero') return heroProps(b);
+  if(b.type==='cards') return cardsProps(b);
+  return genericProps(b);
 }
+
+/* ---------------- OUTLINE / FILES / VERSIONS ---------------- */
 function railHTML(m){
-  if(m==='outline') return `<div class="stub"><h4>index · page outline</h4>
-    ${outline.map(o=>`
-      <div class="stubrow" data-outline="${o.sec}" style="cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/></svg><b style="font-weight:700">${o.sec}</b><span class="sc">${o.block}</span></div>
-      ${o.kids.map(k=>`<div class="stubrow" style="padding-left:30px;color:var(--gray-600);font-weight:500">${chev}${k}</div>`).join('')}
-    `).join('')}
-    <div class="stubrow" style="color:var(--gray-500)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg>nav &amp; footer<span class="sc">fragments</span></div></div>`;
-  if(m==='props') return propsFor(selectedSection);
-  if(m==='files') return `<div class="stub"><h4>index · files</h4>
-    ${[['index','page · edited 2h ago'],['nav','fragment'],['footer','fragment'],['metadata','sheet'],['placeholders','sheet'],['/drafts/spring-campaign','page · draft']].map(([f,meta])=>`<div class="stubrow">${fico}${f}<span class="sc">${meta}</span></div>`).join('')}</div>`;
-  if(m==='versions') return `<div class="stub"><h4>index · version history</h4>
-    ${[['Now','Autosave · you'],['20m ago','Previewed · you'],['2h ago','Published · you'],['Yesterday','Edited · martin'],['Aug 12','Rollout → de, fr'],['Aug 08','Restored from live']].map(([t,w])=>`<div class="stubrow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg><b style="font-weight:700">${t}</b><span class="sc">${w}</span></div>`).join('')}</div>`;
+  if(m==='outline'){
+    if(!page.length) return `<div class="stub"><h4>Outline</h4><div style="color:var(--gray-500);font-size:13px">Blank page — drag blocks from Content to build the outline.</div></div>`;
+    return `<div class="stub"><h4>new-page · outline</h4>${page.map(b=>`<div class="field" style="margin-bottom:6px"><div class="selctrl set" data-outline="${b.id}" style="cursor:pointer">${b.type==='hero'?'Hero':b.type==='cards'?'Cards':b.props.label||b.type}</div></div>`).join('')}</div>`;
+  }
+  if(m==='files') return `<div class="stub"><h4>wknd-advanced · files</h4>${[['new-page','draft · you'],['index','page'],['nav','fragment'],['footer','fragment'],['metadata','sheet'],['placeholders','sheet']].map(([f,meta])=>`<div class="field" style="margin-bottom:6px"><div class="selctrl set">${f} <span style="color:var(--gray-500);font-weight:500;font-size:11px">${meta}</span></div></div>`).join('')}</div>`;
+  if(m==='versions') return `<div class="stub"><h4>new-page · versions</h4>${[['Now','Autosave · you'],['Just now','Draft created'],['—','Not yet published']].map(([t,w])=>`<div class="field" style="margin-bottom:6px"><div class="selctrl set">${t} <span style="color:var(--gray-500);font-weight:500;font-size:11px">${w}</span></div></div>`).join('')}</div>`;
   return '';
 }
-function render(){
-  if(mode==='content'){ railbody.innerHTML=contentHTML(); wireContent(); renderGrid(); }
-  else {
-    railbody.innerHTML = railHTML(mode);
-    if(mode==='outline'){
-      railbody.querySelectorAll('[data-outline]').forEach(el=>{
-        el.classList.toggle('on', el.dataset.outline===selectedSection);
-        el.addEventListener('click',()=>selectSection(el.dataset.outline));
-      });
-    }
+
+/* ---------------- RENDER RAIL ---------------- */
+function renderRail(){
+  if(railMode==='content'){ railbody.innerHTML=contentPanel(); wireContent(); }
+  else if(railMode==='props'){ railbody.innerHTML=propsPanel(); wireProps(); }
+  else { railbody.innerHTML=railHTML(railMode);
+    if(railMode==='outline') railbody.querySelectorAll('[data-outline]').forEach(el=>el.addEventListener('click',()=>select(el.dataset.outline)));
   }
 }
 function wireContent(){
-  const cq=document.getElementById('cq'); if(cq) cq.addEventListener('input',e=>{q=e.target.value;renderGrid();});
-  const sf=document.getElementById('srcfilter'); if(sf) sf.addEventListener('click',e=>{const c=e.target.closest('.srcchip');if(!c)return;src=c.dataset.src;folder='All';render();});
-  railbody.querySelectorAll('[data-folder]').forEach(el=>el.addEventListener('click',()=>{folder=el.dataset.folder;renderGrid(); railbody.querySelectorAll('[data-folder]').forEach(x=>x.classList.toggle('on',x===el));}));
-  railbody.querySelectorAll('.crumbrow .cc').forEach(el=>el.addEventListener('click',()=>{folder='All';renderGrid();}));
+  const cq=document.getElementById('cq'); if(cq){cq.addEventListener('input',e=>{q=e.target.value;const p=cq.selectionStart;renderRail();const n=document.getElementById('cq');if(n){n.focus();n.setSelectionRange(p,p);}});}
+  railbody.querySelectorAll('[data-src]').forEach(el=>el.addEventListener('click',()=>{src=el.dataset.src;assetFolder='All';renderRail();}));
+  railbody.querySelectorAll('[data-folder]').forEach(el=>el.addEventListener('click',()=>{assetFolder=el.dataset.folder;renderRail();}));
+  railbody.querySelectorAll('[draggable=true]').forEach(el=>el.addEventListener('dragstart',e=>{
+    const d={kind:el.dataset.kind};
+    if(d.kind==='block')d.block=el.dataset.block;
+    if(d.kind==='asset'){d.img=el.dataset.img;d.alt=el.dataset.alt;}
+    if(d.kind==='fragment')d.idx=el.dataset.idx;
+    e.dataTransfer.setData('text/plain',JSON.stringify(d));
+  }));
 }
-function wireGrid(){
-  railbody.querySelectorAll('.insertbtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();insert(b.dataset.name,b.dataset.type);}));
-  railbody.querySelectorAll('.item').forEach(it=>{
-    it.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',JSON.stringify({n:it.dataset.name,t:it.dataset.type}));});
+function wireProps(){
+  railbody.querySelectorAll('input[data-prop],textarea[data-prop]').forEach(inp=>inp.addEventListener('input',()=>{
+    const b=page.find(x=>x.id===sel); if(!b)return; b.props[inp.dataset.prop]=inp.value; renderPage();
+  }));
+  railbody.querySelectorAll('[data-seg]').forEach(seg=>seg.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+    const b=page.find(x=>x.id===sel); if(!b)return; b.props[seg.dataset.seg]=btn.dataset.val;
+    seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===btn)); renderPage();
+  })));
+}
+
+/* ---------------- RENDER CANVAS ---------------- */
+function renderBlock(b){
+  const s=sel===b.id?'sel':'';
+  if(b.type==='hero'){const p=b.props;const style=p.image?`background-image:url('${p.image}')`:'';
+    const szmap={'2XL':'clamp(30px,4vw,44px)','XL':'34px','L':'27px','M':'21px'};
+    const inner=p.image?`
+      ${p.eyebrow?`<div class="eyebrow" style="text-align:${p.align}">${p.eyebrow}</div>`:''}
+      <h1 style="font-size:${szmap[p.size]||'40px'};text-align:${p.align}">${p.headline||'Add a headline'}</h1>
+      ${p.subhead?`<div class="subhead" style="text-align:${p.align}">${p.subhead}</div>`:''}
+      ${p.cta?`<div class="hcta">${p.cta} ›</div>`:''}`
+      :`<div class="imgdrop">🖼 Drop an image from <b>Assets</b> to set the hero background</div>
+        <h1 style="font-size:28px;margin-top:12px;color:var(--gray-700)">${p.headline||'Add a headline'}</h1>`;
+    return `<div class="cblock c-hero ${p.image?'':'noimg'} ${s}" data-id="${b.id}" data-drop="hero" style="${style}"><span class="blabel">Hero</span>${inner}</div>`;}
+  if(b.type==='cards'){const items=b.props.items||[];
+    return `<div class="cblock c-cards ${s}" data-id="${b.id}" data-drop="cards"><span class="blabel">Cards</span>
+      ${b.props.heading?`<h2>${b.props.heading}</h2>`:'<h2>Trips Worth Taking</h2>'}
+      <div class="c-cardrow">${items.map(it=>`<div class="tc"><div class="tcimg" style="background-image:url('${it.img}')"></div><div class="tcb"><b>${it.title}</b><p>${it.desc||''}</p>${it.cta?`<span class="cta">${it.cta} ›</span>`:''}</div></div>`).join('')}
+        <div class="slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Drag trip fragments here</div></div></div>`;}
+  if(b.type==='image')return `<div class="cblock c-image ${s}" data-id="${b.id}"><span class="blabel">Image</span><img src="${b.props.url}" alt="${b.props.alt||''}"></div>`;
+  if(b.type==='divider')return `<div class="cblock c-divider ${s}" data-id="${b.id}"><span class="blabel">Divider</span><hr></div>`;
+  return `<div class="cblock c-generic ${s}" data-id="${b.id}" data-drop="generic"><span class="blabel">${b.props.label}</span><div class="gbox"><b>${b.props.label} block</b>Configure in Properties, or drag content in.</div></div>`;}
+
+function renderPage(){
+  pageEl.classList.toggle('pageselected', sel==='page');
+  if(!page.length){
+    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p>Start by dragging a <b>block</b> from the Content panel. Then drop an <b>image</b> from Assets, edit text in <b>Properties</b>, and add <b>trip fragments</b> as cards.</p></div>`;
+  } else {
+    pageEl.innerHTML=page.map(renderBlock).join('');
+  }
+  wireCanvas();
+}
+function wireCanvas(){
+  pageEl.querySelectorAll('.cblock').forEach(el=>{
+    el.addEventListener('click',e=>{e.stopPropagation();select(el.dataset.id);});
+    el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drophot');});
+    el.addEventListener('dragleave',e=>{if(!el.contains(e.relatedTarget))el.classList.remove('drophot');});
+    el.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();el.classList.remove('drophot');handleDrop(getData(e),el.dataset.id,el.dataset.drop);});
   });
+  const empty=document.getElementById('empty');
+  if(empty){['dragover'].forEach(()=>{});empty.addEventListener('dragover',e=>{e.preventDefault();empty.classList.add('hot');});empty.addEventListener('dragleave',()=>empty.classList.remove('hot'));empty.addEventListener('drop',e=>{e.preventDefault();empty.classList.remove('hot');handleDrop(getData(e),null,'page');});}
 }
-// tabs
-document.getElementById('railtabs').addEventListener('click',e=>{const t=e.target.closest('.railtab');if(!t)return;mode=t.dataset.mode;document.querySelectorAll('.railtab').forEach(x=>x.classList.toggle('on',x===t));render();});
+function getData(e){try{return JSON.parse(e.dataTransfer.getData('text/plain'));}catch(_){return null;}}
+// clicking page background (not a block) selects page
+pageEl.addEventListener('click',e=>{if(e.target===pageEl||e.target.id==='empty'||e.target.closest('#empty'))select('page');});
+pageEl.addEventListener('dragover',e=>e.preventDefault());
+pageEl.addEventListener('drop',e=>{if(e.target===pageEl){e.preventDefault();handleDrop(getData(e),null,'page');}});
 
-// ---- canvas selection: clicking a section drives the rail context ----
-function selectSection(name){
-  selectedSection=name;
-  document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('selected', s.dataset.sec===name));
-  const b=document.querySelector('.ctxbar b'); if(b) b.textContent='Section · '+name;      // update Content banner live
-  if(mode==='props') render();                                                              // Properties reflects the new selection
-  document.querySelectorAll('[data-outline]').forEach(o=>o.classList.toggle('on', o.dataset.outline===name));
+/* ---------------- DROP LOGIC ---------------- */
+function newBlock(kind){
+  const id='b'+(uid++);
+  if(kind==='hero')return{id,type:'hero',props:{eyebrow:'',headline:'',subhead:'',level:'H1',size:'2XL',align:'left',image:'',cta:''}};
+  if(kind==='cards')return{id,type:'cards',props:{items:[],heading:''}};
+  if(kind==='divider')return{id,type:'divider',props:{}};
+  const labels={columns:'Columns',teaser:'Teaser',carousel:'Carousel',accordion:'Accordion',quote:'Quote',tabs:'Tabs',embed:'Embed',related:'Related Articles',table:'Table'};
+  return{id,type:'generic',props:{label:labels[kind]||kind}};
+}
+function handleDrop(d,targetId,dropType){
+  if(!d)return;
+  if(d.kind==='block'){const b=newBlock(d.block);page.push(b);sel=b.id;renderPage();toast(`Added ${b.type==='hero'?'Hero':b.type==='cards'?'Cards':b.props.label} block`);return;}
+  if(d.kind==='asset'){
+    const tb=page.find(x=>x.id===targetId);
+    if(tb&&tb.type==='hero'){tb.props.image=d.img;sel=tb.id;renderPage();if(railMode==='props')renderRail();toast('Set hero background image');return;}
+    if(tb&&tb.type==='cards'){tb.props.items.push({img:d.img,title:d.alt||'Image',desc:'',cta:''});renderPage();toast('Added image card');return;}
+    const b={id:'b'+(uid++),type:'image',props:{url:d.img,alt:d.alt}};page.push(b);sel=b.id;renderPage();toast('Added image');return;}
+  if(d.kind==='fragment'){
+    const t=TRIPS[+d.idx];const card={img:t.img,title:t.t,desc:t.d,cta:t.cta};
+    let cb=page.find(x=>x.id===targetId&&x.type==='cards')||[...page].reverse().find(x=>x.type==='cards');
+    if(!cb){cb=newBlock('cards');page.push(cb);}
+    cb.props.items.push(card);sel=cb.id;renderPage();toast(`Added trip: ${t.t}`);return;}
 }
 
-// ---- insertion into the currently selected section ----
-function insert(name,type){
-  const sec = document.querySelector('.sec.selected') || document.getElementById('targetsec');
-  let row = sec.querySelector('.cardsrow');
-  if(!row){ const b=document.createElement('div'); b.className='block'; row=document.createElement('div'); row.className='cardsrow'; b.appendChild(row); sec.appendChild(b); }
-  const el=document.createElement('div'); el.className='pcard';
-  const head = type==='asset' ? `<div class="ph" style="background:linear-gradient(135deg,#8a7a63,#b6a488)"></div>` : `<div class="ph t-${type}" style="display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${glyphs[type]||glyphs.block}</svg></div>`;
-  el.innerHTML = head + `<div class="pb"><b>${name}</b><p>${SRC[type].label}</p></div>`;
-  const slot = row.querySelector('.dropslot');
-  if(slot) row.insertBefore(el, slot); else row.appendChild(el);
-  toast(`Inserted “${name}” into Section · ${sec.dataset.sec}`);
-}
+/* ---------------- SELECTION ---------------- */
+function select(id){sel=id;setMode('props');renderPage();}
+function setMode(m){railMode=m;document.querySelectorAll('.railtab').forEach(x=>x.classList.toggle('on',x.dataset.mode===m));renderRail();}
+document.getElementById('railtabs').addEventListener('click',e=>{const t=e.target.closest('.railtab');if(t)setMode(t.dataset.mode);});
 
-// ---- section click + drag-drop (every section is a target) ----
-document.querySelectorAll('.sec').forEach(sec=>{
-  sec.addEventListener('click',e=>{ if(e.target.closest('.insertbtn')) return; selectSection(sec.dataset.sec); });
-  sec.addEventListener('dragover',e=>{e.preventDefault(); sec.classList.add('draghot'); const ds=sec.querySelector('.dropslot'); if(ds) ds.classList.add('hot');});
-  sec.addEventListener('dragleave',e=>{ if(!sec.contains(e.relatedTarget)){ sec.classList.remove('draghot'); const ds=sec.querySelector('.dropslot'); if(ds) ds.classList.remove('hot'); }});
-  sec.addEventListener('drop',e=>{e.preventDefault(); sec.classList.remove('draghot'); const ds=sec.querySelector('.dropslot'); if(ds) ds.classList.remove('hot'); selectSection(sec.dataset.sec); try{const d=JSON.parse(e.dataTransfer.getData('text/plain')); insert(d.n,d.t);}catch(_){}} );
-});
+let toastT;function toast(m){const el=document.getElementById('toast');document.getElementById('toasttext').textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2000);}
 
-let toastT; function toast(msg){const el=document.getElementById('toast');document.getElementById('toasttext').textContent=msg;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2200);}
-
-selectSection('Cards');   // default selection on load
-render();
+renderPage(); renderRail();
 </script>
 </body>
 </html>
