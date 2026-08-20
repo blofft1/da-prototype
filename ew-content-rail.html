@@ -38,6 +38,29 @@
   .iconrail{width:48px;flex:0 0 48px;background:#fff;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:16px;color:var(--gray-500)}
   .iconrail svg{width:22px;height:22px;cursor:pointer}
 
+  /* ---- left AI prompt rail (Experience Workspace) ---- */
+  .ailrail{width:322px;flex:0 0 322px;background:#fff;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;min-height:0}
+  .ailtop{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:flex-end;padding:0 14px}
+  .ailtop .ib{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--gray-500);cursor:pointer}
+  .ailtop .ib:hover{background:var(--gray-75)}
+  .ailbody{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:8px 22px;overflow:auto}
+  .ailwelcome{text-align:center}
+  .ailwelcome h2{font-size:21px;font-weight:700;letter-spacing:-.3px}
+  .ailwelcome p{color:var(--gray-600);font-size:14px;margin-top:10px}
+  .aichips{display:flex;flex-direction:column;gap:11px}
+  .aichip{display:flex;align-items:center;gap:11px;width:100%;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-s);padding:11px 14px;font-size:13.5px;font-weight:600;color:var(--gray-800);cursor:pointer;box-shadow:var(--shadow);text-align:left}
+  .aichip:hover{background:var(--gray-50);border-color:var(--gray-300)}
+  .aiico{width:22px;height:22px;border-radius:6px;background:var(--accent-wash);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:0 0 22px}
+  .aiico svg{width:13px;height:13px}
+  .ailmore{text-align:center;font-size:13px;color:var(--gray-600);cursor:pointer}
+  .ailmore:hover{color:var(--accent)}
+  .ailinput{margin:6px 16px 0;border:1px solid var(--gray-300);border-radius:var(--radius-m);padding:13px 15px;min-height:82px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+  .ailinput .ph{color:var(--gray-500);font-size:14px}
+  .aiplus{width:26px;height:26px;border-radius:50%;border:1px solid var(--gray-300);color:var(--gray-600);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .aiplus svg{width:14px;height:14px}
+  .ailfoot{padding:12px 16px 16px;font-size:11px;color:var(--gray-500);line-height:1.55}
+  .ailfoot a{color:var(--accent);font-weight:600}
+
   .canvaswrap{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--gray-100)}
   .subbar{height:44px;flex:0 0 44px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;padding:0 16px}
   .seg{display:inline-flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:3px;gap:2px}
@@ -205,6 +228,27 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 4 10c-.7.7-1 1.5-1 2H9c0-.5-.3-1.3-1-2A6 6 0 0 1 12 3z"/></svg>
     </div>
+
+    <!-- ===== LEFT AI PROMPT RAIL (Experience Workspace) ===== -->
+    <aside class="ailrail">
+      <div class="ailtop">
+        <div class="ib" title="Toggle panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></div>
+      </div>
+      <div class="ailbody">
+        <div class="ailwelcome"><h2>Welcome, Bill</h2><p>What are we working on today?</p></div>
+        <div class="aichips">
+          <div class="aichip"><span class="aiico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v10H8l-4 4z"/><path d="M15.5 8.2l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z"/></svg></span> AI Visibility Audit</div>
+          <div class="aichip"><span class="aiico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v10H8l-4 4z"/><path d="M8 8h8M8 11h5"/></svg></span> Summarize page</div>
+          <div class="aichip"><span class="aiico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v10H8l-4 4z"/><path d="M8.5 10l2 2 4-4"/></svg></span> Publish Workflow</div>
+        </div>
+        <div class="ailmore">Show more</div>
+      </div>
+      <div class="ailinput">
+        <span class="ph">Ask anything, or type / for skills…</span>
+        <div class="aiplus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="ailfoot">Responses are generated using AI, and may be inaccurate. Check before using. <a href="#">AI User Guidelines</a></div>
+    </aside>
 
     <div class="canvaswrap">
       <div class="subbar">
