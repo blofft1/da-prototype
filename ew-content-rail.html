@@ -200,6 +200,41 @@
   .imgprop .ipmeta{font-size:12px}.imgprop .ipmeta b{font-size:12.5px}.imgprop .ipmeta span{color:var(--gray-500);font-size:11px}
   .imgprop .ipnone{color:var(--gray-500);font-size:12px}
 
+  /* Content Advisor patterns */
+  .catabs{display:flex;gap:20px;padding:12px 16px 0;border-bottom:1px solid var(--gray-100)}
+  .catab{font-size:12.5px;font-weight:700;color:var(--gray-500);padding-bottom:10px;border-bottom:2px solid transparent;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .catab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .rseg{display:flex;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-pill);padding:3px;gap:2px;margin:13px 16px 4px}
+  .rseg button{border:none;background:transparent;font-family:var(--font);font-weight:700;font-size:12.5px;color:var(--gray-600);padding:7px 14px;border-radius:var(--radius-pill);cursor:pointer;flex:1}
+  .rseg button.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+  .catoolbar{display:flex;align-items:center;gap:10px;padding:2px 16px 10px;color:var(--gray-600);font-size:12px}
+  .catoolbar .ci{width:28px;height:28px;border-radius:7px;border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .catoolbar .ci:hover{background:var(--gray-75)}
+  .catoolbar .sort{display:flex;align-items:center;gap:6px;font-weight:600;cursor:pointer}
+  .catoolbar .vtog{margin-left:auto;display:inline-flex;border:1px solid var(--gray-200);border-radius:var(--radius-s);overflow:hidden}
+  .catoolbar .vtog button{border:none;background:#fff;padding:5px 8px;cursor:pointer;color:var(--gray-500);display:flex}
+  .catoolbar .vtog button.on{background:var(--accent-wash);color:var(--accent)}
+  .ameta{display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap}
+  .afmt{font-size:9.5px;font-weight:800;color:var(--gray-600);background:var(--gray-100);border-radius:4px;padding:1px 6px;letter-spacing:.3px}
+  .astatus{font-size:10px;color:var(--gray-500);font-weight:600}
+  .afolder{font-size:10px;color:var(--purple);font-weight:700}
+  .alist .arow{display:flex;gap:11px;align-items:center;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:8px;margin-bottom:8px;cursor:grab;background:#fff}
+  .alist .arow:hover{box-shadow:var(--shadow-hover);border-color:var(--gray-300)}
+  .alist .arow .aimg{width:64px;height:46px;flex:0 0 64px;border-radius:8px;background-size:cover;background-position:center}
+  .empty2{color:var(--gray-500);font-size:13px;padding:24px;text-align:center}
+  .colrow{display:flex;align-items:center;gap:11px;border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:10px;margin-bottom:9px;cursor:pointer}
+  .colrow:hover{background:var(--gray-50)}
+  .colthumb{width:56px;height:42px;flex:0 0 56px;border-radius:8px;background-size:cover;background-position:center}
+  .colrow .cn{font-size:13px;font-weight:700}
+  .colrow .cc2{font-size:11px;color:var(--gray-500);margin-top:2px}
+  /* locked / disallowed block */
+  .bitem.locked{cursor:not-allowed;background:var(--gray-50);border-style:dashed;border-color:var(--gray-300)}
+  .bitem.locked .bthumb{background:var(--gray-100);color:var(--gray-400)}
+  .bitem.locked .bn{color:var(--gray-500)}
+  .lockbadge{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);display:flex;align-items:center;justify-content:center;z-index:2}
+  .lockbadge svg{width:12px;height:12px}
+  .lockcap{font-size:10.5px;font-weight:700;color:var(--notice)}
+
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:var(--radius-pill);box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;transition:.2s;z-index:100;display:flex;align-items:center;gap:9px}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast svg{width:16px;height:16px;color:#7ee0b0}
@@ -265,7 +300,8 @@
 
     <aside class="rail">
       <div class="railtabs" id="railtabs">
-        <div class="railtab on" data-mode="content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Content</div>
+        <div class="railtab on" data-mode="blocks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="13" width="8" height="7" rx="1.5"/><rect x="13" y="13" width="8" height="7" rx="1.5"/></svg>Blocks</div>
+        <div class="railtab" data-mode="content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8" cy="9" r="1.6"/><path d="M21 15l-5-4-8 6"/></svg>Content</div>
         <div class="railtab" data-mode="outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Outline</div>
         <div class="railtab" data-mode="props"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Properties</div>
         <div class="railtab" data-mode="files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Files</div>
@@ -304,7 +340,7 @@ const G={hero:'<rect x="3" y="4" width="18" height="9" rx="1.5"/><rect x="3" y="
  table:'<rect x="3" y="4" width="18" height="16"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/>',
  divider:'<path d="M3 12h18"/>'};
 const BLOCKS=[
- {n:'Hero',k:'hero'},{n:'Cards',k:'cards'},{n:'Columns',k:'columns'},{n:'Teaser',k:'teaser'},
+ {n:'Hero',k:'hero'},{n:'Cards',k:'cards'},{n:'Columns',k:'columns'},{n:'Teaser',k:'teaser',locked:true},
  {n:'Carousel',k:'carousel'},{n:'Accordion',k:'accordion'},{n:'Quote',k:'quote'},{n:'Tabs',k:'tabs'},
  {n:'Embed',k:'embed'},{n:'Related Articles',k:'related'},{n:'Table',k:'table'},{n:'Divider',k:'divider'}];
 // 10 WKND trip fragments (content) mapped to real images
@@ -333,39 +369,68 @@ const ASSETS=[
  {f:'river-kayaking.jpg',alt:'River kayaking',img:IMG.kayak,folder:'Activities'},
 ];
 const ASSET_FOLDERS=['All','Mountains','Coast','Activities'];
+const COLLECTIONS=[
+ {n:'Winter Trips',c:4,img:IMG.alpine},{n:'Hero Images',c:6,img:IMG.snowpeak},
+ {n:'Brand-Approved',c:12,img:IMG.fjord},{n:'Coastal',c:3,img:IMG.ocean}];
 
-let railMode='content', src='all', q='', assetFolder='All', sel='page', uid=1;
+let railMode='blocks', q='', assetFolder='All', sel='page', uid=1, contentKind='asset', caStore='files', caView='grid', caSort='Name';
 let page=[]; // {id,type,props}
 const railbody=document.getElementById('railbody'), pageEl=document.getElementById('page');
 
-/* ---------------- CONTENT PANEL ---------------- */
-function blockCard(b){return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">Library block</div></div>`;}
-function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ao">Content Advisor · AEM Assets</div></div></div>`;}
-function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Trip · fragment</span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
+/* ---------------- BLOCKS (Layout) + CONTENT (Content Advisor) PANELS ---------------- */
+function blockCard(b){
+  if(b.locked) return `<div class="bitem locked" title="This block isn't permitted by the page template">
+    <span class="lockbadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+    <div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div>
+    <div class="bn">${b.n}</div><div class="lockcap">Not allowed on this page</div></div>`;
+  return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">Layout block</div></div>`;
+}
+function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span></div></div></div>`;}
+function assetRow(a){return `<div class="arow" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab" style="flex:1"><div class="an" style="font-size:12.5px;font-weight:700">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span><span class="afolder">${a.folder}</span></div></div></div>`;}
+function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Edge Fragment</span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
+function colRow(c){return `<div class="colrow"><div class="colthumb" style="background-image:url('${c.img}')"></div><div><div class="cn">${c.n}</div><div class="cc2">${c.c} items</div></div></div>`;}
 function matchTrip(t){const s=(t.t+' '+t.d+' '+t.r+' '+t.s).toLowerCase();return !q||s.includes(q.toLowerCase());}
-function matchBlock(b){return !q||b.n.toLowerCase().includes(q.toLowerCase());}
 function matchAsset(a){const s=(a.f+' '+a.alt+' '+a.folder).toLowerCase();return (!q||s.includes(q.toLowerCase()))&&(assetFolder==='All'||a.folder===assetFolder);}
 
-function contentPanel(){
-  const chips=[['all','All','var(--gray-400)'],['block','Blocks','var(--accent)'],['fragment','Fragments','var(--notice)'],['asset','Assets','var(--purple)']];
-  const blocks=BLOCKS.filter(matchBlock), trips=TRIPS.filter(matchTrip), assets=ASSETS.filter(matchAsset);
-  let body='';
-  const blocksSec=`<div class="subhead2">Blocks<span class="ln"></span></div><div class="bgrid">${blocks.map(blockCard).join('')}</div>`;
-  const tripsSec=`<div class="subhead2">Fragments · WKND trips<span class="ln"></span></div>${trips.map((t)=>tripRow(t,TRIPS.indexOf(t))).join('')||'<div style="color:var(--gray-500);font-size:12.5px;padding:6px">No trips match.</div>'}`;
-  const assetsSec=`<div class="subhead2">Assets<span class="ln"></span></div><div class="agrid">${assets.map(assetCard).join('')}</div>`;
-  if(src==='all') body=blocksSec+tripsSec+assetsSec;
-  else if(src==='block') body=`<div class="bgrid">${blocks.map(blockCard).join('')}</div>`;
-  else if(src==='fragment') body=trips.map((t)=>tripRow(t,TRIPS.indexOf(t))).join('')||'<div style="color:var(--gray-500);font-size:13px;padding:20px;text-align:center">No trips match.</div>';
-  else if(src==='asset') body=`<div class="agrid">${assets.map(assetCard).join('')}</div>`;
-  const count = src==='block'?blocks.length+' blocks': src==='fragment'?trips.length+' trips': src==='asset'?assets.length+' assets': (blocks.length+trips.length+assets.length)+' items';
+function blocksPanel(){
+  const blocks=BLOCKS.filter(b=>!q||b.n.toLowerCase().includes(q.toLowerCase()));
   return `
     <div class="csearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input id="cq" type="text" placeholder="Search blocks, trips, assets…" value="${q}"></div>
-    <div class="srcfilter" id="srcfilter">${chips.map(([k,l,c])=>`<span class="srcchip ${src===k?'on':''}" data-src="${k}"><span class="sd" style="background:${c}"></span>${l}</span>`).join('')}</div>
-    ${src==='asset'?`<div class="srcfilter" style="padding-top:0">${ASSET_FOLDERS.map(f=>`<span class="srcchip ${assetFolder===f?'on':''}" data-folder="${f}" style="${assetFolder===f?'':'background:#fff'}">${f}</span>`).join('')}</div>`:''}
-    <div class="ctxbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg>Drag onto the page to compose &nbsp;·&nbsp; <b>no pop-ups</b></div>
-    <div class="reslist">${body}</div>
-    <div class="gridcount"><span>${count}</span><span>Assets = Content Advisor</span></div>`;
+      <input id="cq" type="text" placeholder="Search layout blocks…" value="${q}"></div>
+    <div class="ctxbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h16"/></svg>Drag a block onto the page &nbsp;·&nbsp; template: <b>WKND Landing</b></div>
+    <div class="reslist"><div class="bgrid">${blocks.map(blockCard).join('')}</div></div>
+    <div class="gridcount"><span>${blocks.length} blocks</span><span>🔒 restricted by template</span></div>`;
+}
+
+function contentPanel(){
+  const assets=ASSETS.filter(matchAsset), trips=TRIPS.filter(matchTrip);
+  let body;
+  if(caStore==='collections'){
+    body=`<div class="reslist">${COLLECTIONS.map(colRow).join('')}</div>`;
+  } else if(contentKind==='asset'){
+    const grid = caView==='list' ? `<div class="alist">${assets.map(assetRow).join('')}</div>` : `<div class="agrid">${assets.map(assetCard).join('')}</div>`;
+    body=`<div class="reslist">${assets.length?grid:'<div class="empty2">No assets match.</div>'}</div>`;
+  } else {
+    body=`<div class="reslist">${trips.length?trips.map(t=>tripRow(t,TRIPS.indexOf(t))).join(''):'<div class="empty2">No Edge Fragments match.</div>'}</div>`;
+  }
+  const count = caStore==='collections' ? COLLECTIONS.length+' collections' : contentKind==='asset' ? assets.length+' assets' : trips.length+' Edge Fragments';
+  const showTools = caStore!=='collections';
+  return `
+    <div class="catabs">
+      <div class="catab ${caStore==='files'?'on':''}" data-store="files"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Files &amp; Folders</div>
+      <div class="catab ${caStore==='collections'?'on':''}" data-store="collections"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Collections</div>
+    </div>
+    ${showTools?`<div class="rseg"><button class="${contentKind==='asset'?'on':''}" data-ck="asset">Assets</button><button class="${contentKind==='fragment'?'on':''}" data-ck="fragment">Edge Fragments</button></div>`:''}
+    <div class="csearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="cq" type="text" placeholder="${caStore==='collections'?'Search collections…':contentKind==='asset'?'Search assets…':'Search Edge Fragments (trips)…'}" value="${q}"></div>
+    ${showTools?`<div class="catoolbar">
+      <div class="ci" title="Filter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18l-7 8v5l-4 2v-7z"/></svg></div>
+      <div class="sort">Sort: ${caSort} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
+      ${contentKind==='asset'?`<div class="vtog"><button class="${caView==='list'?'on':''}" data-caview="list"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button><button class="${caView==='grid'?'on':''}" data-caview="grid"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button></div>`:''}
+    </div>`:''}
+    ${contentKind==='asset'&&caStore==='files'?`<div class="srcfilter" style="padding-top:0">${ASSET_FOLDERS.map(f=>`<span class="srcchip ${assetFolder===f?'on':''}" data-folder="${f}" style="${assetFolder===f?'':'background:#fff'}">${f}</span>`).join('')}</div>`:''}
+    ${body}
+    <div class="gridcount"><span>${count}</span><span>Content Advisor</span></div>`;
 }
 
 /* ---------------- PROPERTIES (context sensitive) ---------------- */
@@ -427,7 +492,7 @@ function cardsProps(){return `<div class="stub"><h4>Selected · Cards block<span
   <details open><summary>Layout</summary><div class="dc">
     <div class="field"><label>Columns</label><div class="pseg"><button>2</button><button class="on">3</button><button>4</button></div></div>
     <div class="field"><label>Card style</label><div class="selctrl set">Elevated ▾</div></div>
-    <div class="field"><label>Content source</label><div class="selctrl set">Fragments (manual) ▾</div><div class="help">Drop WKND trip fragments to fill this block.</div></div>
+    <div class="field"><label>Content source</label><div class="selctrl set">Edge Fragments (manual) ▾</div><div class="help">Drop WKND trip Edge Fragments to fill this block.</div></div>
   </div></details></div>`;}
 
 function genericProps(b){return `<div class="stub"><h4>Selected · ${b.props.label} block<span class="pill">block</span></h4>
@@ -455,7 +520,8 @@ function railHTML(m){
 
 /* ---------------- RENDER RAIL ---------------- */
 function renderRail(){
-  if(railMode==='content'){ railbody.innerHTML=contentPanel(); wireContent(); }
+  if(railMode==='blocks'){ railbody.innerHTML=blocksPanel(); wireContent(); }
+  else if(railMode==='content'){ railbody.innerHTML=contentPanel(); wireContent(); }
   else if(railMode==='props'){ railbody.innerHTML=propsPanel(); wireProps(); }
   else { railbody.innerHTML=railHTML(railMode);
     if(railMode==='outline') railbody.querySelectorAll('[data-outline]').forEach(el=>el.addEventListener('click',()=>select(el.dataset.outline)));
@@ -463,8 +529,10 @@ function renderRail(){
 }
 function wireContent(){
   const cq=document.getElementById('cq'); if(cq){cq.addEventListener('input',e=>{q=e.target.value;const p=cq.selectionStart;renderRail();const n=document.getElementById('cq');if(n){n.focus();n.setSelectionRange(p,p);}});}
-  railbody.querySelectorAll('[data-src]').forEach(el=>el.addEventListener('click',()=>{src=el.dataset.src;assetFolder='All';renderRail();}));
+  railbody.querySelectorAll('[data-ck]').forEach(el=>el.addEventListener('click',()=>{contentKind=el.dataset.ck;q='';renderRail();}));
+  railbody.querySelectorAll('[data-store]').forEach(el=>el.addEventListener('click',()=>{caStore=el.dataset.store;q='';renderRail();}));
   railbody.querySelectorAll('[data-folder]').forEach(el=>el.addEventListener('click',()=>{assetFolder=el.dataset.folder;renderRail();}));
+  railbody.querySelectorAll('[data-caview]').forEach(el=>el.addEventListener('click',()=>{caView=el.dataset.caview;renderRail();}));
   railbody.querySelectorAll('[draggable=true]').forEach(el=>el.addEventListener('dragstart',e=>{
     const d={kind:el.dataset.kind};
     if(d.kind==='block')d.block=el.dataset.block;
@@ -508,7 +576,7 @@ function renderBlock(b){
 function renderPage(){
   pageEl.classList.toggle('pageselected', sel==='page');
   if(!page.length){
-    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p>Start by dragging a <b>block</b> from the Content panel. Then drop an <b>image</b> from Assets, edit text in <b>Properties</b>, and add <b>trip fragments</b> as cards.</p></div>`;
+    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p>Start by dragging a <b>block</b> from the <b>Blocks</b> tab. Then drop an <b>image</b> from Content ▸ Assets, edit text in <b>Properties</b>, and add <b>Edge Fragments</b> (trips) as cards.</p></div>`;
   } else {
     pageEl.innerHTML=page.map(renderBlock).join('');
   }
