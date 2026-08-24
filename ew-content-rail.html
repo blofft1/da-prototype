@@ -235,6 +235,53 @@
   .lockbadge svg{width:12px;height:12px}
   .lockcap{font-size:10.5px;font-weight:700;color:var(--notice)}
 
+  /* assembly stepper */
+  .stepper{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:1px solid var(--gray-100);background:var(--gray-50)}
+  .step{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--gray-500);cursor:pointer;padding:4px 8px;border-radius:var(--radius-pill)}
+  .step .sn{width:18px;height:18px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+  .step.on{color:var(--accent)} .step.on .sn{background:var(--accent);color:#fff}
+  .step:hover{color:var(--gray-800)}
+  .sarrow{color:var(--gray-300);font-weight:700}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--gray-100);padding:1px 5px;border-radius:4px;color:var(--gray-700)}
+
+  /* Trips (fragment) block variants */
+  .c-trips{padding:24px 28px}
+  .c-trips .thead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .c-trips h2{font-size:20px;letter-spacing:-.3px}
+  .refbadge{font-size:10.5px;font-weight:700;color:var(--pos);background:var(--pos-wash);border-radius:var(--radius-pill);padding:3px 10px;white-space:nowrap}
+  .bindslot{border:2px dashed var(--accent-border);border-radius:var(--radius-m);min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--accent);font-weight:700;font-size:13.5px;background:var(--accent-wash);text-align:center;padding:20px}
+  .ti{border:1px solid var(--gray-200);border-radius:var(--radius-m);overflow:hidden;background:#fff}
+  .ti .tiimg{background-size:cover;background-position:center;background-color:var(--gray-100)}
+  .ti .tib{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+  .ti .tieye{font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--accent)}
+  .ti .tit{font-size:15px;font-weight:700;letter-spacing:-.2px}
+  .ti .tid{font-size:12.5px;color:var(--gray-600);line-height:1.4}
+  .ti .ticta{font-size:12.5px;font-weight:700;color:var(--accent);margin-top:2px}
+  .tv-card{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tv-card .tiimg{height:140px}
+  .tv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .tv-grid .tiimg{height:104px}.tv-grid .tib{padding:9px 10px}.tv-grid .tit{font-size:13px}.tv-grid .tid{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .tv-compact{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .tv-compact .tiimg{height:82px}.tv-compact .tib{padding:9px 11px}.tv-compact .tit{font-size:13.5px}.tv-compact .tid{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .tv-list{display:flex;flex-direction:column;gap:12px}
+  .tv-list .ti{display:flex;align-items:stretch}
+  .tv-list .tiimg{width:160px;flex:0 0 160px;min-height:108px}
+  .tv-list .tib{flex:1;justify-content:center}
+  .tv-featured{display:flex;flex-direction:column;gap:18px}
+  .tv-featured .ti{display:flex;align-items:stretch}
+  .tv-featured .tiimg{width:46%;flex:0 0 46%;min-height:230px}
+  .tv-featured .tib{flex:1;justify-content:center;padding:24px;gap:9px}
+  .tv-featured .tit{font-size:25px}.tv-featured .tid{font-size:14px}
+  /* field toggles + reference note (Properties) */
+  .togs{display:flex;flex-wrap:wrap;gap:7px}
+  .tog{font-size:12px;font-weight:700;border:1px solid var(--gray-300);border-radius:var(--radius-pill);padding:6px 11px;cursor:pointer;color:var(--gray-600);display:flex;align-items:center;gap:6px}
+  .tog.on{background:var(--accent-wash);border-color:var(--accent-border);color:var(--accent)}
+  .tog .ck{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--gray-400);display:flex;align-items:center;justify-content:center;color:#fff}
+  .tog.on .ck{background:var(--accent);border-color:var(--accent)}
+  .tog .ck svg{width:9px;height:9px}
+  .refnote{font-size:11.5px;color:#245b43;background:var(--pos-wash);border:1px solid #b7e0c9;border-radius:var(--radius-s);padding:9px 11px;line-height:1.45;margin-bottom:12px}
+  .refnote b{color:var(--pos)}
+
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:var(--radius-pill);box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;transition:.2s;z-index:100;display:flex;align-items:center;gap:9px}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast svg{width:16px;height:16px;color:#7ee0b0}
@@ -299,6 +346,11 @@
     </div>
 
     <aside class="rail">
+      <div class="stepper" id="stepper" title="Assembly flow">
+        <div class="step" data-step="blocks"><span class="sn">1</span> Structure</div><div class="sarrow">›</div>
+        <div class="step" data-step="content"><span class="sn">2</span> Bind</div><div class="sarrow">›</div>
+        <div class="step" data-step="props"><span class="sn">3</span> Display</div>
+      </div>
       <div class="railtabs" id="railtabs">
         <div class="railtab on" data-mode="blocks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="13" width="8" height="7" rx="1.5"/><rect x="13" y="13" width="8" height="7" rx="1.5"/></svg>Blocks</div>
         <div class="railtab" data-mode="content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8" cy="9" r="1.6"/><path d="M21 15l-5-4-8 6"/></svg>Content</div>
@@ -338,9 +390,10 @@ const G={hero:'<rect x="3" y="4" width="18" height="9" rx="1.5"/><rect x="3" y="
  embed:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l4 3-4 3z"/>',
  related:'<rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="11" width="18" height="3" rx="1"/><rect x="3" y="16" width="12" height="3" rx="1"/>',
  table:'<rect x="3" y="4" width="18" height="16"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/>',
- divider:'<path d="M3 12h18"/>'};
+ divider:'<path d="M3 12h18"/>',
+ trips:'<rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="7" rx="1.5"/><rect x="13" y="13" width="8" height="7" rx="1.5"/>'};
 const BLOCKS=[
- {n:'Hero',k:'hero'},{n:'Cards',k:'cards'},{n:'Columns',k:'columns'},{n:'Teaser',k:'teaser',locked:true},
+ {n:'Hero',k:'hero'},{n:'Cards',k:'cards'},{n:'Trips',k:'trips'},{n:'Columns',k:'columns'},{n:'Teaser',k:'teaser',locked:true},
  {n:'Carousel',k:'carousel'},{n:'Accordion',k:'accordion'},{n:'Quote',k:'quote'},{n:'Tabs',k:'tabs'},
  {n:'Embed',k:'embed'},{n:'Related Articles',k:'related'},{n:'Table',k:'table'},{n:'Divider',k:'divider'}];
 // 10 WKND trip fragments (content) mapped to real images
@@ -383,7 +436,7 @@ function blockCard(b){
     <span class="lockbadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
     <div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div>
     <div class="bn">${b.n}</div><div class="lockcap">Not allowed on this page</div></div>`;
-  return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">Layout block</div></div>`;
+  return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">${b.k==='trips'?'Fragment block':'Layout block'}</div></div>`;
 }
 function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span></div></div></div>`;}
 function assetRow(a){return `<div class="arow" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab" style="flex:1"><div class="an" style="font-size:12.5px;font-weight:700">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span><span class="afolder">${a.folder}</span></div></div></div>`;}
@@ -492,8 +545,29 @@ function cardsProps(){return `<div class="stub"><h4>Selected · Cards block<span
   <details open><summary>Layout</summary><div class="dc">
     <div class="field"><label>Columns</label><div class="pseg"><button>2</button><button class="on">3</button><button>4</button></div></div>
     <div class="field"><label>Card style</label><div class="selctrl set">Elevated ▾</div></div>
-    <div class="field"><label>Content source</label><div class="selctrl set">Edge Fragments (manual) ▾</div><div class="help">Drop WKND trip Edge Fragments to fill this block.</div></div>
+    <div class="field"><label>Content source</label><div class="selctrl set">Manual (authored here) ▾</div><div class="help">For one-off cards you author on this page. For reusable content, use the <b>Trips</b> block instead.</div></div>
   </div></details></div>`;}
+
+function tripsProps(b){const p=b.props;const items=tripsItems(b);
+  const variants=[['featured','Featured'],['card','Card'],['compact','Compact'],['list','List'],['grid','Grid']];
+  const seasons=['All','Winter','Spring','Summer','Autumn'];
+  const fieldDefs=[['image','Image'],['region','Region'],['season','Season'],['desc','Description'],['cta','CTA']];
+  const ck='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M5 12l5 5L20 6"/></svg>';
+  return `<div class="stub"><h4>Selected · Trips block<span class="pill">fragment</span></h4>
+    <div class="refnote"><b>◆ Live reference.</b> Shows ${items.length} Edge Fragment${items.length===1?'':'s'} by reference — approve a trip once and every page updates. The block controls display; the fragment owns the data.</div>
+    <details open><summary>Source</summary><div class="dc">
+      <div class="field"><label>Content source</label><div class="rseg" data-seg2="source"><button data-val="manual" class="${p.source==='manual'?'on':''}">Selected fragments</button><button data-val="collection" class="${p.source==='collection'?'on':''}">Collection (query)</button></div></div>
+      ${p.source==='collection'?`
+      <div class="field"><label>Season</label><div class="pseg" data-q="season">${seasons.map(x=>`<button data-val="${x}" class="${p.query.season===x?'on':''}">${x}</button>`).join('')}</div></div>
+      <div class="field"><label>Limit</label><div class="pseg" data-q="limit">${[3,6,9].map(n=>`<button data-val="${n}" class="${p.query.limit===n?'on':''}">${n}</button>`).join('')}</div><div class="help">Query-driven list — stays in sync as trips are added.</div></div>`
+      :`<div class="field"><div class="help">${items.length} fragment${items.length===1?'':'s'} bound. Drag more from <b>Content ▸ Edge Fragments</b> onto the block.</div></div>`}
+    </div></details>
+    <details open><summary>Layout &amp; variant</summary><div class="dc">
+      <div class="field"><label>Display variant</label><div class="pseg" data-seg2="variant">${variants.map(([v,l])=>`<button data-val="${v}" class="${p.variant===v?'on':''}">${l}</button>`).join('')}</div><div class="help">Same content, different display — block option <code>.trips.${p.variant}</code>.</div></div>
+      <div class="field"><label>Show fields</label><div class="togs" data-fields>${fieldDefs.map(([k,l])=>`<span class="tog ${p.fields[k]?'on':''}" data-field="${k}"><span class="ck">${p.fields[k]?ck:''}</span>${l}</span>`).join('')}</div></div>
+    </div></details>
+    <details><summary>Heading (one-off)</summary><div class="dc"><div class="field"><label>Block heading — page-specific</label><input type="text" data-prop="heading" value="${(p.heading||'').replace(/"/g,'&quot;')}"><div class="help">One-off copy authored on this page (not a fragment).</div></div></div></details>
+  </div>`;}
 
 function genericProps(b){return `<div class="stub"><h4>Selected · ${b.props.label} block<span class="pill">block</span></h4>
   <details open><summary>Settings</summary><div class="dc"><div class="field"><label>Style</label><div class="selctrl set">Default ▾</div></div><div class="field"><label>Spacing</label><div class="selctrl set">Medium ▾</div></div></div></details></div>`;}
@@ -503,6 +577,7 @@ function propsPanel(){
   const b=page.find(x=>x.id===sel);
   if(!b) return `<div class="stub"><h4>Properties</h4><div style="color:var(--gray-500);font-size:13px">Select a block on the page, or click empty space for page properties.</div></div>`;
   if(b.type==='hero') return heroProps(b);
+  if(b.type==='trips') return tripsProps(b);
   if(b.type==='cards') return cardsProps(b);
   return genericProps(b);
 }
@@ -549,9 +624,32 @@ function wireProps(){
     const b=page.find(x=>x.id===sel); if(!b)return; b.props[seg.dataset.seg]=btn.dataset.val;
     seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===btn)); renderPage();
   })));
+  // trips: source & variant segmented → re-render panel (query fields / help depend on it)
+  railbody.querySelectorAll('[data-seg2]').forEach(seg=>seg.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+    const b=page.find(x=>x.id===sel); if(!b)return; b.props[seg.dataset.seg2]=btn.dataset.val; renderPage(); renderRail();
+  })));
+  // trips: collection query
+  railbody.querySelectorAll('[data-q]').forEach(seg=>seg.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+    const b=page.find(x=>x.id===sel); if(!b)return; const k=seg.dataset.q; b.props.query[k]= k==='limit'?+btn.dataset.val:btn.dataset.val; renderPage(); renderRail();
+  })));
+  // trips: field toggles
+  railbody.querySelectorAll('[data-field]').forEach(el=>el.addEventListener('click',()=>{
+    const b=page.find(x=>x.id===sel); if(!b)return; b.props.fields[el.dataset.field]=!b.props.fields[el.dataset.field]; renderPage(); renderRail();
+  }));
 }
 
 /* ---------------- RENDER CANVAS ---------------- */
+// Trips block reads fragments by reference (live) — source of truth stays in TRIPS
+function tripsItems(b){const p=b.props;
+  if(p.source==='collection'){
+    return TRIPS.filter(t=>p.query.season==='All'||t.s===p.query.season).slice(0,p.query.limit);
+  }
+  return p.items.map(i=>TRIPS[i]).filter(Boolean);
+}
+function tripItemHTML(t,p){const f=p.fields;
+  const eye=(f.region||f.season)?`<div class="tieye">${[f.region?t.r:'',f.season?t.s:''].filter(Boolean).join(' · ')}</div>`:'';
+  return `<div class="ti">${f.image?`<div class="tiimg" style="background-image:url('${t.img}')"></div>`:''}<div class="tib">${eye}<div class="tit">${t.t}</div>${f.desc?`<div class="tid">${t.d}</div>`:''}${f.cta?`<div class="ticta">${t.cta} ›</div>`:''}</div></div>`;
+}
 function renderBlock(b){
   const s=sel===b.id?'sel':'';
   if(b.type==='hero'){const p=b.props;const style=p.image?`background-image:url('${p.image}')`:'';
@@ -569,6 +667,12 @@ function renderBlock(b){
       ${b.props.heading?`<h2>${b.props.heading}</h2>`:'<h2>Trips Worth Taking</h2>'}
       <div class="c-cardrow">${items.map(it=>`<div class="tc"><div class="tcimg" style="background-image:url('${it.img}')"></div><div class="tcb"><b>${it.title}</b><p>${it.desc||''}</p>${it.cta?`<span class="cta">${it.cta} ›</span>`:''}</div></div>`).join('')}
         <div class="slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Drag trip fragments here</div></div></div>`;}
+  if(b.type==='trips'){const p=b.props;const items=tripsItems(b);
+    const body=items.length?`<div class="tv-${p.variant}">${items.map(t=>tripItemHTML(t,p)).join('')}</div>`
+      :`<div class="bindslot">◆ Bind Edge Fragments<br><span style="font-weight:500;color:var(--gray-600)">Drag trips from <b>Content ▸ Edge Fragments</b>, or set a Collection query in Properties</span></div>`;
+    return `<div class="cblock c-trips ${s}" data-id="${b.id}" data-drop="trips"><span class="blabel">Trips · Fragment</span>
+      <div class="thead"><h2>${p.heading||'Trips'}</h2>${items.length?`<span class="refbadge">◆ ${items.length} live reference${items.length>1?'s':''} · ${p.variant}</span>`:''}</div>
+      ${body}</div>`;}
   if(b.type==='image')return `<div class="cblock c-image ${s}" data-id="${b.id}"><span class="blabel">Image</span><img src="${b.props.url}" alt="${b.props.alt||''}"></div>`;
   if(b.type==='divider')return `<div class="cblock c-divider ${s}" data-id="${b.id}"><span class="blabel">Divider</span><hr></div>`;
   return `<div class="cblock c-generic ${s}" data-id="${b.id}" data-drop="generic"><span class="blabel">${b.props.label}</span><div class="gbox"><b>${b.props.label} block</b>Configure in Properties, or drag content in.</div></div>`;}
@@ -576,7 +680,7 @@ function renderBlock(b){
 function renderPage(){
   pageEl.classList.toggle('pageselected', sel==='page');
   if(!page.length){
-    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p>Start by dragging a <b>block</b> from the <b>Blocks</b> tab. Then drop an <b>image</b> from Content ▸ Assets, edit text in <b>Properties</b>, and add <b>Edge Fragments</b> (trips) as cards.</p></div>`;
+    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p><b>Assembly flow:</b> ① drag <b>blocks</b> to shape the page · ② bind approved <b>Edge Fragments</b> to a <b>Trips</b> block · ③ pick a <b>display variant</b> in Properties. Content is referenced, not copied — approve once, reuse everywhere.</p></div>`;
   } else {
     pageEl.innerHTML=page.map(renderBlock).join('');
   }
@@ -603,33 +707,41 @@ function newBlock(kind){
   const id='b'+(uid++);
   if(kind==='hero')return{id,type:'hero',props:{eyebrow:'',headline:'',subhead:'',level:'H1',size:'2XL',align:'left',image:'',cta:''}};
   if(kind==='cards')return{id,type:'cards',props:{items:[],heading:''}};
+  if(kind==='trips')return{id,type:'trips',props:{variant:'featured',source:'manual',items:[],fields:{image:true,region:true,season:true,desc:true,cta:true},query:{season:'All',limit:6},heading:'Trips Worth Taking'}};
   if(kind==='divider')return{id,type:'divider',props:{}};
   const labels={columns:'Columns',teaser:'Teaser',carousel:'Carousel',accordion:'Accordion',quote:'Quote',tabs:'Tabs',embed:'Embed',related:'Related Articles',table:'Table'};
   return{id,type:'generic',props:{label:labels[kind]||kind}};
 }
 function handleDrop(d,targetId,dropType){
   if(!d)return;
-  if(d.kind==='block'){const b=newBlock(d.block);page.push(b);sel=b.id;renderPage();toast(`Added ${b.type==='hero'?'Hero':b.type==='cards'?'Cards':b.props.label} block`);return;}
+  if(d.kind==='block'){const b=newBlock(d.block);page.push(b);sel=b.id;renderPage();
+    toast(b.type==='trips'?'Added Trips block — now bind Edge Fragments (step 2)':`Added ${b.type==='hero'?'Hero':b.type==='cards'?'Cards':b.props.label} block`);return;}
   if(d.kind==='asset'){
     const tb=page.find(x=>x.id===targetId);
     if(tb&&tb.type==='hero'){tb.props.image=d.img;sel=tb.id;renderPage();if(railMode==='props')renderRail();toast('Set hero background image');return;}
     if(tb&&tb.type==='cards'){tb.props.items.push({img:d.img,title:d.alt||'Image',desc:'',cta:''});renderPage();toast('Added image card');return;}
     const b={id:'b'+(uid++),type:'image',props:{url:d.img,alt:d.alt}};page.push(b);sel=b.id;renderPage();toast('Added image');return;}
   if(d.kind==='fragment'){
-    const t=TRIPS[+d.idx];const card={img:t.img,title:t.t,desc:t.d,cta:t.cta};
-    let cb=page.find(x=>x.id===targetId&&x.type==='cards')||[...page].reverse().find(x=>x.type==='cards');
-    if(!cb){cb=newBlock('cards');page.push(cb);}
-    cb.props.items.push(card);sel=cb.id;renderPage();toast(`Added trip: ${t.t}`);return;}
+    // reference model: bind the fragment to a Trips block (never copy into a card)
+    const idx=+d.idx;
+    let tb=(page.find(x=>x.id===targetId&&x.type==='trips'))||[...page].reverse().find(x=>x.type==='trips');
+    if(!tb){tb=newBlock('trips');page.push(tb);}
+    tb.props.source='manual';
+    if(!tb.props.items.includes(idx)) tb.props.items.push(idx);
+    sel=tb.id;renderPage();if(railMode==='props')renderRail();
+    toast(`Bound “${TRIPS[idx].t}” — live reference`);return;}
 }
 
 /* ---------------- SELECTION ---------------- */
 function select(id){sel=id;setMode('props');renderPage();}
-function setMode(m){railMode=m;document.querySelectorAll('.railtab').forEach(x=>x.classList.toggle('on',x.dataset.mode===m));renderRail();}
+function setMode(m){railMode=m;document.querySelectorAll('.railtab').forEach(x=>x.classList.toggle('on',x.dataset.mode===m));updateStepper();renderRail();}
+function updateStepper(){const cur=({blocks:'blocks',content:'content',props:'props'})[railMode];document.querySelectorAll('#stepper .step').forEach(s=>s.classList.toggle('on',s.dataset.step===cur));}
 document.getElementById('railtabs').addEventListener('click',e=>{const t=e.target.closest('.railtab');if(t)setMode(t.dataset.mode);});
+document.getElementById('stepper').addEventListener('click',e=>{const s=e.target.closest('.step');if(s)setMode(s.dataset.step);});
 
 let toastT;function toast(m){const el=document.getElementById('toast');document.getElementById('toasttext').textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2000);}
 
-renderPage(); renderRail();
+updateStepper(); renderPage(); renderRail();
 </script>
 </body>
 </html>
