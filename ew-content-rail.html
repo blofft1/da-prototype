@@ -282,6 +282,37 @@
   .refnote{font-size:11.5px;color:#245b43;background:var(--pos-wash);border:1px solid #b7e0c9;border-radius:var(--radius-s);padding:9px 11px;line-height:1.45;margin-bottom:12px}
   .refnote b{color:var(--pos)}
 
+  /* Edit button on fragment rows */
+  .fedit{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);border-radius:var(--radius-pill);padding:4px 10px;cursor:pointer}
+  .fedit svg{width:12px;height:12px}
+  .fedit:hover{background:#fff}
+
+  /* Fragment editor (main window) */
+  .fed{max-width:720px;margin:0 auto;padding:10px 6px 30px}
+  .fedhdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .fedhdr .ftitle{font-size:16px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .fedhdr .fchip{font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--notice);background:var(--notice-wash);padding:3px 8px;border-radius:var(--radius-pill)}
+  .fedhdr .fpath{font-size:12px;color:var(--gray-500);font-family:ui-monospace,Menlo,monospace;margin-top:4px}
+  .fedbtns{display:flex;gap:9px;flex:0 0 auto}
+  .fedbtn{border:none;cursor:pointer;font-family:var(--font);font-weight:700;font-size:13px;border-radius:var(--radius-pill);padding:9px 16px}
+  .fedbtn.primary{background:var(--accent);color:#fff}.fedbtn.primary:hover{background:var(--accent-hover)}
+  .fedbtn.ghost{background:#fff;color:var(--gray-800);border:1px solid var(--gray-300)}.fedbtn.ghost:hover{background:var(--gray-75)}
+  .fednote{font-size:12px;color:#245b43;background:var(--pos-wash);border:1px solid #b7e0c9;border-radius:var(--radius-s);padding:10px 13px;line-height:1.45;margin-bottom:16px}
+  .fednote b{color:var(--pos)}
+  .fedcard{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-l);box-shadow:var(--shadow);padding:22px}
+  .fedrow{margin-bottom:16px}.fedrow:last-child{margin-bottom:0}
+  .fedrow label{display:block;font-size:11px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--gray-600);margin-bottom:6px}
+  .fedrow input,.fedrow textarea,.fedrow select{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-s);padding:10px 12px;font-family:var(--font);font-size:14px;color:var(--gray-900);background:#fff;outline:none}
+  .fedrow input:focus,.fedrow textarea:focus,.fedrow select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+  .fedrow textarea{min-height:84px;line-height:1.5;resize:vertical}
+  .fedimg{height:210px;border-radius:var(--radius-m);background-size:cover;background-position:center;border:1px solid var(--gray-200);display:flex;align-items:flex-end;justify-content:flex-end;padding:10px}
+  .fedimg .replace{background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill)}
+  .fedimg.drop{outline:3px dashed var(--accent);outline-offset:-6px}
+  .fedmetatag{font-size:10.5px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px}
+  .fedmeta{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .fedprevh{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-500);margin:20px 0 9px}
+  .fedprev{max-width:320px}.fedprev .ti .tiimg{height:150px}
+
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:var(--radius-pill);box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;transition:.2s;z-index:100;display:flex;align-items:center;gap:9px}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast svg{width:16px;height:16px;color:#7ee0b0}
@@ -428,6 +459,7 @@ const COLLECTIONS=[
 
 let railMode='blocks', q='', assetFolder='All', sel='page', uid=1, contentKind='asset', caStore='files', caView='grid', caSort='Name';
 let page=[]; // {id,type,props}
+let editFrag=null; // index into TRIPS when editing a fragment in the main window
 const railbody=document.getElementById('railbody'), pageEl=document.getElementById('page');
 
 /* ---------------- BLOCKS (Layout) + CONTENT (Content Advisor) PANELS ---------------- */
@@ -440,7 +472,7 @@ function blockCard(b){
 }
 function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span></div></div></div>`;}
 function assetRow(a){return `<div class="arow" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab" style="flex:1"><div class="an" style="font-size:12.5px;font-weight:700">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span><span class="afolder">${a.folder}</span></div></div></div>`;}
-function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Edge Fragment</span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
+function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Edge Fragment</span><button class="fedit" data-editfrag="${i}" title="Edit this fragment in the main window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13.5 6.5l3 3"/></svg> Edit</button></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
 function colRow(c){return `<div class="colrow"><div class="colthumb" style="background-image:url('${c.img}')"></div><div><div class="cn">${c.n}</div><div class="cc2">${c.c} items</div></div></div>`;}
 function matchTrip(t){const s=(t.t+' '+t.d+' '+t.r+' '+t.s).toLowerCase();return !q||s.includes(q.toLowerCase());}
 function matchAsset(a){const s=(a.f+' '+a.alt+' '+a.folder).toLowerCase();return (!q||s.includes(q.toLowerCase()))&&(assetFolder==='All'||a.folder===assetFolder);}
@@ -608,6 +640,7 @@ function wireContent(){
   railbody.querySelectorAll('[data-store]').forEach(el=>el.addEventListener('click',()=>{caStore=el.dataset.store;q='';renderRail();}));
   railbody.querySelectorAll('[data-folder]').forEach(el=>el.addEventListener('click',()=>{assetFolder=el.dataset.folder;renderRail();}));
   railbody.querySelectorAll('[data-caview]').forEach(el=>el.addEventListener('click',()=>{caView=el.dataset.caview;renderRail();}));
+  railbody.querySelectorAll('[data-editfrag]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();openFragmentEditor(+el.dataset.editfrag);}));
   railbody.querySelectorAll('[draggable=true]').forEach(el=>el.addEventListener('dragstart',e=>{
     const d={kind:el.dataset.kind};
     if(d.kind==='block')d.block=el.dataset.block;
@@ -677,7 +710,50 @@ function renderBlock(b){
   if(b.type==='divider')return `<div class="cblock c-divider ${s}" data-id="${b.id}"><span class="blabel">Divider</span><hr></div>`;
   return `<div class="cblock c-generic ${s}" data-id="${b.id}" data-drop="generic"><span class="blabel">${b.props.label}</span><div class="gbox"><b>${b.props.label} block</b>Configure in Properties, or drag content in.</div></div>`;}
 
+/* ---------------- FRAGMENT EDITOR (main window) ---------------- */
+function openFragmentEditor(idx){editFrag=idx;sel=null;renderPage();pageEl.parentElement.scrollTop=0;}
+function fragmentEditorHTML(){
+  const t=TRIPS[editFrag];
+  const slug=t.t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  const seasons=['Winter','Spring','Summer','Autumn'];
+  const prev=tripItemHTML(t,{fields:{image:true,region:true,season:true,desc:true,cta:true}});
+  return `<div class="fed">
+    <div class="fedhdr">
+      <div><div class="ftitle">Editing Edge Fragment <span class="fchip">source of truth</span></div><div class="fpath">/trips/${slug}</div></div>
+      <div class="fedbtns"><button class="fedbtn ghost" data-fcancel>Cancel</button><button class="fedbtn primary" data-fdone>Done editing</button></div>
+    </div>
+    <div class="fednote"><b>◆ Edit once, updates everywhere.</b> This is the fragment itself — every page that references it (via a Trips block) reflects these changes automatically. You never touch the pages.</div>
+    <div class="fedcard">
+      <div class="fedrow"><label>Image <span style="color:var(--gray-400);font-weight:600;text-transform:none;letter-spacing:0">· drag one from Content ▸ Assets to replace</span></label>
+        <div class="fedimg" id="fedimg" style="background-image:url('${t.img}')"><span class="replace">Replace image</span></div></div>
+      <div class="fedrow"><label>Title</label><input type="text" data-f="t" value="${t.t.replace(/"/g,'&quot;')}"></div>
+      <div class="fedrow"><label>Description</label><textarea data-f="d">${t.d}</textarea></div>
+      <div class="fedrow"><label>CTA label</label><input type="text" data-f="cta" value="${t.cta.replace(/"/g,'&quot;')}"></div>
+      <div class="fedrow"><div class="fedmetatag">Metadata · powers collection queries</div>
+        <div class="fedmeta">
+          <div><label>Region</label><input type="text" data-f="r" value="${t.r.replace(/"/g,'&quot;')}"></div>
+          <div><label>Season</label><select data-f="s">${seasons.map(x=>`<option ${t.s===x?'selected':''}>${x}</option>`).join('')}</select></div>
+        </div></div>
+    </div>
+    <div class="fedprevh">Live preview</div>
+    <div class="fedprev" id="fedprev">${prev}</div>
+  </div>`;
+}
+function wireEditor(){
+  pageEl.querySelectorAll('[data-f]').forEach(inp=>inp.addEventListener('input',()=>{
+    TRIPS[editFrag][inp.dataset.f]=inp.value;
+    const pv=document.getElementById('fedprev'); if(pv) pv.innerHTML=tripItemHTML(TRIPS[editFrag],{fields:{image:true,region:true,season:true,desc:true,cta:true}});
+  }));
+  const done=pageEl.querySelector('[data-fdone]'); if(done)done.addEventListener('click',()=>{const nm=TRIPS[editFrag].t;editFrag=null;renderPage();toast(`Saved “${nm}” — every page referencing it is updated`);});
+  const cancel=pageEl.querySelector('[data-fcancel]'); if(cancel)cancel.addEventListener('click',()=>{editFrag=null;renderPage();});
+  const img=document.getElementById('fedimg');
+  if(img){img.addEventListener('dragover',e=>{e.preventDefault();img.classList.add('drop');});img.addEventListener('dragleave',()=>img.classList.remove('drop'));
+    img.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();img.classList.remove('drop');const d=getData(e);if(d&&d.kind==='asset'){TRIPS[editFrag].img=d.img;renderPage();toast('Fragment image replaced');}});}
+}
+
+/* ---------------- RENDER PAGE ---------------- */
 function renderPage(){
+  if(editFrag!==null){ pageEl.classList.remove('pageselected'); pageEl.innerHTML=fragmentEditorHTML(); wireEditor(); return; }
   pageEl.classList.toggle('pageselected', sel==='page');
   if(!page.length){
     pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p><b>Assembly flow:</b> ① drag <b>blocks</b> to shape the page · ② bind approved <b>Edge Fragments</b> to a <b>Trips</b> block · ③ pick a <b>display variant</b> in Properties. Content is referenced, not copied — approve once, reuse everywhere.</p></div>`;
@@ -698,9 +774,9 @@ function wireCanvas(){
 }
 function getData(e){try{return JSON.parse(e.dataTransfer.getData('text/plain'));}catch(_){return null;}}
 // clicking page background (not a block) selects page
-pageEl.addEventListener('click',e=>{if(e.target===pageEl||e.target.id==='empty'||e.target.closest('#empty'))select('page');});
+pageEl.addEventListener('click',e=>{if(editFrag!==null)return;if(e.target===pageEl||e.target.id==='empty'||e.target.closest('#empty'))select('page');});
 pageEl.addEventListener('dragover',e=>e.preventDefault());
-pageEl.addEventListener('drop',e=>{if(e.target===pageEl){e.preventDefault();handleDrop(getData(e),null,'page');}});
+pageEl.addEventListener('drop',e=>{if(editFrag!==null)return;if(e.target===pageEl){e.preventDefault();handleDrop(getData(e),null,'page');}});
 
 /* ---------------- DROP LOGIC ---------------- */
 function newBlock(kind){
