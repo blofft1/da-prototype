@@ -282,10 +282,12 @@
   .refnote{font-size:11.5px;color:#245b43;background:var(--pos-wash);border:1px solid #b7e0c9;border-radius:var(--radius-s);padding:9px 11px;line-height:1.45;margin-bottom:12px}
   .refnote b{color:var(--pos)}
 
-  /* Edit button on fragment rows */
-  .fedit{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);border-radius:var(--radius-pill);padding:4px 10px;cursor:pointer}
+  /* Edit / API buttons on fragment rows */
+  .ftactions{margin-left:auto;display:flex;gap:6px}
+  .fedit{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);border-radius:var(--radius-pill);padding:4px 10px;cursor:pointer}
   .fedit svg{width:12px;height:12px}
   .fedit:hover{background:#fff}
+  .fedit.api{color:var(--purple);background:var(--purple-wash);border-color:#e0d3f5}
 
   /* Fragment editor (main window) */
   .fed{max-width:720px;margin:0 auto;padding:10px 6px 30px}
@@ -312,6 +314,24 @@
   .fedmeta{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .fedprevh{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-500);margin:20px 0 9px}
   .fedprev{max-width:320px}.fedprev .ti .tiimg{height:150px}
+  /* developer / headless API panel */
+  .devcard{background:#0f1424;border-radius:var(--radius-l);padding:18px 20px;margin-top:22px;color:#c9d3ea}
+  .devhdr{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .devhdr .dt{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+  .devhdr .dt svg{width:15px;height:15px;color:#8fe3b0}
+  .devseg{display:inline-flex;background:rgba(255,255,255,.08);border-radius:var(--radius-pill);padding:3px;gap:2px}
+  .devseg button{border:none;background:transparent;color:#9fb0d0;font-weight:700;font-size:11px;padding:5px 12px;border-radius:var(--radius-pill);cursor:pointer;font-family:var(--font)}
+  .devseg button.on{background:#3b63fb;color:#fff}
+  .devschema{font-size:11.5px;color:#9fb0d0;margin-bottom:14px}
+  .devschema b{color:#c9a8ff} .devschema code{background:rgba(255,255,255,.08);color:#8fe3b0;border:none}
+  .devrow{margin-bottom:14px}
+  .devrow .dl{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#7f8fb3;margin-bottom:6px}
+  .endpoint{display:flex;align-items:center;gap:9px;background:#0a0e1a;border:1px solid #232a40;border-radius:8px;padding:9px 11px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#8fe3b0;word-break:break-all;line-height:1.5}
+  .endpoint .m{color:#e0c07a;font-weight:700;flex:0 0 auto}
+  .copy{margin-left:auto;flex:0 0 auto;background:rgba(255,255,255,.1);color:#dfe6f5;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font)}
+  .copy:hover{background:rgba(255,255,255,.2)}
+  .code2{background:#0a0e1a;border:1px solid #232a40;border-radius:8px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.65;color:#c9d3ea;white-space:pre;overflow-x:auto}
+  .code2 .k{color:#7fb0ff}.code2 .s{color:#8fe3b0}.code2 .c{color:#6b7794}
 
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-900);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:var(--radius-pill);box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;transition:.2s;z-index:100;display:flex;align-items:center;gap:9px}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -460,6 +480,7 @@ const COLLECTIONS=[
 let railMode='blocks', q='', assetFolder='All', sel='page', uid=1, contentKind='asset', caStore='files', caView='grid', caSort='Name';
 let page=[]; // {id,type,props}
 let editFrag=null; // index into TRIPS when editing a fragment in the main window
+let devEnv='live'; // headless API env: preview | live
 const railbody=document.getElementById('railbody'), pageEl=document.getElementById('page');
 
 /* ---------------- BLOCKS (Layout) + CONTENT (Content Advisor) PANELS ---------------- */
@@ -472,7 +493,7 @@ function blockCard(b){
 }
 function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span></div></div></div>`;}
 function assetRow(a){return `<div class="arow" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab" style="flex:1"><div class="an" style="font-size:12.5px;font-weight:700">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span><span class="afolder">${a.folder}</span></div></div></div>`;}
-function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Edge Fragment</span><button class="fedit" data-editfrag="${i}" title="Edit this fragment in the main window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13.5 6.5l3 3"/></svg> Edit</button></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
+function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Edge Fragment</span><span class="ftactions"><button class="fedit api" data-apifrag="${i}" title="View headless API"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg> API</button><button class="fedit" data-editfrag="${i}" title="Edit this fragment in the main window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13.5 6.5l3 3"/></svg> Edit</button></span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
 function colRow(c){return `<div class="colrow"><div class="colthumb" style="background-image:url('${c.img}')"></div><div><div class="cn">${c.n}</div><div class="cc2">${c.c} items</div></div></div>`;}
 function matchTrip(t){const s=(t.t+' '+t.d+' '+t.r+' '+t.s).toLowerCase();return !q||s.includes(q.toLowerCase());}
 function matchAsset(a){const s=(a.f+' '+a.alt+' '+a.folder).toLowerCase();return (!q||s.includes(q.toLowerCase()))&&(assetFolder==='All'||a.folder===assetFolder);}
@@ -641,6 +662,7 @@ function wireContent(){
   railbody.querySelectorAll('[data-folder]').forEach(el=>el.addEventListener('click',()=>{assetFolder=el.dataset.folder;renderRail();}));
   railbody.querySelectorAll('[data-caview]').forEach(el=>el.addEventListener('click',()=>{caView=el.dataset.caview;renderRail();}));
   railbody.querySelectorAll('[data-editfrag]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();openFragmentEditor(+el.dataset.editfrag);}));
+  railbody.querySelectorAll('[data-apifrag]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();openFragmentEditor(+el.dataset.apifrag,true);}));
   railbody.querySelectorAll('[draggable=true]').forEach(el=>el.addEventListener('dragstart',e=>{
     const d={kind:el.dataset.kind};
     if(d.kind==='block')d.block=el.dataset.block;
@@ -711,15 +733,19 @@ function renderBlock(b){
   return `<div class="cblock c-generic ${s}" data-id="${b.id}" data-drop="generic"><span class="blabel">${b.props.label}</span><div class="gbox"><b>${b.props.label} block</b>Configure in Properties, or drag content in.</div></div>`;}
 
 /* ---------------- FRAGMENT EDITOR (main window) ---------------- */
-function openFragmentEditor(idx){editFrag=idx;sel=null;renderPage();pageEl.parentElement.scrollTop=0;}
+function openFragmentEditor(idx,dev){editFrag=idx;sel=null;renderPage();
+  if(dev){const d=document.getElementById('devpanel');if(d)d.scrollIntoView({block:'center'});}
+  else pageEl.parentElement.scrollTop=0;}
 function fragmentEditorHTML(){
   const t=TRIPS[editFrag];
   const slug=t.t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   const seasons=['Winter','Spring','Summer','Autumn'];
   const prev=tripItemHTML(t,{fields:{image:true,region:true,season:true,desc:true,cta:true}});
+  const base=devEnv==='preview'?'https://main--wknd-advanced--blofft1.aem.page':'https://main--wknd-advanced--blofft1.aem.live';
+  const imgPath=t.img.replace(/^https?:\/\/[^/]+/,'').split('?')[0];
   return `<div class="fed">
     <div class="fedhdr">
-      <div><div class="ftitle">Editing Edge Fragment <span class="fchip">source of truth</span></div><div class="fpath">/trips/${slug}</div></div>
+      <div><div class="ftitle">Editing Edge Fragment <span class="fchip">source of truth</span></div><div class="fpath">/trips/${slug} · <span style="color:#a883e6">structured content · schema: Trip</span></div></div>
       <div class="fedbtns"><button class="fedbtn ghost" data-fcancel>Cancel</button><button class="fedbtn primary" data-fdone>Done editing</button></div>
     </div>
     <div class="fednote"><b>◆ Edit once, updates everywhere.</b> This is the fragment itself — every page that references it (via a Trips block) reflects these changes automatically. You never touch the pages.</div>
@@ -737,6 +763,28 @@ function fragmentEditorHTML(){
     </div>
     <div class="fedprevh">Live preview</div>
     <div class="fedprev" id="fedprev">${prev}</div>
+
+    <div class="devcard" id="devpanel">
+      <div class="devhdr"><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg> Developer · headless API</div>
+        <div class="devseg"><button class="${devEnv==='preview'?'on':''}" data-devenv="preview">Preview</button><button class="${devEnv==='live'?'on':''}" data-devenv="live">Live</button></div></div>
+      <div class="devschema">Delivered as <b>DA structured content</b> against <code>schema: Trip</code> — fields: title, region, season, image, description, cta. No Content Fragments, no GraphQL.</div>
+      <div class="devrow"><div class="dl">Single item · JSON</div><div class="endpoint"><span class="m">GET</span><span id="ep1">${base}/trips/${slug}.json</span><button class="copy" data-copytarget="ep1">Copy</button></div></div>
+      <div class="devrow"><div class="dl">Collection · filter by field</div><div class="endpoint"><span class="m">GET</span><span id="ep2">${base}/trips/query-index.json</span><button class="copy" data-copytarget="ep2">Copy</button></div></div>
+      <div class="devrow"><div class="dl">Response shape</div><div class="code2" id="jsonshape">{
+  <span class="k">"title"</span>: <span class="s">"${t.t}"</span>,
+  <span class="k">"region"</span>: <span class="s">"${t.r}"</span>,
+  <span class="k">"season"</span>: <span class="s">"${t.s}"</span>,
+  <span class="k">"image"</span>: <span class="s">"${imgPath}"</span>,
+  <span class="k">"description"</span>: <span class="s">"${t.d.slice(0,52)}…"</span>,
+  <span class="k">"cta"</span>: <span class="s">"${t.cta}"</span>
+}</div></div>
+      <div class="devrow"><div class="dl" style="display:flex;align-items:center">Consume it<button class="copy" data-copytarget="snip" style="margin-left:auto">Copy</button></div><div class="code2" id="snip"><span class="c">// one Trip (structured content → JSON)</span>
+const trip = <span class="k">await</span> (<span class="k">await</span> fetch(<span class="s">'${base}/trips/${slug}.json'</span>)).json();
+
+<span class="c">// collection — filter by the schema field</span>
+const { data } = <span class="k">await</span> (<span class="k">await</span> fetch(<span class="s">'${base}/trips/query-index.json'</span>)).json();
+const winter = data.filter(t =&gt; t.season === <span class="s">'Winter'</span>);</div></div>
+    </div>
   </div>`;
 }
 function wireEditor(){
@@ -746,6 +794,8 @@ function wireEditor(){
   }));
   const done=pageEl.querySelector('[data-fdone]'); if(done)done.addEventListener('click',()=>{const nm=TRIPS[editFrag].t;editFrag=null;renderPage();toast(`Saved “${nm}” — every page referencing it is updated`);});
   const cancel=pageEl.querySelector('[data-fcancel]'); if(cancel)cancel.addEventListener('click',()=>{editFrag=null;renderPage();});
+  pageEl.querySelectorAll('[data-devenv]').forEach(b=>b.addEventListener('click',()=>{devEnv=b.dataset.devenv;renderPage();const d=document.getElementById('devpanel');if(d)d.scrollIntoView({block:'center'});}));
+  pageEl.querySelectorAll('[data-copytarget]').forEach(b=>b.addEventListener('click',()=>{const el=document.getElementById(b.dataset.copytarget);const txt=el?el.textContent:'';try{navigator.clipboard&&navigator.clipboard.writeText(txt);}catch(_){}toast('Copied to clipboard');}));
   const img=document.getElementById('fedimg');
   if(img){img.addEventListener('dragover',e=>{e.preventDefault();img.classList.add('drop');});img.addEventListener('dragleave',()=>img.classList.remove('drop'));
     img.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();img.classList.remove('drop');const d=getData(e);if(d&&d.kind==='asset'){TRIPS[editFrag].img=d.img;renderPage();toast('Fragment image replaced');}});}
