@@ -25,6 +25,8 @@
   .alogo{width:28px;height:28px;background:#EB1000;border-radius:7px;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
   .crumb{font-size:13.5px;color:var(--gray-600);display:flex;align-items:center;gap:7px}
   .crumb b{color:var(--gray-900)}
+  .crumb .clink{color:var(--accent);cursor:pointer;font-weight:600}
+  .crumb .clink:hover{text-decoration:underline}
   .spacer{flex:1}
   .concept{font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--accent);background:var(--accent-wash);border:1px solid var(--accent-border);padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase}
   .actions{display:flex;align-items:center;gap:4px;padding:3px;background:var(--gray-75);border:1px solid var(--gray-200);border-radius:var(--radius-pill)}
@@ -343,7 +345,7 @@
 <div class="app">
   <header class="appbar">
     <div class="alogo">A</div>
-    <div class="crumb">blofft1 <span>›</span> wknd-advanced <span>›</span> <b>new-page</b></div>
+    <div class="crumb" id="crumb"></div>
     <span class="concept">Concept · Spectrum 2</span>
     <div class="spacer"></div>
     <div class="actions">
@@ -489,11 +491,11 @@ function blockCard(b){
     <span class="lockbadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
     <div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div>
     <div class="bn">${b.n}</div><div class="lockcap">Not allowed on this page</div></div>`;
-  return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">${b.k==='trips'?'Fragment block':'Layout block'}</div></div>`;
+  return `<div class="bitem" draggable="true" data-kind="block" data-block="${b.k}"><div class="bthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${G[b.k]}</svg></div><div class="bn">${b.n}</div><div class="bo">${b.k==='trips'?'Content block':'Layout block'}</div></div>`;
 }
 function assetCard(a){return `<div class="aitem" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><span class="abadge">AEM</span><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab"><div class="an">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span></div></div></div>`;}
 function assetRow(a){return `<div class="arow" draggable="true" data-kind="asset" data-img="${a.img}" data-alt="${a.alt}"><div class="aimg" style="background-image:url('${a.img}')"></div><div class="ab" style="flex:1"><div class="an" style="font-size:12.5px;font-weight:700">${a.f}</div><div class="ameta"><span class="afmt">${a.f.split('.').pop().toUpperCase()}</span><span class="astatus">● No status</span><span class="afolder">${a.folder}</span></div></div></div>`;}
-function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Edge Fragment</span><span class="ftactions"><button class="fedit api" data-apifrag="${i}" title="View headless API"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg> API</button><button class="fedit" data-editfrag="${i}" title="Edit this fragment in the main window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13.5 6.5l3 3"/></svg> Edit</button></span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
+function tripRow(t,i){return `<div class="fitem" draggable="true" data-kind="fragment" data-idx="${i}"><div class="fprev" style="background-image:url('${t.img}')"></div><div class="fbody"><div class="ftop"><span class="ftag">Structured · Trip</span><span class="ftactions"><button class="fedit api" data-apifrag="${i}" title="View headless API"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg> API</button><button class="fedit" data-editfrag="${i}" title="Edit this entry in the main window"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13.5 6.5l3 3"/></svg> Edit</button></span></div><div class="ft">${t.t}</div><div class="fd">${t.d}</div><div class="fmeta"><span>◍ ${t.r}</span><span>❄ ${t.s}</span></div></div></div>`;}
 function colRow(c){return `<div class="colrow"><div class="colthumb" style="background-image:url('${c.img}')"></div><div><div class="cn">${c.n}</div><div class="cc2">${c.c} items</div></div></div>`;}
 function matchTrip(t){const s=(t.t+' '+t.d+' '+t.r+' '+t.s).toLowerCase();return !q||s.includes(q.toLowerCase());}
 function matchAsset(a){const s=(a.f+' '+a.alt+' '+a.folder).toLowerCase();return (!q||s.includes(q.toLowerCase()))&&(assetFolder==='All'||a.folder===assetFolder);}
@@ -517,18 +519,18 @@ function contentPanel(){
     const grid = caView==='list' ? `<div class="alist">${assets.map(assetRow).join('')}</div>` : `<div class="agrid">${assets.map(assetCard).join('')}</div>`;
     body=`<div class="reslist">${assets.length?grid:'<div class="empty2">No assets match.</div>'}</div>`;
   } else {
-    body=`<div class="reslist">${trips.length?trips.map(t=>tripRow(t,TRIPS.indexOf(t))).join(''):'<div class="empty2">No Edge Fragments match.</div>'}</div>`;
+    body=`<div class="reslist">${trips.length?trips.map(t=>tripRow(t,TRIPS.indexOf(t))).join(''):'<div class="empty2">No Trips match.</div>'}</div>`;
   }
-  const count = caStore==='collections' ? COLLECTIONS.length+' collections' : contentKind==='asset' ? assets.length+' assets' : trips.length+' Edge Fragments';
+  const count = caStore==='collections' ? COLLECTIONS.length+' collections' : contentKind==='asset' ? assets.length+' assets' : trips.length+' Trips';
   const showTools = caStore!=='collections';
   return `
     <div class="catabs">
       <div class="catab ${caStore==='files'?'on':''}" data-store="files"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Files &amp; Folders</div>
       <div class="catab ${caStore==='collections'?'on':''}" data-store="collections"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Collections</div>
     </div>
-    ${showTools?`<div class="rseg"><button class="${contentKind==='asset'?'on':''}" data-ck="asset">Assets</button><button class="${contentKind==='fragment'?'on':''}" data-ck="fragment">Edge Fragments</button></div>`:''}
+    ${showTools?`<div class="rseg"><button class="${contentKind==='asset'?'on':''}" data-ck="asset">Assets</button><button class="${contentKind==='fragment'?'on':''}" data-ck="fragment">Structured Content</button></div>`:''}
     <div class="csearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input id="cq" type="text" placeholder="${caStore==='collections'?'Search collections…':contentKind==='asset'?'Search assets…':'Search Edge Fragments (trips)…'}" value="${q}"></div>
+      <input id="cq" type="text" placeholder="${caStore==='collections'?'Search collections…':contentKind==='asset'?'Search assets…':'Search structured content (Trips)…'}" value="${q}"></div>
     ${showTools?`<div class="catoolbar">
       <div class="ci" title="Filter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18l-7 8v5l-4 2v-7z"/></svg></div>
       <div class="sort">Sort: ${caSort} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></div>
@@ -606,20 +608,20 @@ function tripsProps(b){const p=b.props;const items=tripsItems(b);
   const seasons=['All','Winter','Spring','Summer','Autumn'];
   const fieldDefs=[['image','Image'],['region','Region'],['season','Season'],['desc','Description'],['cta','CTA']];
   const ck='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M5 12l5 5L20 6"/></svg>';
-  return `<div class="stub"><h4>Selected · Trips block<span class="pill">fragment</span></h4>
-    <div class="refnote"><b>◆ Live reference.</b> Shows ${items.length} Edge Fragment${items.length===1?'':'s'} by reference — approve a trip once and every page updates. The block controls display; the fragment owns the data.</div>
+  return `<div class="stub"><h4>Selected · Trips block<span class="pill">content</span></h4>
+    <div class="refnote"><b>◆ Live reference.</b> Shows ${items.length} Trip entr${items.length===1?'y':'ies'} by reference — approve a trip once and every page updates. The block controls display; the structured content owns the data.</div>
     <details open><summary>Source</summary><div class="dc">
-      <div class="field"><label>Content source</label><div class="rseg" data-seg2="source"><button data-val="manual" class="${p.source==='manual'?'on':''}">Selected fragments</button><button data-val="collection" class="${p.source==='collection'?'on':''}">Collection (query)</button></div></div>
+      <div class="field"><label>Content source</label><div class="rseg" data-seg2="source"><button data-val="manual" class="${p.source==='manual'?'on':''}">Selected entries</button><button data-val="collection" class="${p.source==='collection'?'on':''}">Collection (query)</button></div></div>
       ${p.source==='collection'?`
       <div class="field"><label>Season</label><div class="pseg" data-q="season">${seasons.map(x=>`<button data-val="${x}" class="${p.query.season===x?'on':''}">${x}</button>`).join('')}</div></div>
-      <div class="field"><label>Limit</label><div class="pseg" data-q="limit">${[3,6,9].map(n=>`<button data-val="${n}" class="${p.query.limit===n?'on':''}">${n}</button>`).join('')}</div><div class="help">Query-driven list — stays in sync as trips are added.</div></div>`
-      :`<div class="field"><div class="help">${items.length} fragment${items.length===1?'':'s'} bound. Drag more from <b>Content ▸ Edge Fragments</b> onto the block.</div></div>`}
+      <div class="field"><label>Limit</label><div class="pseg" data-q="limit">${[3,6,9].map(n=>`<button data-val="${n}" class="${p.query.limit===n?'on':''}">${n}</button>`).join('')}</div><div class="help">Query-driven list — stays in sync as Trip entries are added.</div></div>`
+      :`<div class="field"><div class="help">${items.length} entr${items.length===1?'y':'ies'} bound. Drag more from <b>Content ▸ Structured Content</b> onto the block.</div></div>`}
     </div></details>
     <details open><summary>Layout &amp; variant</summary><div class="dc">
       <div class="field"><label>Display variant</label><div class="pseg" data-seg2="variant">${variants.map(([v,l])=>`<button data-val="${v}" class="${p.variant===v?'on':''}">${l}</button>`).join('')}</div><div class="help">Same content, different display — block option <code>.trips.${p.variant}</code>.</div></div>
       <div class="field"><label>Show fields</label><div class="togs" data-fields>${fieldDefs.map(([k,l])=>`<span class="tog ${p.fields[k]?'on':''}" data-field="${k}"><span class="ck">${p.fields[k]?ck:''}</span>${l}</span>`).join('')}</div></div>
     </div></details>
-    <details><summary>Heading (one-off)</summary><div class="dc"><div class="field"><label>Block heading — page-specific</label><input type="text" data-prop="heading" value="${(p.heading||'').replace(/"/g,'&quot;')}"><div class="help">One-off copy authored on this page (not a fragment).</div></div></div></details>
+    <details><summary>Heading (one-off)</summary><div class="dc"><div class="field"><label>Block heading — page-specific</label><input type="text" data-prop="heading" value="${(p.heading||'').replace(/"/g,'&quot;')}"><div class="help">One-off copy authored on this page (not structured content).</div></div></div></details>
   </div>`;}
 
 function genericProps(b){return `<div class="stub"><h4>Selected · ${b.props.label} block<span class="pill">block</span></h4>
@@ -721,11 +723,11 @@ function renderBlock(b){
     return `<div class="cblock c-cards ${s}" data-id="${b.id}" data-drop="cards"><span class="blabel">Cards</span>
       ${b.props.heading?`<h2>${b.props.heading}</h2>`:'<h2>Trips Worth Taking</h2>'}
       <div class="c-cardrow">${items.map(it=>`<div class="tc"><div class="tcimg" style="background-image:url('${it.img}')"></div><div class="tcb"><b>${it.title}</b><p>${it.desc||''}</p>${it.cta?`<span class="cta">${it.cta} ›</span>`:''}</div></div>`).join('')}
-        <div class="slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Drag trip fragments here</div></div></div>`;}
+        <div class="slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Author cards here</div></div></div>`;}
   if(b.type==='trips'){const p=b.props;const items=tripsItems(b);
     const body=items.length?`<div class="tv-${p.variant}">${items.map(t=>tripItemHTML(t,p)).join('')}</div>`
-      :`<div class="bindslot">◆ Bind Edge Fragments<br><span style="font-weight:500;color:var(--gray-600)">Drag trips from <b>Content ▸ Edge Fragments</b>, or set a Collection query in Properties</span></div>`;
-    return `<div class="cblock c-trips ${s}" data-id="${b.id}" data-drop="trips"><span class="blabel">Trips · Fragment</span>
+      :`<div class="bindslot">◆ Bind structured content<br><span style="font-weight:500;color:var(--gray-600)">Drag Trips from <b>Content ▸ Structured Content</b>, or set a Collection query in Properties</span></div>`;
+    return `<div class="cblock c-trips ${s}" data-id="${b.id}" data-drop="trips"><span class="blabel">Trips · Content</span>
       <div class="thead"><h2>${p.heading||'Trips'}</h2>${items.length?`<span class="refbadge">◆ ${items.length} live reference${items.length>1?'s':''} · ${p.variant}</span>`:''}</div>
       ${body}</div>`;}
   if(b.type==='image')return `<div class="cblock c-image ${s}" data-id="${b.id}"><span class="blabel">Image</span><img src="${b.props.url}" alt="${b.props.alt||''}"></div>`;
@@ -745,10 +747,10 @@ function fragmentEditorHTML(){
   const imgPath=t.img.replace(/^https?:\/\/[^/]+/,'').split('?')[0];
   return `<div class="fed">
     <div class="fedhdr">
-      <div><div class="ftitle">Editing Edge Fragment <span class="fchip">source of truth</span></div><div class="fpath">/trips/${slug} · <span style="color:#a883e6">structured content · schema: Trip</span></div></div>
+      <div><div class="ftitle">Editing structured content <span class="fchip">Trip · source of truth</span></div><div class="fpath">/trips/${slug} · <span style="color:#a883e6">schema: Trip</span></div></div>
       <div class="fedbtns"><button class="fedbtn ghost" data-fcancel>Cancel</button><button class="fedbtn primary" data-fdone>Done editing</button></div>
     </div>
-    <div class="fednote"><b>◆ Edit once, updates everywhere.</b> This is the fragment itself — every page that references it (via a Trips block) reflects these changes automatically. You never touch the pages.</div>
+    <div class="fednote"><b>◆ Edit once, updates everywhere.</b> This is the structured content record itself — every page that references it (via a Trips block) reflects these changes automatically. You never touch the pages.</div>
     <div class="fedcard">
       <div class="fedrow"><label>Image <span style="color:var(--gray-400);font-weight:600;text-transform:none;letter-spacing:0">· drag one from Content ▸ Assets to replace</span></label>
         <div class="fedimg" id="fedimg" style="background-image:url('${t.img}')"><span class="replace">Replace image</span></div></div>
@@ -765,7 +767,7 @@ function fragmentEditorHTML(){
     <div class="fedprev" id="fedprev">${prev}</div>
 
     <div class="devcard" id="devpanel">
-      <div class="devhdr"><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg> Developer · headless API</div>
+      <div class="devhdr"><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg> Developer · API &amp; contract</div>
         <div class="devseg"><button class="${devEnv==='preview'?'on':''}" data-devenv="preview">Preview</button><button class="${devEnv==='live'?'on':''}" data-devenv="live">Live</button></div></div>
       <div class="devschema">Delivered as <b>DA structured content</b> against <code>schema: Trip</code> — fields: title, region, season, image, description, cta. No Content Fragments, no GraphQL.</div>
       <div class="devrow"><div class="dl">Single item · JSON</div><div class="endpoint"><span class="m">GET</span><span id="ep1">${base}/trips/${slug}.json</span><button class="copy" data-copytarget="ep1">Copy</button></div></div>
@@ -784,6 +786,25 @@ const trip = <span class="k">await</span> (<span class="k">await</span> fetch(<s
 <span class="c">// collection — filter by the schema field</span>
 const { data } = <span class="k">await</span> (<span class="k">await</span> fetch(<span class="s">'${base}/trips/query-index.json'</span>)).json();
 const winter = data.filter(t =&gt; t.season === <span class="s">'Winter'</span>);</div></div>
+
+      <div class="devrow" style="border-top:1px solid #232a40;padding-top:14px"><div class="dl" style="display:flex;align-items:center;color:#c9a8ff">Contract · model + block definition<span style="margin-left:auto;font-weight:600;text-transform:none;letter-spacing:0;color:#7f8fb3">developer-owned</span></div></div>
+      <div class="devrow"><div class="dl" style="display:flex;align-items:center">Content model · <code style="color:#c9a8ff;background:rgba(255,255,255,.06)">schema: Trip</code><button class="copy" data-copytarget="schemadef" style="margin-left:auto">Copy</button></div><div class="code2" id="schemadef"><span class="k">Trip</span> {
+  title        <span class="s">text</span>        <span class="c">(required)</span>
+  region       <span class="s">text</span>
+  season       <span class="s">enum</span>        <span class="c">Winter | Spring | Summer | Autumn</span>
+  image        <span class="s">reference</span>   <span class="c">→ Asset</span>
+  description  <span class="s">richtext</span>
+  cta          <span class="s">text</span>
+}</div></div>
+      <div class="devrow"><div class="dl" style="display:flex;align-items:center">Renderer block · <code style="color:#8fe3b0;background:rgba(255,255,255,.06)">trips</code> definition<button class="copy" data-copytarget="blockdef" style="margin-left:auto">Copy</button></div><div class="code2" id="blockdef">{
+  <span class="k">"block"</span>: <span class="s">"trips"</span>,
+  <span class="k">"model"</span>: <span class="s">"Trip"</span>,
+  <span class="k">"variants"</span>: [<span class="s">"featured"</span>, <span class="s">"card"</span>, <span class="s">"compact"</span>, <span class="s">"list"</span>, <span class="s">"grid"</span>],
+  <span class="k">"options"</span>: {
+    <span class="k">"fields"</span>: [<span class="s">"image"</span>, <span class="s">"region"</span>, <span class="s">"season"</span>, <span class="s">"description"</span>, <span class="s">"cta"</span>],
+    <span class="k">"source"</span>: [<span class="s">"selected"</span>, <span class="s">"collection"</span>]
+  }
+}</div><div style="font-size:11px;color:#7f8fb3;margin-top:8px;line-height:1.5">The developer defines the model + these variants; the Properties panel reads this manifest to build its selectors. <b style="color:#c9d3ea">Authors select variants and author entries — never decoration.</b></div></div>
     </div>
   </div>`;
 }
@@ -798,15 +819,27 @@ function wireEditor(){
   pageEl.querySelectorAll('[data-copytarget]').forEach(b=>b.addEventListener('click',()=>{const el=document.getElementById(b.dataset.copytarget);const txt=el?el.textContent:'';try{navigator.clipboard&&navigator.clipboard.writeText(txt);}catch(_){}toast('Copied to clipboard');}));
   const img=document.getElementById('fedimg');
   if(img){img.addEventListener('dragover',e=>{e.preventDefault();img.classList.add('drop');});img.addEventListener('dragleave',()=>img.classList.remove('drop'));
-    img.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();img.classList.remove('drop');const d=getData(e);if(d&&d.kind==='asset'){TRIPS[editFrag].img=d.img;renderPage();toast('Fragment image replaced');}});}
+    img.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();img.classList.remove('drop');const d=getData(e);if(d&&d.kind==='asset'){TRIPS[editFrag].img=d.img;renderPage();toast('Image replaced');}});}
+}
+
+/* ---------------- BREADCRUMB ---------------- */
+function renderCrumb(){
+  const c=document.getElementById('crumb'); if(!c)return;
+  if(editFrag!==null){
+    const t=TRIPS[editFrag]; const slug=t.t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    c.innerHTML=`blofft1 <span>›</span> wknd-advanced <span>›</span> <span class="clink" data-gopage>new-page</span> <span>›</span> trips <span>›</span> <b>${slug}</b>`;
+  } else {
+    c.innerHTML=`blofft1 <span>›</span> wknd-advanced <span>›</span> <b>new-page</b>`;
+  }
 }
 
 /* ---------------- RENDER PAGE ---------------- */
 function renderPage(){
+  renderCrumb();
   if(editFrag!==null){ pageEl.classList.remove('pageselected'); pageEl.innerHTML=fragmentEditorHTML(); wireEditor(); return; }
   pageEl.classList.toggle('pageselected', sel==='page');
   if(!page.length){
-    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p><b>Assembly flow:</b> ① drag <b>blocks</b> to shape the page · ② bind approved <b>Edge Fragments</b> to a <b>Trips</b> block · ③ pick a <b>display variant</b> in Properties. Content is referenced, not copied — approve once, reuse everywhere.</p></div>`;
+    pageEl.innerHTML=`<div class="emptystate" id="empty"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div><h3>Blank page · new-page</h3><p><b>Assembly flow:</b> ① drag <b>blocks</b> to shape the page · ② bind approved <b>structured content</b> (Trips) to a <b>Trips</b> block · ③ pick a <b>display variant</b> in Properties. Content is referenced, not copied — approve once, reuse everywhere.</p></div>`;
   } else {
     pageEl.innerHTML=page.map(renderBlock).join('');
   }
@@ -841,7 +874,7 @@ function newBlock(kind){
 function handleDrop(d,targetId,dropType){
   if(!d)return;
   if(d.kind==='block'){const b=newBlock(d.block);page.push(b);sel=b.id;renderPage();
-    toast(b.type==='trips'?'Added Trips block — now bind Edge Fragments (step 2)':`Added ${b.type==='hero'?'Hero':b.type==='cards'?'Cards':b.props.label} block`);return;}
+    toast(b.type==='trips'?'Added Trips block — now bind structured content (step 2)':`Added ${b.type==='hero'?'Hero':b.type==='cards'?'Cards':b.props.label} block`);return;}
   if(d.kind==='asset'){
     const tb=page.find(x=>x.id===targetId);
     if(tb&&tb.type==='hero'){tb.props.image=d.img;sel=tb.id;renderPage();if(railMode==='props')renderRail();toast('Set hero background image');return;}
@@ -864,6 +897,7 @@ function setMode(m){railMode=m;document.querySelectorAll('.railtab').forEach(x=>
 function updateStepper(){const cur=({blocks:'blocks',content:'content',props:'props'})[railMode];document.querySelectorAll('#stepper .step').forEach(s=>s.classList.toggle('on',s.dataset.step===cur));}
 document.getElementById('railtabs').addEventListener('click',e=>{const t=e.target.closest('.railtab');if(t)setMode(t.dataset.mode);});
 document.getElementById('stepper').addEventListener('click',e=>{const s=e.target.closest('.step');if(s)setMode(s.dataset.step);});
+document.getElementById('crumb').addEventListener('click',e=>{if(e.target.closest('[data-gopage]')){editFrag=null;renderPage();}});
 
 let toastT;function toast(m){const el=document.getElementById('toast');document.getElementById('toasttext').textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2000);}
 
