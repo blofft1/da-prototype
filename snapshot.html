@@ -150,6 +150,7 @@
   .diff-path{background:var(--soft2);padding:3px 8px;border-radius:5px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .diff-date{max-width:230px;}
   .diff-now{font-size:13px;color:var(--ink);}
+  .diff-badge{font-size:10px;background:#fff4d6;color:var(--warn);padding:2px 8px;border-radius:999px;}
   .diff-ver-cap{font-size:12px;color:var(--sub);min-height:16px;}
   .diff-ver-cap.ok{color:var(--accent-deep);font-weight:600;}
   @media (max-width:820px){ .diff-cols{grid-template-columns:1fr;} }
@@ -446,19 +447,15 @@ function renderReview(){
     </div>
     <div id="diff-modal" class="diff-modal hidden">
       <div class="diff-panel">
-        <div class="diff-head"><strong>Bulk diff — current vs past version</strong><button class="diff-close" id="diff-close" aria-label="Close">×</button></div>
+        <div class="diff-head"><strong>Bulk diff — production vs latest updates</strong><button class="diff-close" id="diff-close" aria-label="Close">×</button></div>
         <div class="diff-cols">
           <div class="diff-col">
-            <div class="diff-side"><span class="diff-side-label">Current Page</span><code class="diff-path" id="diff-cur-path"></code></div>
-            <div class="diff-side"><span class="diff-side-label">as of</span><span class="diff-now">Now — current published</span></div>
-            <div class="diff-ver-cap ok">Live version</div>
-            <div class="diff-frame"><iframe id="diff-left-frame" title="current page"></iframe></div>
+            <div class="diff-side"><span class="diff-side-label">Current Page in Production</span><code class="diff-path" id="diff-cur-path"></code></div>
+            <div class="diff-frame"><iframe id="diff-left-frame" title="production page"></iframe></div>
           </div>
           <div class="diff-col">
-            <div class="diff-side"><span class="diff-side-label">Past version</span><code class="diff-path" id="diff-past-path"></code></div>
-            <div class="diff-side"><span class="diff-side-label">as of</span><input class="input diff-date" id="diff-date" type="datetime-local"></div>
-            <div class="diff-ver-cap" id="diff-ver-cap"></div>
-            <div class="diff-frame"><iframe id="diff-right-frame" title="past version"></iframe></div>
+            <div class="diff-side"><span class="diff-side-label">Latest Updates</span><span class="diff-badge">unpublished</span><code class="diff-path" id="diff-past-path"></code></div>
+            <div class="diff-frame"><iframe id="diff-right-frame" title="latest updates"></iframe></div>
           </div>
         </div>
       </div>
@@ -479,28 +476,18 @@ function renderReview(){
     s.status='Denied'; s.locked=false; s.denyReason=msg; render(); toast('Denial sent to author ✕','warn');
   });
 
-  // Bulk diff — current page vs a past version of the same page
+  // Bulk diff — current production page vs the latest (unpublished) edits
   const diffModal=body.querySelector('#diff-modal');
   const curPath=s.pages[s.idx];
-  const setDoc=(sel,doc)=>{ body.querySelector(sel).srcdoc=doc||'<!doctype html><meta charset="utf-8"><div style="font:14px -apple-system,Segoe UI,Arial;color:#6e6e77;padding:26px">No earlier version recorded for this page.</div>'; };
-  const renderRight=()=>{
-    const when=body.querySelector('#diff-date').value;
-    const cap=body.querySelector('#diff-ver-cap');
-    const v=pastVersionAsOf(curPath, when);
-    if(v){ setDoc('#diff-right-frame', v.doc); cap.textContent=`Showing version from ${v.date.toLocaleDateString()}`; cap.className='diff-ver-cap ok'; }
-    else { setDoc('#diff-right-frame', null); cap.textContent = when?'No earlier version before this date.':'Pick a date to load a past version.'; cap.className='diff-ver-cap'; }
-  };
+  const prodOf=(path)=>{ const list=PAST[path]; return (list&&list.length)?list.slice().sort((a,b)=>b.date-a.date)[0].doc:null; };
+  const setDoc=(sel,doc)=>{ body.querySelector(sel).srcdoc=doc||'<!doctype html><meta charset="utf-8"><div style="font:14px -apple-system,Segoe UI,Arial;color:#6e6e77;padding:26px">Not yet in production — this is a new, unpublished page.</div>'; };
   body.querySelector('#diff-btn').addEventListener('click',()=>{
     diffModal.classList.remove('hidden');
     body.querySelector('#diff-cur-path').textContent=curPath;
     body.querySelector('#diff-past-path').textContent=curPath;
-    setDoc('#diff-left-frame', previewDoc(curPath));
-    const list=PAST[curPath];
-    const di=body.querySelector('#diff-date');
-    if(list && list.length && !di.value){ di.value=toLocalInput(list.slice().sort((a,b)=>b.date-a.date)[0].date); }
-    renderRight();
+    setDoc('#diff-left-frame', prodOf(curPath));       // current production (published)
+    setDoc('#diff-right-frame', previewDoc(curPath));  // latest edits (pending publish)
   });
-  body.querySelector('#diff-date').addEventListener('change',renderRight);
   body.querySelector('#diff-close').addEventListener('click',()=>diffModal.classList.add('hidden'));
   diffModal.addEventListener('click',(e)=>{ if(e.target===diffModal) diffModal.classList.add('hidden'); });
 }
