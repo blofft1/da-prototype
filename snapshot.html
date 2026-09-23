@@ -77,6 +77,8 @@
   /* review */
   .snaphead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
   .snaphead strong{font-size:18px;}
+  .back-link{display:inline-block;font-size:12.5px;color:var(--accent-deep);text-decoration:none;margin-bottom:10px;}
+  .back-link:hover{text-decoration:underline;}
   .status{font-size:11px;padding:3px 10px;border-radius:999px;background:var(--soft2);color:var(--sub);font-weight:600;}
   .status.locked{background:var(--warn-bg);color:var(--warn);}
   .status.pub{background:#dcf5e8;color:var(--ok);}
@@ -199,9 +201,8 @@
 
     <div class="content">
       <nav class="tabs">
+        <button class="tab" data-tab="audit">Snapshots</button>
         <button class="tab" data-tab="create">Create</button>
-        <button class="tab" data-tab="review">Review</button>
-        <button class="tab" data-tab="audit">Audit</button>
       </nav>
       <div id="body"></div>
     </div>
@@ -431,6 +432,7 @@ function renderReview(){
 
   body.innerHTML = `
     <div class="card">
+      <a class="back-link" id="back-list" href="#">← Back to Snapshots</a>
       <div class="snaphead"><strong>${esc(s.name)}</strong><span class="status ${statusClass(s)}">${esc(s.status)}</span></div>
       ${s.description?`<p class="rev-desc">${esc(s.description)}</p>`:''}
       ${denied && s.denyReason?`<div class="deny-banner"><strong>Denied:</strong> ${esc(s.denyReason)}</div>`:''}
@@ -499,6 +501,7 @@ function renderReview(){
   body.querySelector('#gprev').addEventListener('click',()=>go(s.idx-1));
   body.querySelector('#gnext').addEventListener('click',()=>go(s.idx+1));
   body.querySelectorAll('.ritem').forEach(b=>b.addEventListener('click',()=>go(Number(b.dataset.i))));
+  body.querySelector('#back-list').addEventListener('click',(e)=>{ e.preventDefault(); setTab('audit'); });
 
   body.querySelector('#approve-pub').addEventListener('click',()=>{ s.status='Published'; s.locked=false; s.denyReason=''; render(); toast('Snapshot approved & published ✓','success'); });
   const denyBox=body.querySelector('#deny-box');
@@ -553,6 +556,7 @@ function renderAudit(){
         <input class="input" id="asof" type="datetime-local" value="${esc(state.auditDate)}">
       </div>
       <button class="btn btn-ghost" id="aclear">Clear</button>
+      <button class="btn btn-primary" id="audit-new" style="margin-left:auto">+ Create New</button>
     </div>
     <div id="pit"></div>
     <table class="atable"><thead><tr><th>Name</th><th>Pages</th><th>Created</th><th>Status</th></tr></thead><tbody id="arows"></tbody></table>
@@ -584,10 +588,11 @@ function renderAudit(){
   body.querySelector('#asearch').addEventListener('input',e=>{state.auditQuery=e.target.value;paint();});
   body.querySelector('#asof').addEventListener('change',e=>{state.auditDate=e.target.value;paintPit();paint();});
   body.querySelector('#aclear').addEventListener('click',()=>{state.auditQuery='';state.auditDate='';renderAudit();});
+  body.querySelector('#audit-new').addEventListener('click',()=>{ resetBuilder(); state.current=null; setTab('create'); });
   paintPit(); paint();
 }
 
-setTab('create');
+setTab('audit');
 </script>
 </body>
 </html>
