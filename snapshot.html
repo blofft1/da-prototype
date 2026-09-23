@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snapshot — WKND (Mockup)</title>
+<style>
+  :root{
+    --accent:#3b63fb; --accent-deep:#2748d8; --ink:#131315; --sub:#6e6e77;
+    --line:#e6e6ea; --bg:#fff; --soft:#f5f6fa; --soft2:#eef0f6;
+    --ok:#0a7c42; --warn:#a86b00; --warn-bg:#fff4d6; --err:#c0392b;
+    --sidebar:#14151a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:var(--soft);}
+  a{color:inherit;}
+
+  .app{display:grid;grid-template-columns:232px 1fr;min-height:100vh;}
+
+  /* sidebar */
+  .side{background:var(--sidebar);color:#c7c9d1;padding:18px 12px;display:flex;flex-direction:column;gap:4px;}
+  .brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px;}
+  .brand b{color:#fff;font-size:18px;letter-spacing:.06em;}
+  .brand span{font-size:10px;color:#8b8e99;letter-spacing:.18em;text-transform:uppercase;}
+  .nav{display:flex;flex-direction:column;gap:2px;margin-top:6px;}
+  .nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:13.5px;color:#c7c9d1;text-decoration:none;}
+  .nav a:hover{background:#20222b;color:#fff;}
+  .nav a.active{background:var(--accent);color:#fff;}
+  .nav .ico{width:16px;text-align:center;opacity:.9;}
+  .side .foot{margin-top:auto;font-size:11px;color:#6b6e79;padding:8px;}
+
+  /* main */
+  .main{display:flex;flex-direction:column;min-width:0;}
+  .topbar{background:var(--bg);border-bottom:1px solid var(--line);padding:16px 26px;display:flex;align-items:center;justify-content:space-between;}
+  .topbar h1{font-size:20px;}
+  .topbar .site{font-size:12px;color:var(--sub);margin-top:2px;}
+  .topbar .site code{background:var(--soft2);padding:1px 6px;border-radius:5px;}
+  .content{padding:22px 26px;max-width:1180px;width:100%;}
+
+  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:20px;}
+  .tab{padding:10px 14px;border:none;background:none;color:var(--sub);font-weight:600;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;}
+  .tab.active{color:var(--accent-deep);border-bottom-color:var(--accent);}
+
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-weight:600;font-size:13px;cursor:pointer;}
+  .btn:hover{background:var(--soft);}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn-primary:hover{background:var(--accent-deep);}
+  .btn-ghost{border-style:dashed;color:var(--sub);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  .grid2{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:18px;}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--sub);margin-bottom:12px;}
+  .label{display:block;font-size:12px;font-weight:600;margin:12px 0 5px;}
+  .input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;font-size:14px;}
+  .input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(59,99,251,.15);}
+  .check{display:flex;align-items:center;gap:8px;font-size:13px;margin:12px 0;}
+
+  .browse-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .folder-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;}
+  .chip{font-size:12px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--bg);cursor:pointer;color:var(--sub);}
+  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .plist{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px;}
+  .prow{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:13px;}
+  .prow:last-child{border-bottom:none;}
+  .prow:hover{background:var(--soft);}
+  .prow .fld{color:var(--sub);}
+  .count{font-size:12px;color:var(--accent-deep);font-weight:600;}
+
+  .cart{position:sticky;top:20px;}
+  .selbox{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin:6px 0;}
+  .selrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .selrow:last-child{border-bottom:none;}
+  .selrow button{border:none;background:none;color:var(--err);cursor:pointer;font-size:15px;line-height:1;}
+  .empty{color:var(--sub);font-size:12.5px;padding:14px;text-align:center;}
+
+  /* review */
+  .snaphead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .snaphead strong{font-size:18px;}
+  .status{font-size:11px;padding:3px 10px;border-radius:999px;background:var(--soft2);color:var(--sub);font-weight:600;}
+  .status.locked{background:var(--warn-bg);color:var(--warn);}
+  .status.pub{background:#dcf5e8;color:var(--ok);}
+  .rtable{width:100%;border-collapse:collapse;margin-top:8px;}
+  .rtable th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);padding:8px 10px;border-bottom:1px solid var(--line);}
+  .rtable td{padding:10px;border-bottom:1px solid var(--line);font-size:13px;}
+  .rtable a{color:var(--accent-deep);text-decoration:none;}
+  .rtable a:hover{text-decoration:underline;}
+  .rev-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .placeholders{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .pchip{font-size:11px;padding:5px 11px;border-radius:999px;border:1px dashed var(--line);color:var(--sub);}
+
+  /* audit */
+  .atable{width:100%;border-collapse:collapse;background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .atable th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);padding:11px 14px;background:var(--soft);}
+  .atable td{padding:12px 14px;border-top:1px solid var(--line);font-size:13.5px;}
+  .atable tr.click{cursor:pointer;}
+  .atable tr.click:hover td{background:var(--soft);}
+
+  .note{font-size:12px;color:var(--sub);line-height:1.5;border-top:1px dashed var(--line);padding-top:12px;margin-top:16px;}
+  .note code{background:var(--soft2);padding:1px 5px;border-radius:4px;}
+  .mock-flag{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#ffe8cc;color:#a86b00;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle;}
+
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:9px;font-size:13px;box-shadow:0 6px 24px rgba(0,0,0,.18);}
+  .toast.hidden{display:none;}
+  .toast.success{background:var(--ok);}
+  .toast.warn{background:var(--warn);}
+
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr;}
+    .side{flex-direction:row;overflow:auto;}
+    .grid2{grid-template-columns:1fr;}
+    .cart{position:static;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><b>WKND</b><span>CMS</span></div>
+    <nav class="nav">
+      <a href="#"><span class="ico">▦</span> Dashboard</a>
+      <a href="#"><span class="ico">🗂</span> Content</a>
+      <a href="#" class="active"><span class="ico">📸</span> Snapshots</a>
+      <a href="#"><span class="ico">🚀</span> Launch</a>
+      <a href="#"><span class="ico">🧩</span> Fragments</a>
+      <a href="#"><span class="ico">🌐</span> MSM &amp; Locales</a>
+      <a href="#"><span class="ico">🛡</span> Governance</a>
+    </nav>
+    <div class="foot">Mockup · not connected to a live site</div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1>Snapshots <span class="mock-flag">Mockup</span></h1>
+        <div class="site">Site: <code>blofft1 / wknd-advanced</code></div>
+      </div>
+      <button class="btn btn-primary" id="new-snap">＋ New Snapshot</button>
+    </div>
+
+    <div class="content">
+      <nav class="tabs">
+        <button class="tab" data-tab="create">Create</button>
+        <button class="tab" data-tab="review">Review</button>
+        <button class="tab" data-tab="audit">Audit</button>
+      </nav>
+      <div id="body"></div>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+/* ---------------- mock data ---------------- */
+const ORG = 'blofft1', REPO = 'wknd-advanced';
+const PAGES = [
+  '/index',
+  '/start-here/travel-planning-101','/start-here/trip-budgeting','/start-here/travel-safety-fund','/start-here/booking-smart',
+  '/new-to-travel','/seasoned-explorer',
+  '/learn/hiking','/learn/surfing','/learn/skiing','/learn/camping','/learn/city-escapes','/learn/road-trips',
+  '/tools/adventure-savings','/tools/trip-readiness','/tools/trip-fund-planner',
+  '/products/books','/products/courses','/products/tools',
+  '/about-us','/events','/whats-coming-next',
+  '/articles/best-fall-ridge-hikes','/articles/shoulder-season-surf','/articles/pacific-coast-road-trip',
+];
+const folderOf = (p) => { const parts = p.split('/').filter(Boolean); return parts.length > 1 ? parts[0] : 'root'; };
+const FOLDERS = ['all', ...Array.from(new Set(PAGES.map(folderOf)))];
+
+const state = {
+  tab: 'create',
+  filter: '',
+  folder: 'all',
+  selected: new Set(['/index','/learn/hiking']),
+  current: null,
+  snapshots: [
+    { name:'fall-collection-2026', description:'Autumn hiking + road-trip refresh', locked:true, status:'In review (locked)',
+      pages:['/learn/hiking','/learn/road-trips','/articles/best-fall-ridge-hikes','/index'], created:new Date('2026-09-18') },
+    { name:'summer-sale-2026', description:'Booking promo across Start Here', locked:false, status:'Published',
+      pages:['/start-here/booking-smart','/start-here/trip-budgeting','/index'], created:new Date('2026-07-02') },
+  ],
+};
+
+/* ---------------- helpers ---------------- */
+const esc = (s) => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const slug = (s) => (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+const reviewsUrl = (name, path) => `https://${slug(name)}--main--${REPO}--${ORG}.aem.reviews${path}`;
+const statusClass = (s) => s.status.startsWith('Published') ? 'pub' : (s.locked ? 'locked' : '');
+
+function toast(msg, type=''){ const t=document.getElementById('toast'); t.textContent=msg; t.className=`toast ${type}`; setTimeout(()=>t.classList.add('hidden'),4000); }
+
+/* ---------------- render ---------------- */
+const body = document.getElementById('body');
+function setTab(t){ state.tab=t; document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); render(); }
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+document.getElementById('new-snap').addEventListener('click',()=>{ state.current=null; setTab('create'); });
+
+function render(){
+  if(state.tab==='create') renderCreate();
+  if(state.tab==='review') renderReview();
+  if(state.tab==='audit') renderAudit();
+}
+
+function renderCreate(){
+  body.innerHTML = `
+    <div class="grid2">
+      <div class="card">
+        <div class="browse-head"><h2 style="margin:0">Browse content</h2><span class="count" id="cnt">${state.selected.size} selected</span></div>
+        <input class="input" id="filter" placeholder="Filter pages…" value="${esc(state.filter)}">
+        <div class="folder-chips" id="chips">${FOLDERS.map(f=>`<span class="chip ${state.folder===f?'active':''}" data-f="${f}">${f}</span>`).join('')}</div>
+        <div class="plist" id="plist"></div>
+      </div>
+      <div class="card cart">
+        <h2>New snapshot</h2>
+        <label class="label">Name</label>
+        <input class="input" id="snap-name" placeholder="e.g. fall-collection-2026">
+        <label class="label">Description</label>
+        <input class="input" id="snap-desc" placeholder="What's in this release?">
+        <label class="check"><input type="checkbox" id="snap-lock" checked> Lock pages during review</label>
+        <label class="label">Selected pages <span class="count" id="selcnt">${state.selected.size}</span></label>
+        <div class="selbox" id="selbox"></div>
+        <button class="btn btn-primary" id="create" style="width:100%;justify-content:center;margin-top:10px">Create Snapshot</button>
+        <p class="note">Snapshots are multi-page by default. Creating stages them on the <code>.aem.reviews</code> environment for review before publish.</p>
+      </div>
+    </div>`;
+
+  const plist = body.querySelector('#plist');
+  const paintList = () => {
+    const q = state.filter.toLowerCase();
+    const rows = PAGES.filter(p => (state.folder==='all'||folderOf(p)===state.folder) && (!q||p.toLowerCase().includes(q)));
+    plist.innerHTML = rows.length ? rows.map(p=>{
+      const parts=p.split('/'); const name=parts.pop(); const fld=parts.join('/')||'/';
+      return `<label class="prow"><input type="checkbox" data-p="${p}" ${state.selected.has(p)?'checked':''}><span>${esc(name)}</span><span class="fld">${esc(fld)}</span></label>`;
+    }).join('') : '<div class="empty">No pages match.</div>';
+    plist.querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{
+      if(cb.checked) state.selected.add(cb.dataset.p); else state.selected.delete(cb.dataset.p);
+      paintCart();
+    }));
+  };
+  const paintCart = () => {
+    body.querySelector('#cnt').textContent = `${state.selected.size} selected`;
+    body.querySelector('#selcnt').textContent = state.selected.size;
+    const sb = body.querySelector('#selbox');
+    const arr=[...state.selected];
+    sb.innerHTML = arr.length ? arr.map(p=>`<div class="selrow"><span>${esc(p)}</span><button data-p="${p}" title="remove">×</button></div>`).join('') : '<div class="empty">No pages selected yet.</div>';
+    sb.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.selected.delete(b.dataset.p);paintList();paintCart();}));
+  };
+
+  body.querySelector('#filter').addEventListener('input',e=>{state.filter=e.target.value;paintList();});
+  body.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{state.folder=c.dataset.f;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.f===state.folder));paintList();}));
+  body.querySelector('#create').addEventListener('click',()=>{
+    const name=body.querySelector('#snap-name').value;
+    if(!slug(name)){toast('Enter a snapshot name.','warn');return;}
+    if(state.selected.size<1){toast('Select at least one page.','warn');return;}
+    const locked=body.querySelector('#snap-lock').checked;
+    const snap={name:slug(name),description:body.querySelector('#snap-desc').value,locked,status:locked?'In review (locked)':'Draft',pages:[...state.selected],created:new Date()};
+    state.snapshots.unshift(snap); state.current=snap; state.selected=new Set();
+    setTab('review'); toast(`Snapshot "${snap.name}" created with ${snap.pages.length} pages ✓`,'success');
+  });
+  paintList(); paintCart();
+}
+
+function renderReview(){
+  const s=state.current;
+  if(!s){ body.innerHTML='<div class="card"><div class="empty">Create a snapshot, or open one from the Audit tab.</div></div>'; return; }
+  body.innerHTML = `
+    <div class="card">
+      <div class="snaphead"><strong>${esc(s.name)}</strong><span class="status ${statusClass(s)}">${esc(s.status)}</span></div>
+      ${s.description?`<p style="color:var(--sub);font-size:13px;margin-bottom:8px">${esc(s.description)}</p>`:''}
+      <table class="rtable">
+        <thead><tr><th>Page</th><th>Review URL</th><th>State</th></tr></thead>
+        <tbody>${s.pages.map(p=>`<tr><td>${esc(p)}</td><td><a href="${reviewsUrl(s.name,p)}" target="_blank" rel="noopener">.aem.reviews ↗</a></td><td>${s.locked?'Locked':'Open'}</td></tr>`).join('')}</tbody>
+      </table>
+      <div class="rev-actions">
+        <button class="btn btn-primary" id="approve">Approve &amp; Publish</button>
+        <button class="btn" id="reject">Reject &amp; Unlock</button>
+        <button class="btn btn-ghost" id="lock">${s.locked?'Unlock':'Request Review (lock)'}</button>
+      </div>
+      <div class="placeholders">
+        <span class="pchip">🔔 Notifications</span><span class="pchip">🔀 Bulk diff</span><span class="pchip">✎ Mark-up</span>
+      </div>
+      <p class="note">Reviewers open each page on <code>.aem.reviews</code>, then someone with publish rights approves or rejects. (Mockup — actions update state only.)</p>
+    </div>`;
+  body.querySelector('#approve').addEventListener('click',()=>{s.status='Published';s.locked=false;render();toast('Approved & published ✓','success');});
+  body.querySelector('#reject').addEventListener('click',()=>{s.status='Rejected — unlocked';s.locked=false;render();toast('Rejected & unlocked');});
+  body.querySelector('#lock').addEventListener('click',()=>{s.locked=!s.locked;s.status=s.locked?'In review (locked)':'Draft';render();toast(s.locked?'Review requested — locked':'Unlocked');});
+}
+
+function renderAudit(){
+  body.innerHTML = `
+    <input class="input" id="asearch" placeholder="Search snapshots by name…" style="max-width:340px;margin-bottom:14px">
+    <table class="atable"><thead><tr><th>Name</th><th>Pages</th><th>Created</th><th>Status</th></tr></thead><tbody id="arows"></tbody></table>
+    <p class="note">Audit lists every snapshot for the site. Live version searches the <code>/snapshot</code> API by date, name, and status.</p>`;
+  const paint=(q='')=>{
+    const rows=state.snapshots.filter(s=>!q||s.name.includes(q.toLowerCase()));
+    const tb=body.querySelector('#arows');
+    tb.innerHTML=rows.length?rows.map(s=>`<tr class="click" data-n="${esc(s.name)}"><td><strong>${esc(s.name)}</strong><div style="color:var(--sub);font-size:12px">${esc(s.description||'')}</div></td><td>${s.pages.length}</td><td>${s.created.toLocaleDateString()}</td><td><span class="status ${statusClass(s)}">${esc(s.status)}</span></td></tr>`).join(''):'<tr><td colspan="4"><div class="empty">No snapshots match.</div></td></tr>';
+    tb.querySelectorAll('tr.click').forEach(r=>r.addEventListener('click',()=>{state.current=state.snapshots.find(s=>s.name===r.dataset.n);setTab('review');}));
+  };
+  body.querySelector('#asearch').addEventListener('input',e=>paint(e.target.value));
+  paint();
+}
+
+setTab('create');
+</script>
+</body>
+</html>
