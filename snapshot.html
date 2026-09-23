@@ -365,11 +365,10 @@ function renderCreate(){
         <input class="input" id="snap-desc" placeholder="What's in this release?" value="${esc(state.createDesc)}">
         <label class="label">Password (optional)</label>
         <input class="input" id="snap-pass" placeholder="Protect the .aem.reviews URLs" value="${esc(state.createPass)}">
-        ${state.editing?'':`<label class="check"><input type="checkbox" id="snap-lock" checked> Freeze pages for review</label>`}
         <label class="label">Selected pages <span class="count" id="selcnt">${state.selected.size}</span></label>
         <div class="selbox" id="selbox"></div>
         <button class="btn btn-primary" id="create" style="width:100%;justify-content:center;margin-top:10px">${state.editing?'Save changes':'Create Snapshot'}</button>
-        <p class="note">${state.editing?'Add or remove pages, then Save. Pages you add join the review and are frozen; pages you remove are released.':'Snapshots are multi-page by default. Creating stages them on the <code>.aem.reviews</code> environment for review before publish.'}</p>
+        <p class="note">${state.editing?'Add or remove pages, then Save. Pages you add join the review and are frozen; pages you remove are released.':'Snapshots are multi-page by default. Creating saves a <strong>Draft</strong> — then open it and <strong>Request Review</strong> when ready.'}</p>
       </div>
     </div>`;
 
@@ -410,9 +409,7 @@ function renderCreate(){
       state.current=snap; state.editing=null;
       setTab('review'); toast(`Saved changes to "${snap.name}" (${snap.pages.length} pages) ✓`,'success');
     } else {
-      const lockEl=body.querySelector('#snap-lock');
-      const locked=lockEl?lockEl.checked:true;
-      const snap={name:slug(name),description:body.querySelector('#snap-desc').value,password:body.querySelector('#snap-pass').value,locked,status:locked?'In review — pages locked':'Draft',pages:[...state.selected],created:new Date()};
+      const snap={name:slug(name),description:body.querySelector('#snap-desc').value,password:body.querySelector('#snap-pass').value,locked:false,status:'Draft',pages:[...state.selected],created:new Date()};
       state.snapshots.unshift(snap); state.current=snap; state.selected=new Set();
       setTab('review'); toast(`Snapshot "${snap.name}" created with ${snap.pages.length} pages ✓`,'success');
     }
