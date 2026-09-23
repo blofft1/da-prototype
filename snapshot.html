@@ -149,6 +149,7 @@
   .diff-side-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);white-space:nowrap;}
   .diff-path{background:var(--soft2);padding:3px 8px;border-radius:5px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .diff-date{max-width:230px;}
+  .diff-now{font-size:13px;color:var(--ink);}
   .diff-ver-cap{font-size:12px;color:var(--sub);min-height:16px;}
   .diff-ver-cap.ok{color:var(--accent-deep);font-weight:600;}
   @media (max-width:820px){ .diff-cols{grid-template-columns:1fr;} }
@@ -449,6 +450,8 @@ function renderReview(){
         <div class="diff-cols">
           <div class="diff-col">
             <div class="diff-side"><span class="diff-side-label">Current Page</span><code class="diff-path" id="diff-cur-path"></code></div>
+            <div class="diff-side"><span class="diff-side-label">as of</span><span class="diff-now">Now — current published</span></div>
+            <div class="diff-ver-cap ok">Live version</div>
             <div class="diff-frame"><iframe id="diff-left-frame" title="current page"></iframe></div>
           </div>
           <div class="diff-col">
