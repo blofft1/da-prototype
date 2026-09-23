@@ -222,7 +222,9 @@ const state = {
   folder: 'all',
   auditQuery: '',
   auditDate: '',
-  selected: new Set(['/index','/learn/hiking']),
+  createName: 'winter-campaign-2026',
+  createDesc: 'Winter adventures push — snowshoe routes, ski-town escapes, and cozy road trips.',
+  selected: new Set(['/index','/learn/hiking','/learn/surfing']),
   current: null,
   snapshots: [
     { name:'fall-collection-2026', description:'Autumn hiking + road-trip refresh', locked:true, status:'In review (locked)',
@@ -254,6 +256,8 @@ const IMG={
   coast:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1000&q=80',
   finance:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1000&q=80',
   desk:'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80',
+  surf:'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1000&q=80',
+  forest:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1000&q=80',
 };
 function pageDoc({kicker,title,img,fallback,intro,sections}){
   return `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -275,6 +279,7 @@ const PREVIEWS={
   '/index':pageDoc({kicker:'Explore · Wander · Belong',title:'Real Trips. Real Routes. This Weekend.',img:IMG.mountain,fallback:'linear-gradient(135deg,#0C2A22,#2FA8A0)',intro:"The best weekends aren't bought, they're lived. Every guide on WKND is built from routes our team has actually walked, ridden, or paddled.",sections:[{h:'The Idea',p:'Honest prep, clear difficulty ratings, and first-hand route notes so you can go prepared and come back wanting more.'},{h:'Why WKND',p:'No hype, no gatekeeping — just the trailhead details that actually matter.'}]}),
   '/start-here/travel-planning-101':pageDoc({kicker:'Start Here',title:'Trip Planning 101',img:IMG.ridge,fallback:'linear-gradient(135deg,#123A2F,#F4A73B)',intro:'Turn a daydream into a trip you can actually take — with a clear goal and a simple, repeatable plan.',sections:[{h:'The three numbers',p:'Your trip cost, your savings rate, and your trip-fund target.'},{h:'Timing matters',p:'Shoulder seasons stretch your budget and thin the crowds.'}]}),
   '/learn/hiking':pageDoc({kicker:'Trip Types',title:'Hiking',img:IMG.hiking,fallback:'linear-gradient(135deg,#0C2A22,#2FA8A0)',intro:'From easy loops to alpine ridgelines — pick a route that matches your level and go prepared.',sections:[{h:'Know before you go',p:'Check current conditions, permits, and honest difficulty ratings.'},{h:'Pack smart',p:'Layers, water, navigation, and the ten essentials.'}]}),
+  '/learn/surfing':pageDoc({kicker:'Trip Types',title:'Surfing',img:IMG.surf,fallback:'linear-gradient(135deg,#0b2a3a,#2FA8A0)',intro:'Cold-water dawn patrols to warm point breaks — find a spot that matches your level.',sections:[{h:'Read the conditions',p:'Check swell, tide, and wind before you paddle out.'},{h:'Gear up',p:'The right wetsuit and board make all the difference.'}]}),
   '/learn/road-trips':pageDoc({kicker:'Trip Types',title:'Road Trips',img:IMG.road,fallback:'linear-gradient(135deg,#14110F,#E8532C)',intro:'Great drives with honest logistics — map the big stops and leave room to wander.',sections:[{h:'Plan the route',p:'Anchor the must-sees, then keep the itinerary loose.'},{h:'Best seasons',p:'Beat the crowds with shoulder-season timing.'}]}),
   '/articles/best-fall-ridge-hikes':pageDoc({kicker:'Article',title:'Best Fall Ridge Hikes',img:IMG.coast,fallback:'linear-gradient(135deg,#123A2F,#F4A73B)',intro:'Crisp air, gold larches, and big views — our favorite ridgelines for peak fall color.',sections:[{h:'Franconia Ridge Loop',p:'A classic White Mountains traverse above treeline.'},{h:'When to go',p:'Early October, typically, for peak color and stable weather.'}]}),
 };
@@ -289,6 +294,7 @@ function toLocalInput(d){ const p=(n)=>String(n).padStart(2,'0'); return `${d.ge
 /* Past versions of a page (pre-rebrand FIRE content), so current-vs-past shows a real difference. */
 const PAST={
   '/index':[
+    {date:new Date('2026-08-20'), doc:pageDoc({kicker:'Weekend Adventures Await',title:'Your Next Adventure Is One Weekend Away',img:IMG.forest,fallback:'linear-gradient(135deg,#14110F,#2FA8A0)',intro:'An earlier WKND homepage — a simpler pitch and a different hero, before the "Real Trips. Real Routes." refresh.',sections:[{h:'Get outside',p:'Hand-picked weekend trips for hikers, surfers, and road-trippers.'},{h:'Plan in minutes',p:'Pick a trip, check conditions, and go.'}]})},
     {date:new Date('2026-01-15'), doc:pageDoc({kicker:'Financial Independence · Retire Early',title:'Your Path to Financial Independence',img:IMG.finance,fallback:'linear-gradient(135deg,#0b1f3a,#c5a059)',intro:'FIRE (diyFIRE) is an education-first platform for Canadians, closing the financial-literacy gap with clear, trustworthy guidance.',sections:[{h:'The Idea',p:'No hype, no selling — education over persuasion.'},{h:'Why FIRE',p:'Turn an overwhelming subject into a plan you can actually follow.'}]})},
   ],
   '/start-here/travel-planning-101':[
@@ -334,9 +340,9 @@ function renderCreate(){
       <div class="card cart">
         <h2>New snapshot</h2>
         <label class="label">Name</label>
-        <input class="input" id="snap-name" placeholder="e.g. fall-collection-2026">
+        <input class="input" id="snap-name" placeholder="e.g. fall-collection-2026" value="${esc(state.createName)}">
         <label class="label">Description</label>
-        <input class="input" id="snap-desc" placeholder="What's in this release?">
+        <input class="input" id="snap-desc" placeholder="What's in this release?" value="${esc(state.createDesc)}">
         <label class="check"><input type="checkbox" id="snap-lock" checked> Lock pages during review</label>
         <label class="label">Selected pages <span class="count" id="selcnt">${state.selected.size}</span></label>
         <div class="selbox" id="selbox"></div>
@@ -378,6 +384,8 @@ function renderCreate(){
     state.snapshots.unshift(snap); state.current=snap; state.selected=new Set();
     setTab('review'); toast(`Snapshot "${snap.name}" created with ${snap.pages.length} pages ✓`,'success');
   });
+  body.querySelector('#snap-name').addEventListener('input',(e)=>{ state.createName=e.target.value; });
+  body.querySelector('#snap-desc').addEventListener('input',(e)=>{ state.createDesc=e.target.value; });
   paintList(); paintCart();
 }
 
