@@ -145,6 +145,12 @@
   .diff-col{display:flex;flex-direction:column;gap:8px;}
   .diff-frame{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
   .diff-frame iframe{display:block;width:100%;height:460px;border:0;}
+  .diff-side{display:flex;align-items:center;gap:10px;min-height:34px;}
+  .diff-side-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);white-space:nowrap;}
+  .diff-path{background:var(--soft2);padding:3px 8px;border-radius:5px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .diff-date{max-width:230px;}
+  .diff-ver-cap{font-size:12px;color:var(--sub);min-height:16px;}
+  .diff-ver-cap.ok{color:var(--accent-deep);font-weight:600;}
   @media (max-width:820px){ .diff-cols{grid-template-columns:1fr;} }
 
   /* audit */
@@ -246,6 +252,8 @@ const IMG={
   road:'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1000&q=80',
   ridge:'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1000&q=80',
   coast:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1000&q=80',
+  finance:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1000&q=80',
+  desk:'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80',
 };
 function pageDoc({kicker,title,img,fallback,intro,sections}){
   return `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -274,6 +282,32 @@ function previewDoc(path){
   if (PREVIEWS[path]) return PREVIEWS[path];
   const title=(path.split('/').pop()||'Page').replace(/-/g,' ').replace(/\b\w/g,(c)=>c.toUpperCase());
   return pageDoc({kicker:'WKND',title,img:IMG.mountain,fallback:'linear-gradient(135deg,#0C2A22,#2FA8A0)',intro:`Preview of ${path}.`,sections:[{h:'Overview',p:'Sample content for this page in the snapshot.'}]});
+}
+
+function toLocalInput(d){ const p=(n)=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+
+/* Past versions of a page (pre-rebrand FIRE content), so current-vs-past shows a real difference. */
+const PAST={
+  '/index':[
+    {date:new Date('2026-01-15'), doc:pageDoc({kicker:'Financial Independence · Retire Early',title:'Your Path to Financial Independence',img:IMG.finance,fallback:'linear-gradient(135deg,#0b1f3a,#c5a059)',intro:'FIRE (diyFIRE) is an education-first platform for Canadians, closing the financial-literacy gap with clear, trustworthy guidance.',sections:[{h:'The Idea',p:'No hype, no selling — education over persuasion.'},{h:'Why FIRE',p:'Turn an overwhelming subject into a plan you can actually follow.'}]})},
+  ],
+  '/start-here/travel-planning-101':[
+    {date:new Date('2026-01-15'), doc:pageDoc({kicker:'Start Here',title:'Financial Independence 101',img:IMG.desk,fallback:'linear-gradient(135deg,#123152,#c5a059)',intro:'The core idea, the numbers that matter, and the simple steps to get started.',sections:[{h:'The three numbers',p:'Your annual expenses, your savings rate, and your FIRE number.'},{h:'The 4% rule',p:'A common starting point — a planning tool, not a promise.'}]})},
+  ],
+  '/learn/hiking':[
+    {date:new Date('2026-01-15'), doc:pageDoc({kicker:'Learn',title:'TFSA',img:IMG.desk,fallback:'linear-gradient(135deg,#123152,#2FA8A0)',intro:'The Tax-Free Savings Account — how it works and why it matters.',sections:[{h:'Contribution room',p:'Confirm current CRA limits for your situation.'}]})},
+  ],
+  '/learn/road-trips':[
+    {date:new Date('2026-01-15'), doc:pageDoc({kicker:'Learn',title:'RRSP',img:IMG.finance,fallback:'linear-gradient(135deg,#0b1f3a,#2FA8A0)',intro:'Registered Retirement Savings Plan basics.',sections:[{h:'Deductions',p:'How RRSP contributions affect your taxes.'}]})},
+  ],
+  '/articles/best-fall-ridge-hikes':[
+    {date:new Date('2026-01-15'), doc:pageDoc({kicker:'Article',title:'The 4% Rule: Calculate Your FIRE Number',img:IMG.desk,fallback:'linear-gradient(135deg,#123152,#c5a059)',intro:'A beginner-friendly look at the 4% rule and your FIRE number.',sections:[{h:'The math',p:'Annual expenses × 25 is a common starting target.'}]})},
+  ],
+};
+function pastVersionAsOf(path, when){
+  const list=PAST[path]; if(!list) return null;
+  const t=new Date(when).getTime(); if(isNaN(t)) return null;
+  return list.filter(v=>v.date.getTime()<=t).sort((a,b)=>b.date-a.date)[0]||null;
 }
 
 /* ---------------- render ---------------- */
@@ -398,10 +432,17 @@ function renderReview(){
     </div>
     <div id="diff-modal" class="diff-modal hidden">
       <div class="diff-panel">
-        <div class="diff-head"><strong>Bulk diff — compare pages</strong><button class="diff-close" id="diff-close" aria-label="Close">×</button></div>
+        <div class="diff-head"><strong>Bulk diff — current vs past version</strong><button class="diff-close" id="diff-close" aria-label="Close">×</button></div>
         <div class="diff-cols">
-          <div class="diff-col"><select class="input diff-sel" id="diff-left"></select><div class="diff-frame"><iframe id="diff-left-frame" title="left page"></iframe></div></div>
-          <div class="diff-col"><select class="input diff-sel" id="diff-right"></select><div class="diff-frame"><iframe id="diff-right-frame" title="right page"></iframe></div></div>
+          <div class="diff-col">
+            <div class="diff-side"><span class="diff-side-label">Current Page</span><code class="diff-path" id="diff-cur-path"></code></div>
+            <div class="diff-frame"><iframe id="diff-left-frame" title="current page"></iframe></div>
+          </div>
+          <div class="diff-col">
+            <div class="diff-side"><span class="diff-side-label">Past version as of</span><input class="input diff-date" id="diff-date" type="datetime-local"></div>
+            <div class="diff-ver-cap" id="diff-ver-cap"></div>
+            <div class="diff-frame"><iframe id="diff-right-frame" title="past version"></iframe></div>
+          </div>
         </div>
       </div>
     </div>`;
@@ -421,24 +462,29 @@ function renderReview(){
     s.status='Denied'; s.locked=false; s.denyReason=msg; render(); toast('Denial sent to author ✕','warn');
   });
 
-  // Bulk diff — compare two pages side by side
+  // Bulk diff — current page vs a past version of the same page
   const diffModal=body.querySelector('#diff-modal');
-  const opts=s.pages.map((p)=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
-  const leftSel=body.querySelector('#diff-left');
-  const rightSel=body.querySelector('#diff-right');
-  leftSel.innerHTML=opts; rightSel.innerHTML=opts;
-  leftSel.value=s.pages[s.idx];
-  rightSel.value=s.pages[(s.idx+1)%s.pages.length];
-  const setFrame=(sel,val)=>{ body.querySelector(sel).srcdoc=previewDoc(val); };
+  const curPath=s.pages[s.idx];
+  const setDoc=(sel,doc)=>{ body.querySelector(sel).srcdoc=doc||'<!doctype html><meta charset="utf-8"><div style="font:14px -apple-system,Segoe UI,Arial;color:#6e6e77;padding:26px">No earlier version recorded for this page.</div>'; };
+  const renderRight=()=>{
+    const when=body.querySelector('#diff-date').value;
+    const cap=body.querySelector('#diff-ver-cap');
+    const v=pastVersionAsOf(curPath, when);
+    if(v){ setDoc('#diff-right-frame', v.doc); cap.textContent=`Showing version from ${v.date.toLocaleDateString()}`; cap.className='diff-ver-cap ok'; }
+    else { setDoc('#diff-right-frame', null); cap.textContent = when?'No earlier version before this date.':'Pick a date to load a past version.'; cap.className='diff-ver-cap'; }
+  };
   body.querySelector('#diff-btn').addEventListener('click',()=>{
     diffModal.classList.remove('hidden');
-    setFrame('#diff-left-frame',leftSel.value);
-    setFrame('#diff-right-frame',rightSel.value);
+    body.querySelector('#diff-cur-path').textContent=curPath;
+    setDoc('#diff-left-frame', previewDoc(curPath));
+    const list=PAST[curPath];
+    const di=body.querySelector('#diff-date');
+    if(list && list.length && !di.value){ di.value=toLocalInput(list.slice().sort((a,b)=>b.date-a.date)[0].date); }
+    renderRight();
   });
+  body.querySelector('#diff-date').addEventListener('change',renderRight);
   body.querySelector('#diff-close').addEventListener('click',()=>diffModal.classList.add('hidden'));
   diffModal.addEventListener('click',(e)=>{ if(e.target===diffModal) diffModal.classList.add('hidden'); });
-  leftSel.addEventListener('change',()=>setFrame('#diff-left-frame',leftSel.value));
-  rightSel.addEventListener('change',()=>setFrame('#diff-right-frame',rightSel.value));
 }
 
 function activeAsOf(when){
