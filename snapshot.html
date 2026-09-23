@@ -233,6 +233,7 @@ const state = {
   auditDate: '',
   createName: 'winter-campaign-2026',
   createDesc: 'Winter adventures push — snowshoe routes, ski-town escapes, and cozy road trips.',
+  createPass: '',
   selected: new Set(['/index','/learn/hiking','/learn/surfing']),
   editing: null,
   current: null,
@@ -335,8 +336,8 @@ function pastVersionAsOf(path, when){
 const body = document.getElementById('body');
 function setTab(t){ state.tab=t; document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); render(); }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
-function resetBuilder(){ state.editing=null; state.selected=new Set(['/index','/learn/hiking','/learn/surfing']); state.createName='winter-campaign-2026'; state.createDesc='Winter adventures push — snowshoe routes, ski-town escapes, and cozy road trips.'; }
-function enterEdit(snap){ if(!snap) return; state.editing=snap; state.selected=new Set(snap.pages); state.createName=snap.name; state.createDesc=snap.description||''; setTab('create'); }
+function resetBuilder(){ state.editing=null; state.selected=new Set(['/index','/learn/hiking','/learn/surfing']); state.createName='winter-campaign-2026'; state.createDesc='Winter adventures push — snowshoe routes, ski-town escapes, and cozy road trips.'; state.createPass=''; }
+function enterEdit(snap){ if(!snap) return; state.editing=snap; state.selected=new Set(snap.pages); state.createName=snap.name; state.createDesc=snap.description||''; state.createPass=snap.password||''; setTab('create'); }
 document.getElementById('new-snap').addEventListener('click',()=>{ resetBuilder(); state.current=null; setTab('create'); });
 
 function render(){
@@ -361,6 +362,8 @@ function renderCreate(){
         <input class="input" id="snap-name" placeholder="e.g. fall-collection-2026" value="${esc(state.createName)}">
         <label class="label">Description</label>
         <input class="input" id="snap-desc" placeholder="What's in this release?" value="${esc(state.createDesc)}">
+        <label class="label">Password (optional)</label>
+        <input class="input" id="snap-pass" placeholder="Protect the .aem.reviews URLs" value="${esc(state.createPass)}">
         ${state.editing?'':`<label class="check"><input type="checkbox" id="snap-lock" checked> Freeze pages for review</label>`}
         <label class="label">Selected pages <span class="count" id="selcnt">${state.selected.size}</span></label>
         <div class="selbox" id="selbox"></div>
@@ -401,20 +404,21 @@ function renderCreate(){
     if(state.selected.size<1){toast('Select at least one page.','warn');return;}
     if(state.editing){
       const snap=state.editing;
-      snap.name=slug(name); snap.description=body.querySelector('#snap-desc').value; snap.pages=[...state.selected];
+      snap.name=slug(name); snap.description=body.querySelector('#snap-desc').value; snap.password=body.querySelector('#snap-pass').value; snap.pages=[...state.selected];
       if(typeof snap.idx==='number' && snap.idx>=snap.pages.length) snap.idx=0;
       state.current=snap; state.editing=null;
       setTab('review'); toast(`Saved changes to "${snap.name}" (${snap.pages.length} pages) ✓`,'success');
     } else {
       const lockEl=body.querySelector('#snap-lock');
       const locked=lockEl?lockEl.checked:true;
-      const snap={name:slug(name),description:body.querySelector('#snap-desc').value,locked,status:locked?'In review — pages locked':'Draft',pages:[...state.selected],created:new Date()};
+      const snap={name:slug(name),description:body.querySelector('#snap-desc').value,password:body.querySelector('#snap-pass').value,locked,status:locked?'In review — pages locked':'Draft',pages:[...state.selected],created:new Date()};
       state.snapshots.unshift(snap); state.current=snap; state.selected=new Set();
       setTab('review'); toast(`Snapshot "${snap.name}" created with ${snap.pages.length} pages ✓`,'success');
     }
   });
   body.querySelector('#snap-name').addEventListener('input',(e)=>{ state.createName=e.target.value; });
   body.querySelector('#snap-desc').addEventListener('input',(e)=>{ state.createDesc=e.target.value; });
+  body.querySelector('#snap-pass').addEventListener('input',(e)=>{ state.createPass=e.target.value; });
   paintList(); paintCart();
 }
 
@@ -448,9 +452,13 @@ function renderReview(){
           <div class="rside-tools">
             <button class="btn" id="edit-pages">✎ Edit pages</button>
             <button class="btn btn-ghost" id="freeze-toggle">${s.locked?'Unfreeze pages':'Freeze pages for review'}</button>
+            <button class="btn btn-ghost" id="delete-snap">🗑 Delete</button>
           </div>
           <div class="rev-decision">
-            <p class="rev-desc" style="margin:0 0 8px">Approve or deny the whole snapshot:</p>
+            <p class="rev-desc" style="margin:0 0 8px">Review workflow:</p>
+            <div class="rev-actions">
+              <button class="btn" id="request-review" ${(s.locked || String(s.status).startsWith('Published'))?'disabled':''}>✈ Request Review</button>
+            </div>
             <div class="rev-actions">
               <button class="btn btn-primary" id="approve-pub">Approve &amp; Publish</button>
               <button class="btn btn-deny" id="deny-btn">Deny</button>
@@ -507,6 +515,9 @@ function renderReview(){
     if(!String(s.status).startsWith('Published') && !String(s.status).startsWith('Denied')) s.status=s.locked?'In review — pages locked':'Draft';
     render(); toast(s.locked?'Pages frozen for review 🔒':'Pages unfrozen','info');
   });
+  const reqBtn=body.querySelector('#request-review');
+  if(reqBtn) reqBtn.addEventListener('click',()=>{ s.locked=true; s.status='In review — pages locked'; s.denyReason=''; render(); toast('Review requested — pages frozen 🔒','info'); });
+  body.querySelector('#delete-snap').addEventListener('click',()=>{ const i=state.snapshots.indexOf(s); if(i>-1) state.snapshots.splice(i,1); state.current=null; setTab('audit'); toast('Snapshot deleted','warn'); });
 
   // Bulk diff — current production page vs the latest (unpublished) edits
   const diffModal=body.querySelector('#diff-modal');
