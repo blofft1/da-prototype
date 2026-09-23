@@ -447,7 +447,8 @@ function renderReview(){
             <div class="diff-frame"><iframe id="diff-left-frame" title="current page"></iframe></div>
           </div>
           <div class="diff-col">
-            <div class="diff-side"><span class="diff-side-label">Past version as of</span><input class="input diff-date" id="diff-date" type="datetime-local"></div>
+            <div class="diff-side"><span class="diff-side-label">Past version</span><code class="diff-path" id="diff-past-path"></code></div>
+            <div class="diff-side"><span class="diff-side-label">as of</span><input class="input diff-date" id="diff-date" type="datetime-local"></div>
             <div class="diff-ver-cap" id="diff-ver-cap"></div>
             <div class="diff-frame"><iframe id="diff-right-frame" title="past version"></iframe></div>
           </div>
@@ -484,6 +485,7 @@ function renderReview(){
   body.querySelector('#diff-btn').addEventListener('click',()=>{
     diffModal.classList.remove('hidden');
     body.querySelector('#diff-cur-path').textContent=curPath;
+    body.querySelector('#diff-past-path').textContent=curPath;
     setDoc('#diff-left-frame', previewDoc(curPath));
     const list=PAST[curPath];
     const di=body.querySelector('#diff-date');
